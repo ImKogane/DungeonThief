@@ -29,6 +29,7 @@ AMainCharacter::AMainCharacter()
 	BaseTurnRate = 65.0f;
 	BaseLookupRate = 65.0f;
 
+	//Don't rotate when the controller rotate (let that just affect the camera
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
@@ -43,7 +44,9 @@ AMainCharacter::AMainCharacter()
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	//Allow the mesh to be seen by the camera
+	GetMesh()->SetOnlyOwnerSee(false);
 }
 
 void AMainCharacter::Tick(float DeltaTime)
