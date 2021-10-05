@@ -70,6 +70,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 	PlayerInputComponent->BindAxis("TurnRate", this, &AMainCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AMainCharacter::LookupRate);
+
+	PlayerInputComponent->BindAxis("ScrollCamera", this, &AMainCharacter::ScrollInOut);
 }
 
 /*
@@ -110,5 +112,16 @@ void AMainCharacter::TurnAtRate(float Rate)
 void AMainCharacter::LookupRate(float Rate)
 {
 	AddControllerPitchInput(Rate * BaseLookupRate * GetWorld()->GetDeltaSeconds());
+}
+
+void AMainCharacter::ScrollInOut(float Value)
+{
+	if(Value != 0.0f)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Je scroll"))
+		float CurrentArmLenght = CameraBoom->TargetArmLength + Value;
+		if(CurrentArmLenght < MaxZoom && CurrentArmLenght > MinZoom)
+			CameraBoom->TargetArmLength += Value;
+	}
 }
 
