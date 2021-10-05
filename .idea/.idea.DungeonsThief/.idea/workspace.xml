@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="568389ce-29b0-419b-ba97-e99e74496a16" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DungeonsThief/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DungeonsThief/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Levels/RomainTestLevel.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/RomainTestLevel.umap" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Player/Blueprint/BP_MainCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Player/Blueprint/BP_MainCharacter.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DungeonsThief/MainCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonsThief/MainCharacter.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,13 +145,14 @@
       <updated>1633353433930</updated>
       <workItem from="1633353441574" duration="1000" />
       <workItem from="1633356883550" duration="4043000" />
+      <workItem from="1633416898029" duration="1790000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
