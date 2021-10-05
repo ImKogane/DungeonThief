@@ -31,3 +31,10 @@ void UMainCharacterAnimInstance::UpdateAnimationProperties()
 	}
 }
 
+void UMainCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
+{
+	Super::NativeUpdateAnimation(DeltaSeconds);
+
+	UpdateAnimationProperties();
+}
+

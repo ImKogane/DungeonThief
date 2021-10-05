@@ -18,8 +18,10 @@ public :
 
     virtual void NativeInitializeAnimation() override;
     
-    UFUNCTION(BlueprintCallable, Category = "AnimationProperties")
+    
 	void UpdateAnimationProperties();
+	
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 public:
 
