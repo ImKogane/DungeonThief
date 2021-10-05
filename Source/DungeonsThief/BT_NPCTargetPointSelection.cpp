@@ -1,13 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "BTNPCTargetPointSelection.h"
+#include "BT_NPCTargetPointSelection.h"
 #include "AIEnemyController.h"
 #include "NPCTargetPoint.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 
-EBTNodeResult::Type UBTNPCTargetPointSelection::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBT_NPCTargetPointSelection::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AAIEnemyController* AIController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
 	

@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BTNPCTargetPointSelection.generated.h"
+#include "BT_NPCTargetPointSelection.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DUNGEONSTHIEF_API UBTNPCTargetPointSelection : public UBTTaskNode
+class DUNGEONSTHIEF_API UBT_NPCTargetPointSelection : public UBTTaskNode
 {
 	GENERATED_BODY()
 

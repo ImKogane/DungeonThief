@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
-#include "MainCharacterAnimInstance.generated.h"
+#include "EnemyAnimInstance.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DUNGEONSTHIEF_API UMainCharacterAnimInstance : public UAnimInstance
+class DUNGEONSTHIEF_API UEnemyAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 
@@ -35,5 +35,5 @@ protected:
 	class APawn* Pawn;
 	
 	UPROPERTY(EditAnywhere, Category = "Movement")
-	class AMainCharacter* MainCharacter;
+	class AAIEnemyCharacter* EnemyCharacter;
 };

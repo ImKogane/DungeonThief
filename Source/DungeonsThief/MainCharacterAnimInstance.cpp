@@ -4,16 +4,17 @@
 #include "MainCharacterAnimInstance.h"
 #include "MainCharacter.h"
 
+
 void UMainCharacterAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
-	
+
 	if (Pawn == nullptr)
 	{
 		Pawn = TryGetPawnOwner();
 	}
-
-	if (Pawn != nullptr)
+	
+	if (Pawn)
 	{
 		MainCharacter = Cast<AMainCharacter>(Pawn);
 	}
@@ -22,12 +23,11 @@ void UMainCharacterAnimInstance::NativeInitializeAnimation()
 
 void UMainCharacterAnimInstance::UpdateAnimationProperties()
 {
-	if (MainCharacter != nullptr)
-	{
-		FVector Velocity = MainCharacter->GetVelocity();
-		FVector LateralVelocity = FVector(Velocity.X, Velocity.Y, 0.0f);
+	//UE_LOG(LogTemp, Warning, TEXT("PLAYER : %f"), MovementSpeed);
 
-		MovementSpeed = LateralVelocity.Size();
+	if (MainCharacter)
+	{
+		MovementSpeed = GetCharacterMovementSpeed();
 	}
 }
 
@@ -38,3 +38,14 @@ void UMainCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	UpdateAnimationProperties();
 }
 
+float UMainCharacterAnimInstance::GetCharacterMovementSpeed()
+{
+	if (MainCharacter)
+	{
+		FVector Speed = MainCharacter->GetVelocity();
+		FVector LateralSpeed = FVector(Speed.X, Speed.Y, 0.f);
+		return LateralSpeed.Size();
+	}
+
+	return 0;
+}
