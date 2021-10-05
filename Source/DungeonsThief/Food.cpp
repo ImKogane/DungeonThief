@@ -2,6 +2,7 @@
 
 
 #include "Food.h"
+#include "MainCharacter.h"
 
 // Sets default values
 AFood::AFood()
@@ -10,6 +11,14 @@ AFood::AFood()
 	PrimaryActorTick.bCanEverTick = true;
 
 	FoodMesh = CreateDefaultSubobject<UStaticMeshComponent>("FoodMesh");
+
+	CollisionBox = CreateDefaultSubobject<UBoxComponent>("BoxCollider");
+	CollisionBox->SetBoxExtent(FVector(32.f, 32.f, 32.f));
+	CollisionBox->SetCollisionProfileName("Trigger");
+	CollisionBox->SetupAttachment(FoodMesh);
+
+	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AFood::OnBoxOverlapBegin);
+	CollisionBox->OnComponentEndOverlap.AddDynamic(this, &AFood::OnBoxOverlapEnd);
 
 }
 
@@ -36,7 +45,7 @@ void AFood::Tick(float DeltaTime)
 void AFood::SetRandomMesh()
 {
     //Choose random index
-	int random = FMath::FRandRange(0,9);
+	int random = FMath::FRandRange(0,FoodArray.Num());
 	
 	
 	if(FoodMesh != nullptr)
@@ -48,4 +57,34 @@ void AFood::SetRandomMesh()
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("NullPTR désolé !"));
 	}
 	
+}
+
+void AFood::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("Proche de l'aliment."));
+	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
+	
+	if(Player != nullptr)
+	{
+		Player->SetPlayerActor(this);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Player NullPTR désolé !"));
+	}
+}
+
+void AFood::OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Loin de l'aliment."));
+	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
+	
+	if(Player != nullptr)
+	{
+		Player->SetPlayerActor(nullptr);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Player NullPTR désolé !"));
+	}
 }

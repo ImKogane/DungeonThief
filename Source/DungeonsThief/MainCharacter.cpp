@@ -2,6 +2,9 @@
 
 
 #include "MainCharacter.h"
+
+#include "Food.h"
+#include "HeadMountedDisplayTypes.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -39,6 +42,8 @@ AMainCharacter::AMainCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f); // at this rotation rate
 	GetCharacterMovement()->JumpZVelocity = 600.f;
 	GetCharacterMovement()->AirControl = .2f;
+
+	BaseSpeed = GetCharacterMovement()->MaxWalkSpeed;
 }
 
 void AMainCharacter::BeginPlay()
@@ -70,6 +75,79 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 	PlayerInputComponent->BindAxis("TurnRate", this, &AMainCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AMainCharacter::LookupRate);
+
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AMainCharacter::InteractWithItem);
+}
+
+void AMainCharacter::SetPlayerActor(AActor* NewActor)
+{
+	TempActor = NewActor;
+}
+
+
+
+bool AMainCharacter::GetCarryFood()
+{
+	return IsCarryFood;
+}
+
+/**
+* @brief Pick random mesh from an array to set the UStaticMeshComponent mesh
+*/
+void AMainCharacter::InteractWithItem()
+{
+	if(TempActor != nullptr)
+	{
+		AFood* TempFood = Cast<AFood>(TempActor);
+		if(TempFood != nullptr)
+		{
+			
+
+			if(IsCarryFood == false)
+			{
+				CarryItem();
+			}
+			else
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Tu porte déjà un aliment."));
+			}
+			
+		}
+		
+	}
+	else
+	{
+		DropItem();
+	}
+
+	
+	
+}
+
+/**
+* @brief Event when player carry item
+*/
+void AMainCharacter::CarryItem()
+{
+	if(IsCarryFood == false)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Carry item."));
+		IsCarryFood = true;
+		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * 0.5;
+	}
+}
+
+/**
+* @brief Event when player drop item (on floor or on spot)
+*/
+void AMainCharacter::DropItem()
+{
+	if(IsCarryFood == true)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Drop item."));
+		IsCarryFood = false;
+		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
+	}
 }
 
 /*
