@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Food.h"
 #include "GameFramework/Character.h"
 #include "MainCharacter.generated.h"
 
@@ -33,6 +34,32 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	float BaseLookupRate;
 	
+	UPROPERTY(VisibleAnywhere, Category = "Movement")
+	float BaseSpeed;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Movement")
+	float Speed;
+
+	UPROPERTY(VisibleAnywhere, Category = "Food")
+	bool IsCarryFood;
+
+	UPROPERTY(VisibleAnywhere, Category = "Other")
+	class AActor* TempActor;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Food")
+	AActor* WornFood;
+
+	
+	
+	
+	UFUNCTION()
+	void InteractWithItem();
+
+	UFUNCTION()
+	void CarryItem();
+
+	
+	
 protected:
 	//For function declaration
 
@@ -51,7 +78,16 @@ protected:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
-public:	
+public:
+
+	void SetPlayerActor(AActor* NewActor);
+	void SetSpeed(float NewSpeed);
+
+	UFUNCTION()
+		void DropItem();
+	
+	bool GetIsCarryFood();
+	AActor* GetWornFood();
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

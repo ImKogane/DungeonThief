@@ -2,6 +2,7 @@
 
 
 #include "Food.h"
+#include "MainCharacter.h"
 
 // Sets default values
 AFood::AFood()
@@ -11,7 +12,27 @@ AFood::AFood()
 
 	FoodMesh = CreateDefaultSubobject<UStaticMeshComponent>("FoodMesh");
 
+	CollisionBox = CreateDefaultSubobject<UBoxComponent>("BoxCollider");
+	CollisionBox->SetBoxExtent(FVector(32.f, 32.f, 32.f));
+	CollisionBox->SetCollisionProfileName("Trigger");
+	CollisionBox->SetupAttachment(FoodMesh);
+
+	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AFood::OnBoxOverlapBegin);
+	CollisionBox->OnComponentEndOverlap.AddDynamic(this, &AFood::OnBoxOverlapEnd);
+
 }
+
+void AFood::BeTake()
+{
+	FoodMesh->SetCollisionProfileName(TEXT("OverlapAll"));
+}
+
+void AFood::BeDrop()
+{
+	FoodMesh->SetCollisionProfileName(TEXT("OverlapOnlyPawn"));
+	//FoodMesh->SetSimulatePhysics(true);
+}
+
 
 // Called when the game starts or when spawned
 void AFood::BeginPlay()
@@ -36,7 +57,7 @@ void AFood::Tick(float DeltaTime)
 void AFood::SetRandomMesh()
 {
     //Choose random index
-	int random = FMath::FRandRange(0,9);
+	int random = FMath::FRandRange(0,FoodArray.Num());
 	
 	
 	if(FoodMesh != nullptr)
@@ -48,4 +69,33 @@ void AFood::SetRandomMesh()
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("NullPTR désolé !"));
 	}
 	
+}
+
+void AFood::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+{
+	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
+	
+	if(Player != nullptr)
+	{
+		Player->SetPlayerActor(this);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Player 1 NullPTR désolé !"));
+	}
+}
+
+void AFood::OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
+	
+	if(Player != nullptr)
+	{
+		Player->SetPlayerActor(nullptr);
+	}
+}
+
+UStaticMeshComponent* AFood::GetMeshComponent()
+{
+	return FoodMesh;
 }

@@ -13,27 +13,27 @@ UCLASS()
 class DUNGEONSTHIEF_API UMainCharacterAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
+	
+public :
 
-protected:
-
-	/* Initialize variables */
-	virtual void NativeInitializeAnimation() override;
-
-	/* Where all the animation variables will be updated */
-	virtual void UpdateAnimationProperties();
-
-	/* The Tick function from the animation instance */ 
+    virtual void NativeInitializeAnimation() override;
+    
+    
+	void UpdateAnimationProperties();
+	
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
-	/* Return the character movement speed */
-	float GetCharacterMovementSpeed();
+public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimationProperties")
 	float MovementSpeed;
 
-	UPROPERTY(EditAnywhere, Category = "Movement")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimationProperties")
+	bool IsCarryItem;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
 	class APawn* Pawn;
-	
-	UPROPERTY(EditAnywhere, Category = "Movement")
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
 	class AMainCharacter* MainCharacter;
 };
