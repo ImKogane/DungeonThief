@@ -25,7 +25,7 @@ AMainCharacter::AMainCharacter()
 	// Attach the camera to the end of the camera boom  
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
-
+	
 	BaseTurnRate = 65.0f;
 	BaseLookupRate = 65.0f;
 

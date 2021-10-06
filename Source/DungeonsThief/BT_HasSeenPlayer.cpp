@@ -2,10 +2,11 @@
 
 
 #include "BT_HasSeenPlayer.h"
+
+#include "AIEnemyCharacter.h"
 #include "AIEnemyController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/Character.h"
 
 void UBT_HasSeenPlayer::ScheduleNextTick(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -31,6 +32,8 @@ void UBT_HasSeenPlayer::ScheduleNextTick(UBehaviorTreeComponent& OwnerComp, uint
 		FVector EnemyLocation = AIController->GetPawn()->GetActorLocation();
 		FVector PlayerLocation = FVector::ZeroVector;
 
+		BlackboardComponent->SetValueAsVector("AILocation", EnemyLocation);
+		
 		APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 
 		if (PlayerPawn)
@@ -46,12 +49,25 @@ void UBT_HasSeenPlayer::ScheduleNextTick(UBehaviorTreeComponent& OwnerComp, uint
 		
 		if (ACos < 55.f)
 		{
-			BlackboardComponent->SetValueAsVector("PlayerLocation", PlayerLocation);
 			BlackboardComponent->SetValueAsInt("HasSeenPlayer", 1);
+			
+			AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();
+
+			if (AICharacter)
+			{
+				AICharacter->SetHasSeenPlayer(true);
+			}
 		}
 		else
 		{
 			BlackboardComponent->SetValueAsInt("HasSeenPlayer", 0);
+
+			AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();
+
+			if (AICharacter)
+			{
+				AICharacter->SetHasSeenPlayer(false);
+			}
 		}
 		
 	}

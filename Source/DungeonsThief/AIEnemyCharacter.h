@@ -17,10 +17,16 @@ public:
 	
 	UPROPERTY(EditAnywhere, Category = "AI")
 	class UBehaviorTree* BehaviourTree;
-	
+
+	FORCEINLINE bool GetHasSeenPlayer() {return bHasSeenPlayer;}
+	FORCEINLINE void SetHasSeenPlayer(bool value) {bHasSeenPlayer = value;}
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UPROPERTY(VisibleAnywhere, Category = "AI")
+	bool bHasSeenPlayer;
 
 public:	
 	// Called every frame

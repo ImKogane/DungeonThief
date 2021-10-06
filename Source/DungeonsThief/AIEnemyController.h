@@ -20,6 +20,7 @@ public:
 	FORCEINLINE UBlackboardComponent* GetBlackBoardComponent() const { return BlackboardComponent; }
 	FORCEINLINE TArray<AActor*> GetAvailableTargetPoints() { return NPCTargetPoints; }
 
+	FORCEINLINE class AAIEnemyCharacter* GetAICharacter() { return AICharacter; }
 protected:
 
 	/* Reference to the Behavior Tree */
@@ -35,6 +36,8 @@ protected:
 	FName LocationToGoKey;
 
 	TArray<AActor*> NPCTargetPoints;
+
+	class AAIEnemyCharacter* AICharacter;
 
 protected:
 

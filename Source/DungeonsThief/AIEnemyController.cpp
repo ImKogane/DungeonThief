@@ -24,20 +24,22 @@ AAIEnemyController::AAIEnemyController()
 	LocationToGoKey = "LocationToGo";
 }
 
+
+
 void AAIEnemyController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-	AAIEnemyCharacter* AIChar = Cast<AAIEnemyCharacter>(InPawn);
+	AICharacter = Cast<AAIEnemyCharacter>(InPawn);
 
-	if (AIChar)
+	if (AICharacter)
 	{
 		//If the blackboard variable is valid, we initialize the current blackBoard of the behaviour tree
-		if (AIChar->BehaviourTree->BlackboardAsset)
+		if (AICharacter->BehaviourTree->BlackboardAsset)
 		{
 			if (BlackboardComponent)
 			{
-				BlackboardComponent->InitializeBlackboard(*(AIChar->BehaviourTree->BlackboardAsset));
+				BlackboardComponent->InitializeBlackboard(*(AICharacter->BehaviourTree->BlackboardAsset));
 			}
 		}
 
@@ -45,7 +47,7 @@ void AAIEnemyController::OnPossess(APawn* InPawn)
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ANPCTargetPoint::StaticClass(), NPCTargetPoints);
 
 		//Start the behaviour tree which coreesponds to the specific character
-		BehaviorTreeComponent->StartTree(*AIChar->BehaviourTree);
+		BehaviorTreeComponent->StartTree(*AICharacter->BehaviourTree);
 	}
 }
 

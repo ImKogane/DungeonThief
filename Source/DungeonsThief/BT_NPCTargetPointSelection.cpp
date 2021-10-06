@@ -2,6 +2,8 @@
 
 
 #include "BT_NPCTargetPointSelection.h"
+
+#include "AIEnemyCharacter.h"
 #include "AIEnemyController.h"
 #include "NPCTargetPoint.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -13,6 +15,16 @@ EBTNodeResult::Type UBT_NPCTargetPointSelection::ExecuteTask(UBehaviorTreeCompon
 	
 	if (AIController)
 	{
+		AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();
+		// If the AI has seen the player we don't want it to keep patrolling
+		if (AICharacter)
+		{
+			if (AICharacter->GetHasSeenPlayer())
+			{
+				return EBTNodeResult::Failed; 
+			}
+		}
+		
 		//Get the Blackboard component and the Current Point of the NPC
 		UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
 		ANPCTargetPoint* CurrentPoint = Cast<ANPCTargetPoint>(BlackboardComponent->GetValueAsObject("LocationToGo"));
