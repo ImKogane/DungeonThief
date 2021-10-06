@@ -22,6 +22,18 @@ AFood::AFood()
 
 }
 
+void AFood::BeTake()
+{
+	FoodMesh->SetCollisionProfileName(TEXT("OverlapAll"));
+}
+
+void AFood::BeDrop()
+{
+	FoodMesh->SetCollisionProfileName(TEXT("OverlapOnlyPawn"));
+	//FoodMesh->SetSimulatePhysics(true);
+}
+
+
 // Called when the game starts or when spawned
 void AFood::BeginPlay()
 {
@@ -61,7 +73,6 @@ void AFood::SetRandomMesh()
 
 void AFood::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, TEXT("Proche de l'aliment."));
 	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
 	
 	if(Player != nullptr)
@@ -70,21 +81,21 @@ void AFood::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor*
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Player NullPTR désolé !"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Player 1 NullPTR désolé !"));
 	}
 }
 
 void AFood::OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Loin de l'aliment."));
 	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
 	
 	if(Player != nullptr)
 	{
 		Player->SetPlayerActor(nullptr);
 	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Player NullPTR désolé !"));
-	}
+}
+
+UStaticMeshComponent* AFood::GetMeshComponent()
+{
+	return FoodMesh;
 }

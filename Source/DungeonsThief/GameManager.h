@@ -22,7 +22,7 @@ protected:
 	UFUNCTION()
 		void SpawnFood();
 		
-
+	
 
 	UPROPERTY(EditAnywhere, Category="Food System")
 		TArray<AFoodSpot*> SpotsArray;
@@ -30,6 +30,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Food System")
 		TSubclassOf<AFood> FoodActor;
 
+	UPROPERTY(VisibleAnywhere, Category="Points System")
+		int Points;
+	
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -37,5 +40,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION()
+		void AddPoints(int PointsCount);
 
 };

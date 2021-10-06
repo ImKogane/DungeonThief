@@ -9,27 +9,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="568389ce-29b0-419b-ba97-e99e74496a16" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Content/Blueprints/BP_FoodSpot.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/Blueprints/BP_GameManager.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/Player/Animations/BS_MainCharacterCarry.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/Player/Animations/Idle_Carry.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/Player/Animations/Walk_Carry.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/DungeonsThief/FoodSpot.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/DungeonsThief/FoodSpot.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/DungeonsThief/GameManager.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Source/DungeonsThief/GameManager.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/BP_PlayerHidingPlace.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/DungeonsThief/PlayerHidingPlace.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/DungeonsThief/PlayerHidingPlace.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DungeonsThief/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DungeonsThief/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultInput.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultInput.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_Food.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_Food.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Levels/MatthiasTestLevel.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/MatthiasTestLevel.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Player/Animations/ABP_MainCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Player/Animations/ABP_MainCharacter.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Player/Blueprint/BP_MainCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Player/Blueprint/BP_MainCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Models/PolygonDungeonRealms/Meshes/Characters/SK_Chr_Hero_Male_01.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Models/PolygonDungeonRealms/Meshes/Characters/SK_Chr_Hero_Male_01.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DungeonsThief/Food.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonsThief/Food.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DungeonsThief/Food.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonsThief/Food.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonsThief/GameManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonsThief/GameManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DungeonsThief/GameManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonsThief/GameManager.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DungeonsThief/MainCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonsThief/MainCharacter.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DungeonsThief/MainCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonsThief/MainCharacter.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DungeonsThief/MainCharacterAnimInstance.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonsThief/MainCharacterAnimInstance.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DungeonsThief/MainCharacterAnimInstance.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DungeonsThief/MainCharacterAnimInstance.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -295,7 +288,13 @@
       <workItem from="1633430684011" duration="1690000" />
       <workItem from="1633434910409" duration="1648000" />
       <workItem from="1633436955278" duration="653000" />
-      <workItem from="1633437663825" duration="9689000" />
+      <workItem from="1633437663825" duration="10120000" />
+      <workItem from="1633513080869" duration="1195000" />
+      <workItem from="1633519136569" duration="285000" />
+      <workItem from="1633519634869" duration="488000" />
+      <workItem from="1633520166141" duration="2494000" />
+      <workItem from="1633522702676" duration="1209000" />
+      <workItem from="1633523972000" duration="765000" />
     </task>
     <servers />
   </component>

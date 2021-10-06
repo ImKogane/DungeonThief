@@ -28,7 +28,7 @@ void UMainCharacterAnimInstance::UpdateAnimationProperties()
 		FVector LateralVelocity = FVector(Velocity.X, Velocity.Y, 0.0f);
 
 		MovementSpeed = LateralVelocity.Size();
-		IsCarryItem = MainCharacter->GetCarryFood();
+		IsCarryItem = MainCharacter->GetIsCarryFood();
 	}
 }
 

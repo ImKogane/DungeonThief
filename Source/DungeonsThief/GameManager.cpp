@@ -47,3 +47,14 @@ void AGameManager::SpawnFood()
 	
 	
 }
+
+void AGameManager::AddPoints(int PointsCount)
+{
+	Points += PointsCount;
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, TEXT("++"));
+
+	if(Points >= 5)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("YOU WIN"));
+	}
+}

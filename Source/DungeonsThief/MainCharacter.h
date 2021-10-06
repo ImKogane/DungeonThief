@@ -45,6 +45,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Other")
 	class AActor* TempActor;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Food")
+	AActor* WornFood;
 
 	
 	
@@ -55,8 +58,7 @@ protected:
 	UFUNCTION()
 	void CarryItem();
 
-	UFUNCTION()
-	void DropItem();
+	
 	
 protected:
 	//For function declaration
@@ -80,8 +82,12 @@ public:
 
 	void SetPlayerActor(AActor* NewActor);
 	void SetSpeed(float NewSpeed);
+
+	UFUNCTION()
+		void DropItem();
 	
-	bool GetCarryFood();
+	bool GetIsCarryFood();
+	AActor* GetWornFood();
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

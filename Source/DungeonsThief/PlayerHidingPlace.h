@@ -4,53 +4,38 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Components/StaticMeshComponent.h"
+#include "MainCharacter.h"
+#include "GameManager.h"
 #include "Components/BoxComponent.h"
-#include "Food.generated.h"
+#include "PlayerHidingPlace.generated.h"
 
 UCLASS()
-class DUNGEONSTHIEF_API AFood : public AActor
+class DUNGEONSTHIEF_API APlayerHidingPlace : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AFood();
+	APlayerHidingPlace();
 
 protected:
-	
-	UPROPERTY(EditDefaultsOnly)
-		TArray<UStaticMesh*> FoodArray;
-	
-	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* FoodMesh;
-
-	UPROPERTY(VisibleAnywhere)
-		UBoxComponent* CollisionBox;
-	
-
-	
-	
-			
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void SetRandomMesh();
+	UPROPERTY(VisibleAnywhere)
+	int FoodCount;
+
+	UPROPERTY(VisibleAnywhere)
+		UBoxComponent* CollisionBox;
+
+	UPROPERTY(EditAnywhere)
+		AGameManager* GameManager;
 
 	UFUNCTION()
 		void OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 
-	UFUNCTION()
-		void OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
 public:	
 	// Called every frame
-
-	UFUNCTION()
-	void BeTake();
-	void BeDrop();
-	
-	UStaticMeshComponent* GetMeshComponent();
 	virtual void Tick(float DeltaTime) override;
 
 };

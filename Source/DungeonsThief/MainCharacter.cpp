@@ -57,6 +57,12 @@ void AMainCharacter::BeginPlay()
 void AMainCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if(WornFood != nullptr)
+	{
+		WornFood->SetActorLocation(this->GetActorLocation());
+	}
+	
 }
 
 /*
@@ -86,9 +92,14 @@ void AMainCharacter::SetPlayerActor(AActor* NewActor)
 
 
 
-bool AMainCharacter::GetCarryFood()
+bool AMainCharacter::GetIsCarryFood()
 {
 	return IsCarryFood;
+}
+
+AActor* AMainCharacter::GetWornFood()
+{
+		return WornFood;
 }
 
 /**
@@ -101,15 +112,19 @@ void AMainCharacter::InteractWithItem()
 		AFood* TempFood = Cast<AFood>(TempActor);
 		if(TempFood != nullptr)
 		{
-			
 
 			if(IsCarryFood == false)
 			{
 				CarryItem();
+				TempFood->BeTake();
+				
+				
+				
 			}
 			else
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Tu porte déjà un aliment."));
+				DropItem();
+				TempFood->BeDrop();
 			}
 			
 		}
@@ -134,6 +149,13 @@ void AMainCharacter::CarryItem()
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Carry item."));
 		IsCarryFood = true;
 		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * 0.5;
+
+		if(TempActor != nullptr)
+		{
+			WornFood = TempActor;
+			WornFood->SetActorLocation(this->GetActorLocation());
+			
+		}
 	}
 }
 
@@ -145,8 +167,10 @@ void AMainCharacter::DropItem()
 	if(IsCarryFood == true)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Drop item."));
-		IsCarryFood = false;
 		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
+		WornFood = nullptr;
+		TempActor = nullptr;
+		IsCarryFood = false;
 	}
 }
 
