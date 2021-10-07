@@ -44,7 +44,9 @@ AMainCharacter::AMainCharacter()
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
+	//set where the camera is looking at
+	CameraBoom->SetRelativeLocation(FVector(0,0,60));
 	//Allow the mesh to be seen by the camera
 	GetMesh()->SetOnlyOwnerSee(false);
 }
