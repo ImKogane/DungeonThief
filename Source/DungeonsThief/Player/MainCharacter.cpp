@@ -3,8 +3,7 @@
 
 #include "MainCharacter.h"
 
-#include "Food.h"
-#include "HeadMountedDisplayTypes.h"
+#include "DungeonsThief/Food//Food.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -44,6 +43,9 @@ AMainCharacter::AMainCharacter()
 	GetCharacterMovement()->AirControl = .2f;
 
 	BaseSpeed = GetCharacterMovement()->MaxWalkSpeed;
+
+	MaxZoom = 600.0f;
+	MinZoom = 200.0f;
 }
 
 void AMainCharacter::BeginPlay()
@@ -52,8 +54,6 @@ void AMainCharacter::BeginPlay()
 	
 	//set where the camera is looking at
 	CameraBoom->SetRelativeLocation(FVector(0,0,60));
-	//Allow the mesh to be seen by the camera
-	GetMesh()->SetOnlyOwnerSee(false);
 }
 
 void AMainCharacter::Tick(float DeltaTime)
@@ -63,8 +63,7 @@ void AMainCharacter::Tick(float DeltaTime)
 	if(WornFood != nullptr)
 	{
 		WornFood->SetActorLocation(this->GetActorLocation());
-	}
-	
+	}	
 }
 
 /*
@@ -89,22 +88,6 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AMainCharacter::InteractWithItem);
 }
 
-void AMainCharacter::SetPlayerActor(AActor* NewActor)
-{
-	TempActor = NewActor;
-}
-
-
-
-bool AMainCharacter::GetIsCarryFood()
-{
-	return IsCarryFood;
-}
-
-AActor* AMainCharacter::GetWornFood()
-{
-		return WornFood;
-}
 
 /**
 * @brief Pick random mesh from an array to set the UStaticMeshComponent mesh
@@ -116,31 +99,22 @@ void AMainCharacter::InteractWithItem()
 		AFood* TempFood = Cast<AFood>(TempActor);
 		if(TempFood != nullptr)
 		{
-
 			if(IsCarryFood == false)
 			{
 				CarryItem();
-				TempFood->BeTake();
-				
-				
-				
+				TempFood->BeTake();			
 			}
 			else
 			{
 				DropItem();
 				TempFood->BeDrop();
-			}
-			
-		}
-		
+			}			
+		}		
 	}
 	else
 	{
 		DropItem();
 	}
-
-	
-	
 }
 
 /**
@@ -157,8 +131,7 @@ void AMainCharacter::CarryItem()
 		if(TempActor != nullptr)
 		{
 			WornFood = TempActor;
-			WornFood->SetActorLocation(this->GetActorLocation());
-			
+			WornFood->SetActorLocation(this->GetActorLocation());			
 		}
 	}
 }
@@ -223,9 +196,13 @@ void AMainCharacter::ScrollInOut(float Value)
 	if(Value != 0.0f)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Je scroll"))
+		
 		float CurrentArmLenght = CameraBoom->TargetArmLength + Value;
+		
 		if(CurrentArmLenght < MaxZoom && CurrentArmLenght > MinZoom)
+		{
 			CameraBoom->TargetArmLength += Value;
+		}
 	}
 }
 

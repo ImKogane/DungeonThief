@@ -2,7 +2,7 @@
 
 
 #include "Food.h"
-#include "MainCharacter.h"
+#include "DungeonsThief/Player/MainCharacter.h"
 
 // Sets default values
 AFood::AFood()

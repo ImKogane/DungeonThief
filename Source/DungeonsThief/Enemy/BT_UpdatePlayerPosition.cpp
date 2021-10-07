@@ -3,8 +3,8 @@
 
 #include "BT_UpdatePlayerPosition.h"
 #include "AIEnemyController.h"
-#include "MainCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "DungeonsThief/Player/MainCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
 EBTNodeResult::Type UBT_UpdatePlayerPosition::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
