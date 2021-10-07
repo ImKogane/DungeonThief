@@ -4,7 +4,6 @@
 #include "MainCharacter.h"
 
 #include "DungeonsThief/Food//Food.h"
-#include "HeadMountedDisplayTypes.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -44,6 +43,9 @@ AMainCharacter::AMainCharacter()
 	GetCharacterMovement()->AirControl = .2f;
 
 	BaseSpeed = GetCharacterMovement()->MaxWalkSpeed;
+
+	MaxZoom = 600.0f;
+	MinZoom = 200.0f;
 }
 
 void AMainCharacter::BeginPlay()
@@ -52,8 +54,6 @@ void AMainCharacter::BeginPlay()
 	
 	//set where the camera is looking at
 	CameraBoom->SetRelativeLocation(FVector(0,0,60));
-	//Allow the mesh to be seen by the camera
-	GetMesh()->SetOnlyOwnerSee(false);
 }
 
 void AMainCharacter::Tick(float DeltaTime)
@@ -196,9 +196,13 @@ void AMainCharacter::ScrollInOut(float Value)
 	if(Value != 0.0f)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Je scroll"))
+		
 		float CurrentArmLenght = CameraBoom->TargetArmLength + Value;
+		
 		if(CurrentArmLenght < MaxZoom && CurrentArmLenght > MinZoom)
+		{
 			CameraBoom->TargetArmLength += Value;
+		}
 	}
 }
 

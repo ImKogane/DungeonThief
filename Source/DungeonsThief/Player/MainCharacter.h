@@ -79,12 +79,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "CameraZoom")
 	float MaxZoom;
+	
 	UPROPERTY(EditAnywhere, Category = "CameraZoom")
 	float MinZoom;
-	
-
-	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 public:
 
