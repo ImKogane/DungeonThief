@@ -37,7 +37,8 @@ void AGameManager::SpawnFood()
 
 	if(tempSpot != nullptr)
 	{
-		GetWorld()->SpawnActor<AFood>(FoodActor, tempSpot->GetActorLocation(), tempSpot->GetActorRotation());
+		//GetWorld()->SpawnActor<AFood>(FoodActor, tempSpot->GetActorLocation(), tempSpot->GetActorRotation());
+		GetWorld()->SpawnActor<AFood>(FoodActor, tempSpot->GetSpawnPoint()->GetComponentLocation(), tempSpot->GetSpawnPoint()->GetComponentRotation());
 	}
 	else
 	{
