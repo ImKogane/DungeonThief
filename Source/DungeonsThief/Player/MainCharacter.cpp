@@ -49,7 +49,9 @@ AMainCharacter::AMainCharacter()
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
+	//set where the camera is looking at
+	CameraBoom->SetRelativeLocation(FVector(0,0,60));
 	//Allow the mesh to be seen by the camera
 	GetMesh()->SetOnlyOwnerSee(false);
 }
@@ -80,6 +82,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 	PlayerInputComponent->BindAxis("TurnRate", this, &AMainCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AMainCharacter::LookupRate);
+
+	PlayerInputComponent->BindAxis("ScrollCamera", this, &AMainCharacter::ScrollInOut);
 
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AMainCharacter::InteractWithItem);
 }
@@ -185,5 +189,16 @@ void AMainCharacter::TurnAtRate(float Rate)
 void AMainCharacter::LookupRate(float Rate)
 {
 	AddControllerPitchInput(Rate * BaseLookupRate * GetWorld()->GetDeltaSeconds());
+}
+
+void AMainCharacter::ScrollInOut(float Value)
+{
+	if(Value != 0.0f)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Je scroll"))
+		float CurrentArmLenght = CameraBoom->TargetArmLength + Value;
+		if(CurrentArmLenght < MaxZoom && CurrentArmLenght > MinZoom)
+			CameraBoom->TargetArmLength += Value;
+	}
 }
 

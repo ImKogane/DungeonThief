@@ -74,6 +74,15 @@ protected:
 	/* Called via input to look up and down at a given rate*/
 	void LookupRate(float Rate);
 
+	/* Called for scrolling in or out the camera view*/
+	void ScrollInOut(float Value);
+
+	UPROPERTY(EditAnywhere, Category = "CameraZoom")
+	float MaxZoom;
+	UPROPERTY(EditAnywhere, Category = "CameraZoom")
+	float MinZoom;
+	
+
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
