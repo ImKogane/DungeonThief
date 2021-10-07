@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "FoodSpot.h"
-#include "Food.h"
 #include "GameManager.generated.h"
 
 UCLASS()
@@ -20,19 +18,17 @@ public:
 protected:
 
 	UFUNCTION()
-		void SpawnFood();
-		
-	
+	void SpawnFood();
+			
 
 	UPROPERTY(EditAnywhere, Category="Food System")
-		TArray<AFoodSpot*> SpotsArray;
+	TArray<class AFoodSpot*> SpotsArray;
 
 	UPROPERTY(EditAnywhere, Category="Food System")
-		TSubclassOf<AFood> FoodActor;
+	TSubclassOf<class AFood> FoodActor;
 
 	UPROPERTY(VisibleAnywhere, Category="Points System")
-		int Points;
-	
+	int Points;	
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -42,6 +38,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-		void AddPoints(int PointsCount);
+	void AddPoints(int PointsCount);
 
 };

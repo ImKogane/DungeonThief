@@ -14,18 +14,12 @@ AFoodSpot::AFoodSpot()
     
     SpotMesh = CreateDefaultSubobject<UStaticMeshComponent>("Spot");
     SpotMesh->SetupAttachment(RootComponent);
-	
-	
-	
-	
-
 }
 
 // Called when the game starts or when spawned
 void AFoodSpot::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 

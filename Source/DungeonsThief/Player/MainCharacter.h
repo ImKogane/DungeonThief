@@ -3,8 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Food.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+
 #include "MainCharacter.generated.h"
 
 UCLASS()
@@ -16,6 +17,7 @@ public:
 	// Sets default values for this character's properties
 	AMainCharacter();
 
+	
 protected: 
 	// For variable declaration
 	// Called when the game starts or when spawned
@@ -48,9 +50,6 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, Category = "Food")
 	AActor* WornFood;
-
-	
-	
 	
 	UFUNCTION()
 	void InteractWithItem();
@@ -80,14 +79,15 @@ protected:
 
 public:
 
-	void SetPlayerActor(AActor* NewActor);
-	void SetSpeed(float NewSpeed);
+	FORCEINLINE void SetPlayerActor(AActor* NewActor) { TempActor = NewActor; }
+	FORCEINLINE void SetSpeed(float NewSpeed) { GetCharacterMovement()->MaxWalkSpeed = NewSpeed; }
 
-	UFUNCTION()
-		void DropItem();
+	FORCEINLINE bool GetIsCarryFood() { return IsCarryFood; }
+	FORCEINLINE AActor* GetWornFood() { return WornFood; }
 	
-	bool GetIsCarryFood();
-	AActor* GetWornFood();
+	UFUNCTION()
+	void DropItem();
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

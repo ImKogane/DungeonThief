@@ -2,13 +2,14 @@
 
 
 #include "GameManager.h"
+#include "DungeonsThief/Food/FoodSpot.h"
+#include "DungeonsThief/Food/Food.h"
 
 // Sets default values
 AGameManager::AGameManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 
@@ -29,8 +30,7 @@ void AGameManager::Tick(float DeltaTime)
 }
 
 void AGameManager::SpawnFood()
-{
-	
+{	
 	int RandomIndex = FMath::FRandRange(0, SpotsArray.Num());
 	//FString Index = FString::FromInt(RandomIndex);
 	AFoodSpot* tempSpot = SpotsArray[RandomIndex];
@@ -42,10 +42,7 @@ void AGameManager::SpawnFood()
 	else
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("NullPTR désolé !"));
-	}
-	
-	
-	
+	}	
 }
 
 void AGameManager::AddPoints(int PointsCount)

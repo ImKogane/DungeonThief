@@ -2,6 +2,8 @@
 
 
 #include "PlayerHidingPlace.h"
+#include "DungeonsThief/GameManager.h"
+#include "DungeonsThief/Player/MainCharacter.h"
 
 // Sets default values
 APlayerHidingPlace::APlayerHidingPlace()
@@ -22,14 +24,12 @@ APlayerHidingPlace::APlayerHidingPlace()
 void APlayerHidingPlace::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
 void APlayerHidingPlace::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void APlayerHidingPlace::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
@@ -42,11 +42,8 @@ void APlayerHidingPlace::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedCompo
 		{
 			GameManager->AddPoints(1);
 			Player->GetWornFood()->Destroy();
-			Player->DropItem();
-			
-		}
-		
-	}
-	
+			Player->DropItem();			
+		}		
+	}	
 }
 

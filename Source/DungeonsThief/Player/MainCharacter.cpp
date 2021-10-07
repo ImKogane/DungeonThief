@@ -3,7 +3,7 @@
 
 #include "MainCharacter.h"
 
-#include "Food.h"
+#include "DungeonsThief/Food//Food.h"
 #include "HeadMountedDisplayTypes.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -61,8 +61,7 @@ void AMainCharacter::Tick(float DeltaTime)
 	if(WornFood != nullptr)
 	{
 		WornFood->SetActorLocation(this->GetActorLocation());
-	}
-	
+	}	
 }
 
 /*
@@ -85,22 +84,6 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AMainCharacter::InteractWithItem);
 }
 
-void AMainCharacter::SetPlayerActor(AActor* NewActor)
-{
-	TempActor = NewActor;
-}
-
-
-
-bool AMainCharacter::GetIsCarryFood()
-{
-	return IsCarryFood;
-}
-
-AActor* AMainCharacter::GetWornFood()
-{
-		return WornFood;
-}
 
 /**
 * @brief Pick random mesh from an array to set the UStaticMeshComponent mesh
@@ -112,31 +95,22 @@ void AMainCharacter::InteractWithItem()
 		AFood* TempFood = Cast<AFood>(TempActor);
 		if(TempFood != nullptr)
 		{
-
 			if(IsCarryFood == false)
 			{
 				CarryItem();
-				TempFood->BeTake();
-				
-				
-				
+				TempFood->BeTake();			
 			}
 			else
 			{
 				DropItem();
 				TempFood->BeDrop();
-			}
-			
-		}
-		
+			}			
+		}		
 	}
 	else
 	{
 		DropItem();
 	}
-
-	
-	
 }
 
 /**
@@ -153,8 +127,7 @@ void AMainCharacter::CarryItem()
 		if(TempActor != nullptr)
 		{
 			WornFood = TempActor;
-			WornFood->SetActorLocation(this->GetActorLocation());
-			
+			WornFood->SetActorLocation(this->GetActorLocation());			
 		}
 	}
 }
