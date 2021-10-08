@@ -1,7 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "DungeonsThief/Player/MainCharacter.h"
 #include "FoodSpot.h"
+
 
 // Sets default values
 AFoodSpot::AFoodSpot()
@@ -14,12 +16,31 @@ AFoodSpot::AFoodSpot()
     
     SpotMesh = CreateDefaultSubobject<UStaticMeshComponent>("Spot");
     SpotMesh->SetupAttachment(RootComponent);
+
+
+
+	CollisionBox = CreateDefaultSubobject<UBoxComponent>("BoxCollider");
+	CollisionBox->SetBoxExtent(FVector(100.f, 100.f, 100.f));
+	CollisionBox->SetCollisionProfileName("Trigger");
+	CollisionBox->SetupAttachment(SpotMesh);
+
+	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AFoodSpot::OnBoxOverlapBegin);
+	CollisionBox->OnComponentEndOverlap.AddDynamic(this, &AFoodSpot::OnBoxOverlapEnd);
+	
+	SpawnSceneComponent = CreateDefaultSubobject<USceneComponent>("SpawnPoint");
+	SpawnSceneComponent->SetupAttachment(SpotMesh);
+	
+	
+	
+	
 }
 
 // Called when the game starts or when spawned
 void AFoodSpot::BeginPlay()
 {
+	
 	Super::BeginPlay();
+	
 }
 
 
@@ -28,5 +49,26 @@ void AFoodSpot::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AFoodSpot::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+{
+	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
+	
+	if(Player != nullptr)
+	{
+		Player->SetSpotReference(this);
+		Player->SetIsNearSpot(true);
+	}
+}
+
+void AFoodSpot::OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
+	if(Player != nullptr)
+	{
+		Player->SetSpotReference(nullptr);
+		Player->SetIsNearSpot(false);
+	}
 }
 

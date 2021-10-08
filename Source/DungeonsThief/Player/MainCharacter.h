@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DungeonsThief/Food/FoodSpot.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -50,12 +51,19 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, Category = "Food")
 	AActor* WornFood;
+
+	UPROPERTY(VisibleAnywhere, Category = "FoodSpot")
+	bool NearToFoodSpot;
+
+	UPROPERTY(VisibleAnywhere, Category = "FoodSpot")
+	 AFoodSpot* SpotReference;
 	
 	UFUNCTION()
 	void InteractWithItem();
 
 	UFUNCTION()
 	void CarryItem();
+	void PutItemOnSpot();
 
 	
 	
@@ -86,7 +94,10 @@ protected:
 public:
 
 	FORCEINLINE void SetPlayerActor(AActor* NewActor) { TempActor = NewActor; }
-	FORCEINLINE void SetSpeed(float NewSpeed) { GetCharacterMovement()->MaxWalkSpeed = NewSpeed; }
+	FORCEINLINE void SetSpeed(float NewSpeed) { GetCharacterMovement()->MaxWalkSpeed = NewSpeed; };
+	
+	FORCEINLINE void SetIsNearSpot(bool NewState){ NearToFoodSpot = NewState; }; 
+	void SetSpotReference(AFoodSpot* Reference);
 
 	FORCEINLINE bool GetIsCarryFood() { return IsCarryFood; }
 	FORCEINLINE AActor* GetWornFood() { return WornFood; }

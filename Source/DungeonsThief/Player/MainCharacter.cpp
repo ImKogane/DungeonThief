@@ -109,47 +109,95 @@ void AMainCharacter::InteractWithItem()
 				DropItem();
 				TempFood->BeDrop();
 			}			
-		}		
+		}
 	}
 	else
 	{
-		DropItem();
-	}
-}
-
-/**
-* @brief Event when player carry item
-*/
-void AMainCharacter::CarryItem()
-{
-	if(IsCarryFood == false)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Carry item."));
-		IsCarryFood = true;
-		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * 0.5;
-
-		if(TempActor != nullptr)
+		if(NearToFoodSpot == true)
 		{
-			WornFood = TempActor;
-			WornFood->SetActorLocation(this->GetActorLocation());			
+			if(IsCarryFood == true)
+			{
+					PutItemOnSpot();	
+			}
+		}
+		else
+		{
+			DropItem();
 		}
 	}
 }
 
+
+
 /**
-* @brief Event when player drop item (on floor or on spot)
+* @brief Put item (food) on a nearest spot
 */
-void AMainCharacter::DropItem()
+void AMainCharacter::PutItemOnSpot()
 {
-	if(IsCarryFood == true)
+	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
+	WornFood->SetActorLocation(SpotReference->GetSpawnPoint()->GetComponentLocation());
+	TempActor = WornFood;
+	WornFood = nullptr;
+	IsCarryFood = false;
+}
+
+void AMainCharacter::SetSpotReference(AFoodSpot* Reference)
+{
+	if(Reference != nullptr)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Drop item."));
-		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
-		WornFood = nullptr;
-		TempActor = nullptr;
-		IsCarryFood = false;
+		SpotReference = Reference;
+	}
+	else
+	{
+		SpotReference = nullptr;
 	}
 }
+
+//////////////////// ITEM CARRY SYSTEM ////////////////////
+#pragma region Carry items system
+
+	/**
+	* @brief Event when player carry item
+	*/
+	void AMainCharacter::CarryItem()
+	{
+		if(IsCarryFood == false)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Carry item."));
+			IsCarryFood = true;
+			GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * 0.5;
+
+			if(TempActor != nullptr)
+			{
+				WornFood = TempActor;
+				TempActor = nullptr;
+				WornFood->SetActorLocation(this->GetActorLocation());			
+			}
+		}
+	}
+
+	/**
+	* @brief Event when player drop item (on floor or on spot)
+	*/
+	void AMainCharacter::DropItem()
+	{
+		if(IsCarryFood == true)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Drop item."));
+			GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
+			TempActor = WornFood;
+			WornFood = nullptr;
+			IsCarryFood = false;
+		}
+	}
+
+#pragma endregion 
+
+
+
+
+//////////////////// PLAYER MOVEMENT ////////////////////
+#pragma region Player movement
 
 /*
  * Move the character in the forward or backward direction
@@ -180,29 +228,38 @@ void AMainCharacter::MoveRight(float Value)
 		AddMovementInput(Direction, Value);
 	}
 }
+#pragma endregion 
 
-void AMainCharacter::TurnAtRate(float Rate)
-{
-	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
-}
 
-void AMainCharacter::LookupRate(float Rate)
-{
-	AddControllerPitchInput(Rate * BaseLookupRate * GetWorld()->GetDeltaSeconds());
-}
 
-void AMainCharacter::ScrollInOut(float Value)
-{
-	if(Value != 0.0f)
+
+
+//////////////////// CAMERA SYSTEM ////////////////////
+#pragma region Camera System
+
+	void AMainCharacter::TurnAtRate(float Rate)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Je scroll"))
-		
-		float CurrentArmLenght = CameraBoom->TargetArmLength + Value;
-		
-		if(CurrentArmLenght < MaxZoom && CurrentArmLenght > MinZoom)
+		AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+	}
+
+	void AMainCharacter::LookupRate(float Rate)
+	{
+		AddControllerPitchInput(Rate * BaseLookupRate * GetWorld()->GetDeltaSeconds());
+	}
+
+	void AMainCharacter::ScrollInOut(float Value)
+	{
+		if(Value != 0.0f)
 		{
-			CameraBoom->TargetArmLength += Value;
+			UE_LOG(LogTemp, Warning, TEXT("Je scroll"))
+			
+			float CurrentArmLenght = CameraBoom->TargetArmLength + Value;
+			
+			if(CurrentArmLenght < MaxZoom && CurrentArmLenght > MinZoom)
+			{
+				CameraBoom->TargetArmLength += Value;
+			}
 		}
 	}
-}
 
+#pragma endregion 

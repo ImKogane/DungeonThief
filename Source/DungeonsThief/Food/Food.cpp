@@ -13,7 +13,7 @@ AFood::AFood()
 	FoodMesh = CreateDefaultSubobject<UStaticMeshComponent>("FoodMesh");
 
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>("BoxCollider");
-	CollisionBox->SetBoxExtent(FVector(32.f, 32.f, 32.f));
+	CollisionBox->SetBoxExtent(FVector(100.f, 100.f, 100.f));
 	CollisionBox->SetCollisionProfileName("Trigger");
 	CollisionBox->SetupAttachment(FoodMesh);
 
@@ -40,6 +40,8 @@ void AFood::BeginPlay()
 
 	Super::BeginPlay();
 	SetRandomMesh();
+
+	BecomeSuperFood();
 	
 }
 
@@ -64,9 +66,18 @@ void AFood::SetRandomMesh()
 	{
 		FoodMesh->SetStaticMesh(FoodArray[random]);
 	}
-	else
+	
+}
+
+void AFood::BecomeSuperFood()
+{
+
+	int randomIndex = FMath::FRandRange(0,SuperFoodRate+1);
+
+	if(randomIndex == 5)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("NullPTR désolé !"));
+		FoodMesh->SetStaticMesh(SuperFoodMesh);
+		IsSuperFood = true;
 	}
 	
 }
@@ -79,10 +90,6 @@ void AFood::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor*
 	{
 		Player->SetPlayerActor(this);
 	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Player 1 NullPTR désolé !"));
-	}
 }
 
 void AFood::OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
@@ -93,9 +100,4 @@ void AFood::OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* O
 	{
 		Player->SetPlayerActor(nullptr);
 	}
-}
-
-UStaticMeshComponent* AFood::GetMeshComponent()
-{
-	return FoodMesh;
 }
