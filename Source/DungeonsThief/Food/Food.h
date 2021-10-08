@@ -19,7 +19,7 @@ public:
 
 protected:
 	
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category="Global")
 		TArray<UStaticMesh*> FoodArray;
 	
 	UPROPERTY(VisibleAnywhere)
@@ -27,15 +27,22 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 		UBoxComponent* CollisionBox;
-	
 
+	UPROPERTY(VisibleAnywhere, Category="SuperFood")
+		bool IsSuperFood;
+
+	UPROPERTY(EditDefaultsOnly, Category="SuperFood")
+		UStaticMesh* SuperFoodMesh;
 	
+	UPROPERTY(VisibleAnywhere, Category="SuperFood")
+		int SuperFoodRate = 10;
 	
 			
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	void SetRandomMesh();
+	void BecomeSuperFood();
 
 	UFUNCTION()
 		void OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
@@ -43,14 +50,18 @@ protected:
 	UFUNCTION()
 		void OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	
+	
 public:	
 	// Called every frame
 
 	UFUNCTION()
 	void BeTake();
 	void BeDrop();
+
+	FORCEINLINE UStaticMeshComponent* GetMeshComponent() { return FoodMesh; } 
+	FORCEINLINE bool GetIsSuperFood() { return IsSuperFood; } 
 	
-	UStaticMeshComponent* GetMeshComponent();
 	virtual void Tick(float DeltaTime) override;
 
 };

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/Engine.h"
+#include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
 #include "FoodSpot.generated.h"
 
@@ -28,10 +29,24 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* SpotMesh;
 
+	UPROPERTY(VisibleAnywhere)
+		USceneComponent* SpawnSceneComponent;
+	
+	UPROPERTY(VisibleAnywhere)
+		UBoxComponent* CollisionBox;
+
+	UFUNCTION()
+		void OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+
+	UFUNCTION()
+		void OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
 	
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	FORCEINLINE USceneComponent* GetSpawnPoint() { return SpawnSceneComponent; } 
 
 };
