@@ -21,12 +21,29 @@ public:
 	FORCEINLINE bool GetHasSeenPlayer() {return bHasSeenPlayer;}
 	FORCEINLINE void SetHasSeenPlayer(bool value) {bHasSeenPlayer = value;}
 
+	FORCEINLINE bool GetIsInSight() {return bIsInSight;}
+	FORCEINLINE void SetIsInSight(bool value) {bIsInSight = value;}
+
+	FORCEINLINE void ResetSetWanderCooldown()
+	{
+		WanderCooldown = WanderDelay;
+		bHasSeenPlayer = false;
+	}
+	
+	FORCEINLINE bool IsInWanderCooldown() { return WanderCooldown > 0; }
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	bool bHasSeenPlayer;
+
+	UPROPERTY(VisibleAnywhere, Category = "AI")
+	bool bIsInSight;
+
+	float WanderDelay;
+	float WanderCooldown;
 
 public:	
 	// Called every frame
@@ -35,4 +52,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+protected:
+
+	void ProcessWanderCooldown(float DeltaTime);
 };
