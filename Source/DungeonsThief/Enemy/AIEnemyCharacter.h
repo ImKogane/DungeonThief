@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "DungeonsThief/Food/CarryingCharacter.h"
 #include "AIEnemyCharacter.generated.h"
 
 UCLASS()
-class DUNGEONSTHIEF_API AAIEnemyCharacter : public ACharacter
+class DUNGEONSTHIEF_API AAIEnemyCharacter : public ACarryingCharacter
 {
 	GENERATED_BODY()
 

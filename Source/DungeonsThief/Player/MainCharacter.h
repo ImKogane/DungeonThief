@@ -3,14 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DungeonsThief/Food/CarryingCharacter.h"
 #include "DungeonsThief/Food/FoodSpot.h"
-#include "GameFramework/Character.h"
-#include "GameFramework/CharacterMovementComponent.h"
 
 #include "MainCharacter.generated.h"
 
 UCLASS()
-class DUNGEONSTHIEF_API AMainCharacter : public ACharacter
+class DUNGEONSTHIEF_API AMainCharacter : public ACarryingCharacter
 {
 	GENERATED_BODY()
 
@@ -37,35 +36,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	float BaseLookupRate;
 	
+	/*
 	UPROPERTY(VisibleAnywhere, Category = "Movement")
-	float BaseSpeed;
+	float BaseSpeed;*/
 	
 	UPROPERTY(VisibleAnywhere, Category = "Movement")
 	float Speed;
-
-	UPROPERTY(VisibleAnywhere, Category = "Food")
-	bool IsCarryFood;
-
-	UPROPERTY(VisibleAnywhere, Category = "Other")
-	class AActor* TempActor;
-	
-	UPROPERTY(VisibleAnywhere, Category = "Food")
-	AActor* WornFood;
-
-	UPROPERTY(VisibleAnywhere, Category = "FoodSpot")
-	bool NearToFoodSpot;
-
-	UPROPERTY(VisibleAnywhere, Category = "FoodSpot")
-	 AFoodSpot* SpotReference;
-	
-	UFUNCTION()
-	void InteractWithItem();
-
-	UFUNCTION()
-	void CarryItem();
-	void PutItemOnSpot();
-
-	
 	
 protected:
 	//For function declaration
@@ -92,20 +68,6 @@ protected:
 	float MinZoom;
 
 public:
-
-	FORCEINLINE void SetPlayerActor(AActor* NewActor) { TempActor = NewActor; }
-	FORCEINLINE void SetSpeed(float NewSpeed) { GetCharacterMovement()->MaxWalkSpeed = NewSpeed; };
-	
-	FORCEINLINE void SetIsNearSpot(bool NewState){ NearToFoodSpot = NewState; }; 
-	void SetSpotReference(AFoodSpot* Reference);
-
-	FORCEINLINE bool GetIsCarryFood() { return IsCarryFood; }
-	FORCEINLINE AActor* GetWornFood() { return WornFood; }
-	FORCEINLINE AActor* GetPlayerTempActor() { return TempActor; }
-	
-	UFUNCTION()
-	void DropItem();
-	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
