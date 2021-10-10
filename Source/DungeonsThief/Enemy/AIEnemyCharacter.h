@@ -28,6 +28,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	bool bHasSeenPlayer;
 
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

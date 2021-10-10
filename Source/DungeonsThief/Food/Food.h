@@ -21,6 +21,9 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category="Global")
 		TArray<UStaticMesh*> FoodArray;
+
+	UPROPERTY(EditDefaultsOnly, Category="Global")
+		int FoodPoints = 1;
 	
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* FoodMesh;
@@ -61,6 +64,7 @@ public:
 
 	FORCEINLINE UStaticMeshComponent* GetMeshComponent() { return FoodMesh; } 
 	FORCEINLINE bool GetIsSuperFood() { return IsSuperFood; } 
+	FORCEINLINE int GetFoodPoints	() { return FoodPoints; } 
 	
 	virtual void Tick(float DeltaTime) override;
 

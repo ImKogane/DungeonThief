@@ -169,6 +169,7 @@ void AMainCharacter::SetSpotReference(AFoodSpot* Reference)
 
 			if(TempActor != nullptr)
 			{
+				
 				WornFood = TempActor;
 				TempActor = nullptr;
 				WornFood->SetActorLocation(this->GetActorLocation());			
@@ -185,9 +186,15 @@ void AMainCharacter::SetSpotReference(AFoodSpot* Reference)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Drop item."));
 			GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
-			TempActor = WornFood;
-			WornFood = nullptr;
 			IsCarryFood = false;
+
+			if(WornFood != nullptr)
+			{
+				TempActor = WornFood;
+				WornFood = nullptr;
+				IsCarryFood = false;
+			}
+			
 		}
 	}
 

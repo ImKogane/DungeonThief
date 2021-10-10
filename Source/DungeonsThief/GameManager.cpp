@@ -39,17 +39,14 @@ void AGameManager::SpawnFood()
 	{
 		//GetWorld()->SpawnActor<AFood>(FoodActor, tempSpot->GetActorLocation(), tempSpot->GetActorRotation());
 		GetWorld()->SpawnActor<AFood>(FoodActor, tempSpot->GetSpawnPoint()->GetComponentLocation(), tempSpot->GetSpawnPoint()->GetComponentRotation());
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("NullPTR désolé !"));
 	}	
 }
 
 void AGameManager::AddPoints(int PointsCount)
 {
 	Points += PointsCount;
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, TEXT("++"));
+	FString PointsA = FString::FromInt(PointsCount);
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, PointsA);
 
 	if(Points >= 5)
 	{

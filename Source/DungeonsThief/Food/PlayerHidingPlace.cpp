@@ -2,6 +2,7 @@
 
 
 #include "PlayerHidingPlace.h"
+#include "DungeonsThief/Food/Food.h"
 #include "DungeonsThief/GameManager.h"
 #include "DungeonsThief/Player/MainCharacter.h"
 
@@ -34,16 +35,22 @@ void APlayerHidingPlace::Tick(float DeltaTime)
 
 void APlayerHidingPlace::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	
 	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
 	if(Player != nullptr)
 	{
 		if(Player->GetIsCarryFood())
 		{
-			GameManager->AddPoints(1);
-			Player->GetWornFood()->Destroy();
-			Player->DropItem();			
-		}		
+			AFood* TempFood = Cast<AFood>(Player->GetWornFood());
+			if(TempFood != nullptr)
+			{
+				GameManager->AddPoints(TempFood->GetFoodPoints());
+			}
+
+			
+			Player->DropItem();
+			Player->GetPlayerTempActor()->Destroy();
+			Player->SetPlayerActor(nullptr);
+		}
 	}	
 }
 
