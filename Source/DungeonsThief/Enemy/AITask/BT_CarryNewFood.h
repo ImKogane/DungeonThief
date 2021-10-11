@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "CarryNewFood.generated.h"
+#include "BT_CarryNewFood.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DUNGEONSTHIEF_API UCarryNewFood : public UBTTaskNode
+class DUNGEONSTHIEF_API UBT_CarryNewFood : public UBTTaskNode
 {
 	GENERATED_BODY()
 	

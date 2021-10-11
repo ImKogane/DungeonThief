@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "GiveRole.generated.h"
+#include "BT_GiveRole.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DUNGEONSTHIEF_API UGiveRole : public UBTTaskNode
+class DUNGEONSTHIEF_API UBT_GiveRole : public UBTTaskNode
 {
 	GENERATED_BODY()
 	

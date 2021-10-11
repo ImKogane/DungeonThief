@@ -1,13 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DungeonsThief/Enemy/AITask/SelectSpotFood.h"
+#include "DungeonsThief/Enemy/AITask/BT_SelectSpotFood.h"
 
 #include "DungeonsThief/Enemy/AIEnemyController.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
-EBTNodeResult::Type USelectSpotFood::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBT_SelectSpotFood::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AAIEnemyController* AIController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
 
@@ -40,7 +40,7 @@ EBTNodeResult::Type USelectSpotFood::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 	return EBTNodeResult::Failed;
 }
 
-AActor* USelectSpotFood::SelectRandomActor(TArray<AActor*> ActorList)
+AActor* UBT_SelectSpotFood::SelectRandomActor(TArray<AActor*> ActorList)
 {
 	int RandomIndex = FMath::FRandRange(0, ActorList.Num());
 	UE_LOG(LogTemp, Warning, TEXT("Select rand : %d"), RandomIndex);

@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "SelectSpotFood.generated.h"
+#include "BT_SelectSpotFood.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DUNGEONSTHIEF_API USelectSpotFood : public UBTTaskNode
+class DUNGEONSTHIEF_API UBT_SelectSpotFood : public UBTTaskNode
 {
 	GENERATED_BODY()
 	

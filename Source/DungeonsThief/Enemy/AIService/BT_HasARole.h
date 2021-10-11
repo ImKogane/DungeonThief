@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTService.h"
-#include "HasARole.generated.h"
+#include "BT_HasARole.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DUNGEONSTHIEF_API UHasARole : public UBTService
+class DUNGEONSTHIEF_API UBT_HasARole : public UBTService
 {
 	GENERATED_BODY()
 	
