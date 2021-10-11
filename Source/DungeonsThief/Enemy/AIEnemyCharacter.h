@@ -37,6 +37,12 @@ public:
 
 	FORCEINLINE bool GetIsAPatrol() {return bIsAPatrol;}
 	FORCEINLINE void SetIsAPatrol(bool value) {bIsAPatrol = value;}
+	
+	FORCEINLINE bool GetHadFood() {return bHadFood;}
+	FORCEINLINE void SetHadFood(bool value) {bHadFood = value;}
+	
+	FORCEINLINE bool GetFollowedAPlayer() {return bFollowedAPlayer;}
+	FORCEINLINE void SetFollowedAPlayer(bool value) {bFollowedAPlayer = value;}
 
 	FORCEINLINE TSubclassOf<class AFood> GetFoodActorBP(){return FoodActorBP;}
 
@@ -49,16 +55,27 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	bool bIsInSight;
-	
+
+
+	//Lionel Part (pour me souvenir)
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	bool bIsAPatrol;
 
-	float WanderDelay;
-	float WanderCooldown;
+	UPROPERTY(VisibleAnywhere, Category = "AI")
+	bool bHadFood;
 
+	UPROPERTY(VisibleAnywhere, Category = "AI")
+	bool bFollowedAPlayer;
+	
 	//Has the AI a role ? : Patrol or CarryFood
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	bool bHasARole;
+	//End
+
+	
+	float WanderDelay;
+	float WanderCooldown;
+
 
 	UPROPERTY(EditAnywhere, Category = "Food")
 	TSubclassOf<class AFood> FoodActorBP;

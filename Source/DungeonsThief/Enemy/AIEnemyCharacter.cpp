@@ -22,6 +22,8 @@ AAIEnemyCharacter::AAIEnemyCharacter()
 	WanderCooldown = 0.0f;
 	bIsAPatrol = false;
 	bHasARole = false;
+	bHadFood = false;
+	bFollowedAPlayer = false;
 }
 
 // Called when the game starts or when spawned

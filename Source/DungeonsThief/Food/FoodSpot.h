@@ -5,11 +5,12 @@
 #include "CoreMinimal.h"
 #include "Engine/Engine.h"
 #include "Components/BoxComponent.h"
+#include "Engine/TargetPoint.h"
 #include "GameFramework/Actor.h"
 #include "FoodSpot.generated.h"
 
 UCLASS()
-class DUNGEONSTHIEF_API AFoodSpot : public AActor
+class DUNGEONSTHIEF_API AFoodSpot : public ATargetPoint
 {
 	GENERATED_BODY()
 
