@@ -19,4 +19,6 @@ protected:
 
 	virtual void ScheduleNextTick(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	
+	bool CanSeePlayerRayCast(FVector ForwardVector, FVector StartTrace, float MaxDistance, class AActor* IgnoreActor);
+
 };

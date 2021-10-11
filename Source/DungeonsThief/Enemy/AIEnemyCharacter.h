@@ -24,6 +24,17 @@ public:
 	FORCEINLINE bool GetHasARole() {return bHasARole;}
 	FORCEINLINE void SetHasARole(bool value) {bHasARole = value;}
 
+	FORCEINLINE bool GetIsInSight() {return bIsInSight;}
+	FORCEINLINE void SetIsInSight(bool value) {bIsInSight = value;}
+
+	FORCEINLINE void ResetSetWanderCooldown()
+	{
+		WanderCooldown = WanderDelay;
+		bHasSeenPlayer = false;
+	}
+	
+	FORCEINLINE bool IsInWanderCooldown() { return WanderCooldown > 0; }
+
 	FORCEINLINE bool GetIsAPatrol() {return bIsAPatrol;}
 	FORCEINLINE void SetIsAPatrol(bool value) {bIsAPatrol = value;}
 
@@ -39,7 +50,12 @@ protected:
 	bool bHasSeenPlayer;
 
 	UPROPERTY(VisibleAnywhere, Category = "AI")
+	bool bIsInSight;
+	UPROPERTY(VisibleAnywhere, Category = "AI")
 	bool bIsAPatrol;
+
+	float WanderDelay;
+	float WanderCooldown;
 
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	bool bHasARole;
@@ -58,4 +74,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+protected:
+
+	void ProcessWanderCooldown(float DeltaTime);
 };

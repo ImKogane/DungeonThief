@@ -15,13 +15,18 @@
  */
 AAIEnemyController::AAIEnemyController()
 {
+	EnemyState = EEnemyState::EES_Patrolling;
+	
 	//Initialize BehaviourTreeComponent and BlackBoardComponent and keys
-
 	BehaviorTreeComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviourComponent"));
 
 	BlackboardComponent = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackboardComponent"));
 
 	LocationToGoKey = "LocationToGo";
+	
+	FieldOfView = 135.0f;
+
+	SightDistance = 1000.f;
 }
 
 

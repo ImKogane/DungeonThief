@@ -16,6 +16,10 @@ AAIEnemyCharacter::AAIEnemyCharacter()
 	BaseSpeed = 450.0f;
 
 	bHasSeenPlayer = false;
+	bIsInSight = false;
+
+	WanderDelay = 3.0f;
+	WanderCooldown = 0.0f;
 	bIsAPatrol = false;
 	bHasARole = false;
 }
@@ -32,13 +36,26 @@ void AAIEnemyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	ProcessWanderCooldown(DeltaTime);
 }
 
 // Called to bind functionality to input
 void AAIEnemyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
 
+void AAIEnemyCharacter::ProcessWanderCooldown(float DeltaTime)
+{
+	if (WanderCooldown > 0.0f)
+	{
+		WanderCooldown -= DeltaTime;
+
+		if (WanderCooldown <= 0.0f) //Cooldown has ended
+		{
+			WanderCooldown = 0.0f;			
+		}		
+	}
 }
 
 
