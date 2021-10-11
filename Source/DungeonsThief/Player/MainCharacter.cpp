@@ -59,11 +59,6 @@ void AMainCharacter::BeginPlay()
 void AMainCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if(WornFood != nullptr)
-	{
-		WornFood->SetActorLocation(this->GetActorLocation());
-	}	
 }
 
 /*

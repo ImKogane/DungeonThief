@@ -15,6 +15,7 @@ enum class EEnemyState : uint8
 	EES_Patrolling UMETA(DisplayName = "Patrolling"),
 	EES_Chasing UMETA(DisplayName = "Chasing"),
 	EES_Wandering UMETA(DisplayName = "Wandering"),
+	EES_CarryFood UMETA(DisplayName = "CarryFood"),
 
 	EES_MAX UMETA(DisplayName = "Default")
 };

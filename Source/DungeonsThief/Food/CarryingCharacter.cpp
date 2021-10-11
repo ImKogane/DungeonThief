@@ -25,7 +25,11 @@ void ACarryingCharacter::BeginPlay()
 void ACarryingCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
+	if(WornFood != nullptr)
+	{
+		WornFood->SetActorLocation(this->GetActorLocation());
+	}
 }
 
 // Called to bind functionality to input

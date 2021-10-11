@@ -58,14 +58,3 @@ void AAIEnemyCharacter::ProcessWanderCooldown(float DeltaTime)
 	}
 }
 
-
-void AAIEnemyCharacter::CarryNewFood()
-{
-	TempActor = GetWorld()->SpawnActor<AFood>(FoodActorBP, GetActorLocation(), GetActorRotation());
-	InteractWithItem();
-}
-
-void AAIEnemyCharacter::ChooseFoodSpot()
-{
-}
-

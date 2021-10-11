@@ -1,10 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DungeonsThief/Enemy/GiveRole.h"
+#include "DungeonsThief/Enemy/AITask/GiveRole.h"
 
-#include "AIEnemyCharacter.h"
-#include "AIEnemyController.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "DungeonsThief/Enemy/AIEnemyController.h"
+#include "DungeonsThief/Enemy/AIEnemyCharacter.h"
 #include "DungeonsThief/Food/Food.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -18,17 +19,21 @@ EBTNodeResult::Type UGiveRole::ExecuteTask(UBehaviorTreeComponent& OwnerComp, ui
 		AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();
 		if(AICharacter)
 		{
+			UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
+			
 			TArray<AActor*> AllFood;
 			UGameplayStatics::GetAllActorsOfClass(GetWorld(), AFood::StaticClass(), AllFood);
+			
 			//2 is a temporary number for test can be changed
-			if(AllFood.Num() < 2)
+			if(AllFood.Num() >= 2)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("CarryFood"))
-				AICharacter->CarryNewFood();
+				uint8 ByteEnum = (uint8)EEnemyState::EES_Patrolling;
+				BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
+				AICharacter->SetIsAPatrol(true);
 			}else
 			{
-				AICharacter->SetIsAPatrol(true);
-				AICharacter->ChooseFoodSpot();
+				uint8 ByteEnum = (uint8)EEnemyState::EES_CarryFood;
+				BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
 			}
 
 

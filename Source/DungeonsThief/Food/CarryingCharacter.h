@@ -40,8 +40,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "FoodSpot")
 	AFoodSpot* SpotReference;
 	
-	UFUNCTION()
-	void InteractWithItem();
 
 	UFUNCTION()
 	void CarryItem();
@@ -51,6 +49,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION()
+	void InteractWithItem();
+	
 	FORCEINLINE void SetPlayerActor(AActor* NewActor) { TempActor = NewActor; }
 	FORCEINLINE void SetSpeed(float NewSpeed) { GetCharacterMovement()->MaxWalkSpeed = NewSpeed; };
 	
