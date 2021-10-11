@@ -20,6 +20,16 @@ public:
 
 	FORCEINLINE bool GetHasSeenPlayer() {return bHasSeenPlayer;}
 	FORCEINLINE void SetHasSeenPlayer(bool value) {bHasSeenPlayer = value;}
+	
+	FORCEINLINE bool GetHasARole() {return bHasARole;}
+	FORCEINLINE void SetHasARole(bool value) {bHasARole = value;}
+
+	FORCEINLINE bool GetIsAPatrol() {return bIsAPatrol;}
+	FORCEINLINE void SetIsAPatrol(bool value) {bIsAPatrol = value;}
+
+	void CarryNewFood();
+
+	void ChooseFoodSpot();
 
 protected:
 	// Called when the game starts or when spawned
@@ -27,6 +37,18 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	bool bHasSeenPlayer;
+
+	UPROPERTY(VisibleAnywhere, Category = "AI")
+	bool bIsAPatrol;
+
+	UPROPERTY(VisibleAnywhere, Category = "AI")
+	bool bHasARole;
+
+	UPROPERTY(EditAnywhere, Category = "Food")
+	TSubclassOf<class AFood> FoodActorBP;
+
+	//used only if the AI is a patrol
+	TArray<AFoodSpot*> PatrolSpot;
 
 
 public:	

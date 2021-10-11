@@ -3,7 +3,9 @@
 
 #include "AIEnemyCharacter.h"
 
+#include "DungeonsThief/Food/Food.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AAIEnemyCharacter::AAIEnemyCharacter()
@@ -11,15 +13,18 @@ AAIEnemyCharacter::AAIEnemyCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	BaseSpeed = 450.0f;
+
 	bHasSeenPlayer = false;
+	bIsAPatrol = false;
+	bHasARole = false;
 }
 
 // Called when the game starts or when spawned
 void AAIEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	GetCharacterMovement()->MaxWalkSpeed = 450.f;	
+	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;	
 }
 
 // Called every frame
@@ -34,5 +39,16 @@ void AAIEnemyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+
+void AAIEnemyCharacter::CarryNewFood()
+{
+	TempActor = GetWorld()->SpawnActor<AFood>(FoodActorBP, GetActorLocation(), GetActorRotation());
+	InteractWithItem();
+}
+
+void AAIEnemyCharacter::ChooseFoodSpot()
+{
 }
 
