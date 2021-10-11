@@ -101,6 +101,7 @@ public:
 
 	FORCEINLINE bool GetIsCarryFood() { return IsCarryFood; }
 	FORCEINLINE AActor* GetWornFood() { return WornFood; }
+	FORCEINLINE AActor* GetPlayerTempActor() { return TempActor; }
 	
 	UFUNCTION()
 	void DropItem();
