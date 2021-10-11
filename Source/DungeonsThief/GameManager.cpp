@@ -2,7 +2,10 @@
 
 
 #include "GameManager.h"
+
+#include "Components/ProgressBar.h"
 #include "DungeonsThief/Food/FoodSpot.h"
+#include "DungeonsThief/HUD/UI_MainClass.h"
 #include "DungeonsThief/Food/Food.h"
 
 // Sets default values
@@ -52,4 +55,5 @@ void AGameManager::AddPoints(int PointsCount)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("YOU WIN"));
 	}
+	
 }

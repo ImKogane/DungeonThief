@@ -28,7 +28,11 @@ protected:
 	TSubclassOf<class AFood> FoodActor;
 
 	UPROPERTY(VisibleAnywhere, Category="Points System")
-	int Points;	
+	int Points;
+	
+	UPROPERTY(EditAnywhere, Category="Points System")
+	int MaxPoints = 5;
+	
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -39,5 +43,8 @@ public:
 
 	UFUNCTION()
 	void AddPoints(int PointsCount);
+
+	FORCEINLINE int GetPoints	() { return Points; } 
+	FORCEINLINE int GetMaxPoints	() { return MaxPoints; } 
 
 };
