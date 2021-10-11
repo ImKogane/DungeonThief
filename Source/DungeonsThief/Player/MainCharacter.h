@@ -65,6 +65,9 @@ protected:
 	void CarryItem();
 	void PutItemOnSpot();
 
+	UFUNCTION()
+	void SetPlayerSpeed();
+
 	
 	
 protected:

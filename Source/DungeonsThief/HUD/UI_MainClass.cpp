@@ -19,6 +19,8 @@ void UUI_MainClass::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	if(Manager != nullptr)
 	{
 		float percent = (Manager->GetPoints());
-		FoodBar->SetPercent(percent/5);	//Set progress bar value
+		int max = (Manager->GetMaxPoints());
+		
+		FoodBar->SetPercent(percent/max);	//Set progress bar value
 	}
 }
