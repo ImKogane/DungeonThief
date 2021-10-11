@@ -9,6 +9,16 @@
 /**
  * 
  */
+UENUM(BlueprintType)
+enum class EEnemyState : uint8
+{
+	EES_Patrolling UMETA(DisplayName = "Patrolling"),
+	EES_Chasing UMETA(DisplayName = "Chasing"),
+	EES_Wandering UMETA(DisplayName = "Wandering"),
+
+	EES_MAX UMETA(DisplayName = "Default")
+};
+
 UCLASS()
 class DUNGEONSTHIEF_API AAIEnemyController : public AAIController
 {
@@ -17,12 +27,22 @@ class DUNGEONSTHIEF_API AAIEnemyController : public AAIController
 public:
 	AAIEnemyController();
 
+	FORCEINLINE EEnemyState GetEnemyState() { return EnemyState; }
+	FORCEINLINE void SetEnemyState(EEnemyState State) { EnemyState = State; }
+	
 	FORCEINLINE UBlackboardComponent* GetBlackBoardComponent() const { return BlackboardComponent; }
 	FORCEINLINE TArray<AActor*> GetAvailableTargetPoints() { return NPCTargetPoints; }
 
 	FORCEINLINE class AAIEnemyCharacter* GetAICharacter() { return AICharacter; }
+
+	FORCEINLINE float GetFieldOfView() { return FieldOfView; }
+	FORCEINLINE float GetSightDistance() { return SightDistance; }
+	
 protected:
 
+	UPROPERTY(VisibleAnywhere, Category = "AI")
+	EEnemyState EnemyState;
+	
 	/* Reference to the Behavior Tree */
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	class UBehaviorTreeComponent* BehaviorTreeComponent;
@@ -38,6 +58,12 @@ protected:
 	TArray<AActor*> NPCTargetPoints;
 
 	class AAIEnemyCharacter* AICharacter;
+
+	UPROPERTY(VisibleAnywhere, Category= "AI")
+	float FieldOfView;
+
+	UPROPERTY(VisibleAnywhere, Category = "AI")
+	float SightDistance;
 
 protected:
 

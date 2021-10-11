@@ -5,6 +5,7 @@
 #include "AIEnemyController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Player/MainCharacter.h"
+#include "DungeonsThief/Enemy/AIEnemyCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
 EBTNodeResult::Type UBT_UpdatePlayerPosition::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -17,12 +18,13 @@ EBTNodeResult::Type UBT_UpdatePlayerPosition::ExecuteTask(UBehaviorTreeComponent
 		UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
 
 		APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+		AAIEnemyCharacter* EnemyCharacter = AIController->GetAICharacter();
 		
-		if (PlayerPawn)
+		if (PlayerPawn && EnemyCharacter)
 		{
 			AMainCharacter* PlayerLocation = Cast<AMainCharacter>(PlayerPawn);
-
-			if (PlayerLocation)
+			
+			if (PlayerLocation && EnemyCharacter->GetHasSeenPlayer())
 			{
 				BlackboardComponent->SetValueAsObject("PlayerLocation", PlayerLocation);
 				

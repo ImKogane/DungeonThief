@@ -7,6 +7,8 @@
 #include "AIEnemyController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "DungeonsThief/Player/MainCharacter.h"
+#include "DrawDebugHelpers.h"
 #include "GameFramework/Character.h"
 
 void UBT_HasSeenPlayer::ScheduleNextTick(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -17,6 +19,8 @@ void UBT_HasSeenPlayer::ScheduleNextTick(UBehaviorTreeComponent& OwnerComp, uint
 
 	if (AIController)
 	{
+		AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();
+		
 		UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
 
 		//Line to the player -> PlayerPos - Enemy
@@ -31,8 +35,6 @@ void UBT_HasSeenPlayer::ScheduleNextTick(UBehaviorTreeComponent& OwnerComp, uint
 
 		FVector EnemyLocation = AIController->GetPawn()->GetActorLocation();
 		FVector PlayerLocation = FVector::ZeroVector;
-
-		BlackboardComponent->SetValueAsVector("AILocation", EnemyLocation);
 		
 		APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 
@@ -42,34 +44,73 @@ void UBT_HasSeenPlayer::ScheduleNextTick(UBehaviorTreeComponent& OwnerComp, uint
 		}
 
 		FVector LineToPlayer = (PlayerLocation - EnemyLocation).GetSafeNormal();
-
 		FVector EnemyForward = AIController->GetPawn()->GetActorForwardVector();
+		
 		float DotProduct = FVector::DotProduct(LineToPlayer, EnemyForward);
 		float ACos = FMath::RadiansToDegrees(FMath::Acos(DotProduct));
-		
-		if (ACos < 55.f)
-		{
-			BlackboardComponent->SetValueAsInt("HasSeenPlayer", 1);
-			
-			AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();
 
+		FVector StartTrace = EnemyLocation + EnemyForward * 2;
+		AActor* IgnoreActor = AIController->GetPawn();
+
+		//The enemy has seen the player and he's in sight : the enemy start chasing him
+		if (ACos < AIController->GetFieldOfView() && CanSeePlayerRayCast(LineToPlayer, StartTrace, AIController->GetSightDistance(), IgnoreActor))
+		{
+			uint8 byteEnum = (uint8)EEnemyState::EES_Chasing;
+			BlackboardComponent->SetValueAsEnum("EnemyState", byteEnum);
+			AIController->SetEnemyState(EEnemyState::EES_Chasing);
+			
 			if (AICharacter)
 			{
 				AICharacter->SetHasSeenPlayer(true);
+				AICharacter->SetIsInSight(true);
 			}
 		}
 		else
 		{
-			BlackboardComponent->SetValueAsInt("HasSeenPlayer", 0);
-
-			AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();
-
 			if (AICharacter)
 			{
-				AICharacter->SetHasSeenPlayer(false);
+				AICharacter->SetIsInSight(false);				
 			}
 		}
+
+		//The enemy has seen the player but he's not in sight anymore : the enemy'll wander to the last player's position known
+		if (AICharacter && AICharacter->GetHasSeenPlayer() && !AICharacter->GetIsInSight())
+		{
+			uint8 byteEnum = (uint8)EEnemyState::EES_Wandering;
+			BlackboardComponent->SetValueAsEnum("EnemyState", byteEnum);
+			AIController->SetEnemyState(EEnemyState::EES_Wandering);
+			AICharacter->ResetSetWanderCooldown();
+		}
+
+		if (AICharacter && !AICharacter->IsInWanderCooldown() && !AICharacter->GetHasSeenPlayer())
+		{
+			uint8 byteEnum = (uint8)EEnemyState::EES_Patrolling;
+			BlackboardComponent->SetValueAsEnum("EnemyState", byteEnum);
+			AIController->SetEnemyState(EEnemyState::EES_Patrolling);
+		}
 		
-	}
+	}	
+}
+
+bool UBT_HasSeenPlayer::CanSeePlayerRayCast(FVector ForwardVector, FVector StartTrace, float MaxDistance, AActor* IgnoreActor)
+{
+	FHitResult* HitResult = new FHitResult();
+	FVector EndTrace = StartTrace + (ForwardVector * MaxDistance);
+	FCollisionQueryParams* TraceParams = new FCollisionQueryParams();
+	TraceParams->AddIgnoredActor(IgnoreActor);
+
+	//DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor::Emerald, true, -1, 0, 10);
 	
+	if (GetWorld()->LineTraceSingleByChannel(*HitResult, StartTrace, EndTrace, ECollisionChannel::ECC_WorldDynamic, *TraceParams))
+	{
+		//FString ObjectName = HitResult->GetActor()->GetName();
+		//UE_LOG(LogTemp, Warning, TEXT("Touch : %s"), *ObjectName);
+		
+		AMainCharacter* MainCharacter = Cast<AMainCharacter>(HitResult->GetActor());
+		
+		//If the MainCharacter is valid, nothing is between the enemy and the player. The enemy can keep chasing the player
+		return MainCharacter == nullptr ? false : true;
+	}
+
+	return false;
 }
