@@ -2,8 +2,11 @@
 
 
 #include "GameManager.h"
+#include "DungeonsThief/Player/MainCharacter.h"
 #include "DungeonsThief/Food/FoodSpot.h"
 #include "DungeonsThief/Food/Food.h"
+#include "Enemy/AIEnemyCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AGameManager::AGameManager()
@@ -18,15 +21,71 @@ void AGameManager::BeginPlay()
 {
 	Super::BeginPlay();
 
+	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	if (PlayerPawn)
+	{
+		AMainCharacter* MainCharacter = Cast<AMainCharacter>(PlayerPawn);
+		if (MainCharacter)
+		{
+			Player = MainCharacter;
+		}
+	}
+	
 	SpawnFood();
 	
+}
+
+void AGameManager::PlayerWin()
+{
+	if (Player)
+	{
+		Player->WinGame();		
+	}
+
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AAIEnemyCharacter::StaticClass(), EnemiesInLevel);
+
+	for (AActor* Enemy : EnemiesInLevel)
+	{
+		if (Enemy)
+		{
+			AAIEnemyCharacter* EnemyCharacter = Cast<AAIEnemyCharacter>(Enemy);
+
+			if (EnemyCharacter)
+			{
+				EnemyCharacter->LooseGame();
+			}
+		}
+	}
+
+}
+
+void AGameManager::PlayerLoose()
+{
+	if (Player)
+	{
+		Player->LooseGame();		
+	}
+	
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AAIEnemyCharacter::StaticClass(), EnemiesInLevel);
+
+	for (AActor* Enemy : EnemiesInLevel)
+	{
+		if (Enemy)
+		{
+			AAIEnemyCharacter* EnemyCharacter = Cast<AAIEnemyCharacter>(Enemy);
+
+			if (EnemyCharacter)
+			{
+				EnemyCharacter->WinGame();
+			}
+		}
+	}
 }
 
 // Called every frame
 void AGameManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AGameManager::SpawnFood()
@@ -48,7 +107,7 @@ void AGameManager::AddPoints(int PointsCount)
 	FString PointsA = FString::FromInt(PointsCount);
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, PointsA);
 
-	if(Points >= 5)
+	if (Points >= 5)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("YOU WIN"));
 	}
