@@ -10,7 +10,7 @@
 #include "FoodSpot.generated.h"
 
 UCLASS()
-class DUNGEONSTHIEF_API AFoodSpot : public ATargetPoint
+class DUNGEONSTHIEF_API AFoodSpot : public AActor
 {
 	GENERATED_BODY()
 
