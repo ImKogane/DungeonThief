@@ -3,6 +3,8 @@
 
 #include "AIEnemyCharacter.h"
 
+
+#include "AIEnemyController.h"
 #include "DungeonsThief/Food/Food.h"
 #include "DungeonsThief/AAnimationsHandler.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -33,7 +35,8 @@ AAIEnemyCharacter::AAIEnemyCharacter()
 void AAIEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;	
+	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
+	SetRandomMesh();
 }
 
 // Called every frame
@@ -67,6 +70,13 @@ void AAIEnemyCharacter::WinGame()
 {
 	if (AnimationHandler && WinMontage)
 	{
+		AAIEnemyController* AIController = Cast<AAIEnemyController>(GetController());
+
+		if (AIController)
+		{
+			AIController->StopMovement();
+		}
+		
 		AnimationHandler->PlayAnimation(this, WinMontage);
 	}
 }
@@ -75,9 +85,31 @@ void AAIEnemyCharacter::LooseGame()
 {
 	if (AnimationHandler && LooseMontage)
 	{
+		AAIEnemyController* AIController = Cast<AAIEnemyController>(GetController());
+
+		if (AIController)
+		{
+			AIController->StopMovement();
+		}
+		
 		AnimationHandler->PlayAnimation(this, LooseMontage);
 	}
 }
+
+/**
+ * @brief Pick random mesh from an array to set the UStaticMeshComponent mesh
+ */
+void AAIEnemyCharacter::SetRandomMesh()
+{
+	//Choose random index
+	int random = FMath::FRandRange(0,MeshArray.Num());
+	GetMesh()->SetSkeletalMesh(MeshArray[random]);
+	
+	random = FMath::FRandRange(0,MaterialArray.Num());
+	GetMesh()->SetMaterial(0, MaterialArray[random]);
+	
+}
+
 
 
 
