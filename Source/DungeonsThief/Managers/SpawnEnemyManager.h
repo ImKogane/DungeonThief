@@ -32,6 +32,12 @@ protected:
 
 	class UBoxComponent* DeleteEnemyBoxComponent;
 
+	//The object is placed in such a way that the enemies do not touch the collision box when they are instantiated
+	class USceneComponent* SpawnLocation;
+
+	UPROPERTY(EditAnywhere, Category = "Spawn Enemy")
+	TSubclassOf<class AFoodManager> FoodManager;
+	
 	UPROPERTY(EditAnywhere, Category = "Spawn Enemy")
 	TSubclassOf<class AAIEnemyCharacter> EnemyToSpawn;
 
@@ -43,6 +49,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Spawn Enemy")
 	int MaxSpawnDelay;
 
+	UPROPERTY(VisibleAnywhere, Category = "Spawn Enemy")
 	int FirstSpawnDelay;
 
 	bool bIsFirstSpawn;
@@ -53,7 +60,11 @@ public:
 
 protected:
 
-	void SpawnEnemy();
+	void SetupEnemy(class AAIEnemyCharacter* EnemyCharacter);
+
+	void CreateEnemy();
+	
+	void SpawnEnemy(int Delay);
 
 	UFUNCTION()
     virtual void DeleteBoxOnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
