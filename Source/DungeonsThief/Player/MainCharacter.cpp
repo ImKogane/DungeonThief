@@ -8,7 +8,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "DungeonsThief/GameManager.h"
+#include "DungeonsThief/Managers/ScoreManager.h"
 
 
 // Sets default values
@@ -86,8 +86,6 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("ScrollCamera", this, &AMainCharacter::ScrollInOut);
 
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AMainCharacter::InteractWithItem);
-
-	PlayerInputComponent->BindAction("Test", IE_Pressed, this, &AMainCharacter::TestWin);
 }
 
 
@@ -165,20 +163,6 @@ void AMainCharacter::MoveRight(float Value)
 
 //////////////////// WIN / LOOSE BEHAVIOUR ////////////////////
 #pragma region Win/Loose Behvaiour
-void AMainCharacter::TestWin()
-{
-	AActor* AManager = UGameplayStatics::GetActorOfClass(GetWorld(), AGameManager::StaticClass());
-	if (AManager)
-	{
-		AGameManager* Manager = Cast<AGameManager>(AManager);
-
-		if (Manager)
-		{
-			Manager->PlayerWin();
-		}
-	}	
-}
-
 
 void AMainCharacter::WinGame()
 {

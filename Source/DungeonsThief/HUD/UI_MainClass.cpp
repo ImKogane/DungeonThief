@@ -4,7 +4,7 @@
 #include "DungeonsThief/HUD/UI_MainClass.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/ProgressBar.h"
-#include "DungeonsThief/GameManager.h"
+#include "DungeonsThief/Managers/ScoreManager.h"
 
 
 void UUI_MainClass::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
@@ -12,15 +12,19 @@ void UUI_MainClass::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
 	//Try to fond the game object actor in the world
-	TArray<AActor*> LeGameManager;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AGameManager::StaticClass(), LeGameManager);
+	AActor* TryScoreManager = UGameplayStatics::GetActorOfClass(GetWorld(), AScoreManager::StaticClass());
 
-	AGameManager* Manager = Cast<AGameManager>(LeGameManager[0]);
-	if(Manager != nullptr)
+	if (TryScoreManager)
 	{
-		float percent = (Manager->GetPoints());
-		int max = (Manager->GetMaxPoints());
+		AScoreManager* ScoreManager = Cast<AScoreManager>(TryScoreManager);
+
+		if(ScoreManager)
+		{
+			float Percent = (ScoreManager->GetPoints());
+			int MaxPercent = (ScoreManager->GetMaxPoints());
 		
-		FoodBar->SetPercent(percent/max);	//Set progress bar value
+			FoodBar->SetPercent(Percent/MaxPercent);	//Set progress bar value
+		}
 	}
+	
 }

@@ -3,6 +3,8 @@
 
 #include "AIEnemyCharacter.h"
 
+
+#include "AIEnemyController.h"
 #include "DungeonsThief/Food/Food.h"
 #include "DungeonsThief/AAnimationsHandler.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -68,6 +70,13 @@ void AAIEnemyCharacter::WinGame()
 {
 	if (AnimationHandler && WinMontage)
 	{
+		AAIEnemyController* AIController = Cast<AAIEnemyController>(GetController());
+
+		if (AIController)
+		{
+			AIController->StopMovement();
+		}
+		
 		AnimationHandler->PlayAnimation(this, WinMontage);
 	}
 }
@@ -76,6 +85,13 @@ void AAIEnemyCharacter::LooseGame()
 {
 	if (AnimationHandler && LooseMontage)
 	{
+		AAIEnemyController* AIController = Cast<AAIEnemyController>(GetController());
+
+		if (AIController)
+		{
+			AIController->StopMovement();
+		}
+		
 		AnimationHandler->PlayAnimation(this, LooseMontage);
 	}
 }
