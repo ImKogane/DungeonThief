@@ -49,6 +49,8 @@ AMainCharacter::AMainCharacter()
 	MinZoom = 200.0f;
 
 	AnimationHandler = CreateDefaultSubobject<AAnimationsHandler>(TEXT("AnimationHandler"));
+
+	bCanMove = true;
 }
 
 void AMainCharacter::BeginPlay()
@@ -245,7 +247,7 @@ void AMainCharacter::SetSpotReference(AFoodSpot* Reference)
  */
 void AMainCharacter::MoveForward(float Value)
 {
-	if (Controller != nullptr && Value != 0.0f)
+	if (Controller != nullptr && Value != 0.0f && bCanMove)
 	{
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
@@ -260,7 +262,7 @@ void AMainCharacter::MoveForward(float Value)
  */
 void AMainCharacter::MoveRight(float Value)
 {
-	if (Controller != nullptr && Value != 0.0f)
+	if (Controller != nullptr && Value != 0.0f && bCanMove)
 	{
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
@@ -277,17 +279,23 @@ void AMainCharacter::MoveRight(float Value)
 
 	void AMainCharacter::TurnAtRate(float Rate)
 	{
-		AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+		if (bCanMove)
+		{
+			AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+		}
 	}
 
 	void AMainCharacter::LookupRate(float Rate)
 	{
-		AddControllerPitchInput(Rate * BaseLookupRate * GetWorld()->GetDeltaSeconds());
+		if (bCanMove)
+		{
+			AddControllerPitchInput(Rate * BaseLookupRate * GetWorld()->GetDeltaSeconds());
+		}
 	}
 
 	void AMainCharacter::ScrollInOut(float Value)
 	{
-		if(Value != 0.0f)
+		if(Value != 0.0f && bCanMove)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Je scroll"))
 			

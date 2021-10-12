@@ -29,6 +29,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category="Points System")
 	int Points;	
+	
+	UPROPERTY(EditAnywhere, Category="Points System")
+    int MaxPoints = 5;
 
 	class AMainCharacter* Player;
 	
@@ -44,6 +47,9 @@ public:
 	UFUNCTION()
 	void AddPoints(int PointsCount);
 
+	FORCEINLINE int GetPoints() { return Points; }
+	FORCEINLINE int GetMaxPoints() { return MaxPoints; }
+	
 	// Play the win animation for the player and the defeat animation for all enemies spawned in the map
 	void PlayerWin();
 
