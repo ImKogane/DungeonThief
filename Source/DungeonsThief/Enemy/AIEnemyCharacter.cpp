@@ -4,6 +4,7 @@
 #include "AIEnemyCharacter.h"
 
 #include "DungeonsThief/Food/Food.h"
+#include "DungeonsThief/AAnimationsHandler.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -24,6 +25,8 @@ AAIEnemyCharacter::AAIEnemyCharacter()
 	bHasARole = false;
 	bHadFood = false;
 	bFollowedAPlayer = false;
+
+	AnimationHandler = CreateDefaultSubobject<AAnimationsHandler>(TEXT("AnimationHandler"));
 }
 
 // Called when the game starts or when spawned
@@ -59,4 +62,22 @@ void AAIEnemyCharacter::ProcessWanderCooldown(float DeltaTime)
 		}		
 	}
 }
+
+void AAIEnemyCharacter::WinGame()
+{
+	if (AnimationHandler && WinMontage)
+	{
+		AnimationHandler->PlayAnimation(this, WinMontage);
+	}
+}
+
+void AAIEnemyCharacter::LooseGame()
+{
+	if (AnimationHandler && LooseMontage)
+	{
+		AnimationHandler->PlayAnimation(this, LooseMontage);
+	}
+}
+
+
 

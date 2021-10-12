@@ -2,12 +2,13 @@
 
 
 #include "MainCharacter.h"
-
+#include "DungeonsThief/AAnimationsHandler.h"
 #include "DungeonsThief/Food//Food.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-
+#include "Kismet/GameplayStatics.h"
+#include "DungeonsThief/GameManager.h"
 
 
 // Sets default values
@@ -46,6 +47,10 @@ AMainCharacter::AMainCharacter()
 
 	MaxZoom = 600.0f;
 	MinZoom = 200.0f;
+
+	AnimationHandler = CreateDefaultSubobject<AAnimationsHandler>(TEXT("AnimationHandler"));
+
+	bCanMove = true;
 }
 
 void AMainCharacter::BeginPlay()
@@ -81,7 +86,153 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("ScrollCamera", this, &AMainCharacter::ScrollInOut);
 
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AMainCharacter::InteractWithItem);
+
+	PlayerInputComponent->BindAction("Test", IE_Pressed, this, &AMainCharacter::TestWin);
 }
+
+//////////////////// ITEM INTERACION ////////////////////
+#pragma region Item Interaction
+/**
+* @brief Pick random mesh from an array to set the UStaticMeshComponent mesh
+*/
+void AMainCharacter::InteractWithItem()
+{
+	if(TempActor != nullptr)
+	{
+		AFood* TempFood = Cast<AFood>(TempActor);
+		if(TempFood != nullptr)
+		{
+			if(IsCarryFood == false)
+			{
+				CarryItem();
+				TempFood->BeTake();			
+			}
+			else
+			{
+				DropItem();
+				TempFood->BeDrop();
+			}			
+		}
+	}
+	else
+	{
+		if(NearToFoodSpot == true)
+		{
+			if(IsCarryFood == true)
+			{
+					PutItemOnSpot();	
+			}
+		}
+		else
+		{
+			DropItem();
+		}
+	}
+}
+
+
+
+/**
+* @brief Put item (food) on a nearest spot
+*/
+void AMainCharacter::PutItemOnSpot()
+{
+	WornFood->SetActorLocation(SpotReference->GetSpawnPoint()->GetComponentLocation());
+	TempActor = WornFood;
+	WornFood = nullptr;
+	IsCarryFood = false;
+	SetPlayerSpeed();
+}
+
+
+/**
+ * @brief Set player speed in depend of it's worn item
+ */
+void AMainCharacter::SetPlayerSpeed()
+{
+	if(IsCarryFood)
+	{
+		AFood* TempFood = Cast<AFood>(WornFood);
+
+		if(TempFood !=nullptr)
+		{
+			GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * TempFood->GetSpeedReduction();
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Reduction."));
+		}
+		else
+		{
+			GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * 0.5;
+		}
+		
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
+	}
+}
+
+void AMainCharacter::SetSpotReference(AFoodSpot* Reference)
+{
+	if(Reference != nullptr)
+	{
+		SpotReference = Reference;
+	}
+	else
+	{
+		SpotReference = nullptr;
+	}
+}
+
+#pragma endregion 
+
+
+//////////////////// ITEM CARRY SYSTEM ////////////////////
+#pragma region Carry items system
+
+	/**
+	* @brief Event when player carry item
+	*/
+	void AMainCharacter::CarryItem()
+	{
+		if(IsCarryFood == false)
+		{
+			
+			IsCarryFood = true;
+
+			if(TempActor != nullptr)
+			{
+				
+				WornFood = TempActor;
+				TempActor = nullptr;
+				SetPlayerSpeed();
+				WornFood->SetActorLocation(this->GetActorLocation());			
+			}
+		}
+	}
+
+	/**
+	* @brief Event when player drop item (on floor or on spot)
+	*/
+	void AMainCharacter::DropItem()
+	{
+		if(IsCarryFood == true)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Drop item."));
+			GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
+			IsCarryFood = false;
+
+			if(WornFood != nullptr)
+			{
+				TempActor = WornFood;
+				WornFood = nullptr;
+				IsCarryFood = false;
+			}
+			
+		}
+	}
+
+#pragma endregion 
+
 
 //////////////////// PLAYER MOVEMENT ////////////////////
 #pragma region Player movement
@@ -91,7 +242,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
  */
 void AMainCharacter::MoveForward(float Value)
 {
-	if (Controller != nullptr && Value != 0.0f)
+	if (Controller != nullptr && Value != 0.0f && bCanMove)
 	{
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
@@ -106,7 +257,7 @@ void AMainCharacter::MoveForward(float Value)
  */
 void AMainCharacter::MoveRight(float Value)
 {
-	if (Controller != nullptr && Value != 0.0f)
+	if (Controller != nullptr && Value != 0.0f && bCanMove)
 	{
 		const FRotator Rotation = Controller->GetControlRotation();
 		const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
@@ -118,25 +269,28 @@ void AMainCharacter::MoveRight(float Value)
 #pragma endregion 
 
 
-
-
-
 //////////////////// CAMERA SYSTEM ////////////////////
 #pragma region Camera System
 
 	void AMainCharacter::TurnAtRate(float Rate)
 	{
-		AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+		if (bCanMove)
+		{
+			AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+		}
 	}
 
 	void AMainCharacter::LookupRate(float Rate)
 	{
-		AddControllerPitchInput(Rate * BaseLookupRate * GetWorld()->GetDeltaSeconds());
+		if (bCanMove)
+		{
+			AddControllerPitchInput(Rate * BaseLookupRate * GetWorld()->GetDeltaSeconds());
+		}
 	}
 
 	void AMainCharacter::ScrollInOut(float Value)
 	{
-		if(Value != 0.0f)
+		if(Value != 0.0f && bCanMove)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Je scroll"))
 			
@@ -149,4 +303,41 @@ void AMainCharacter::MoveRight(float Value)
 		}
 	}
 
-#pragma endregion 
+#pragma endregion
+
+
+//////////////////// WIN / LOOSE BEHAVIOUR ////////////////////
+#pragma region Win/Loose Behvaiour
+void AMainCharacter::TestWin()
+{
+	AActor* AManager = UGameplayStatics::GetActorOfClass(GetWorld(), AGameManager::StaticClass());
+	if (AManager)
+	{
+		AGameManager* Manager = Cast<AGameManager>(AManager);
+
+		if (Manager)
+		{
+			Manager->PlayerWin();
+		}
+	}	
+}
+
+
+void AMainCharacter::WinGame()
+{
+	if (AnimationHandler && WinMontage)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("YOU WIN"));
+		AnimationHandler->PlayAnimation(this, WinMontage);
+	}
+}
+
+void AMainCharacter::LooseGame()
+{
+	if (AnimationHandler && LooseMontage)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("YOU LOOSE"));
+		AnimationHandler->PlayAnimation(this, LooseMontage);
+	}
+}
+#pragma endregion

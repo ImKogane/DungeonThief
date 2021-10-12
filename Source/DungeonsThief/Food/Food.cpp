@@ -77,6 +77,7 @@ void AFood::BecomeSuperFood()
 	if(randomIndex == 5)
 	{
 		FoodPoints = 2;
+		SpeedReduction = 0.25;
 		FoodMesh->SetStaticMesh(SuperFoodMesh);
 		IsSuperFood = true;
 	}

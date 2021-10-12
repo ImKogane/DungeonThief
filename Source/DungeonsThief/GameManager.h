@@ -30,9 +30,16 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category="Points System")
 	int Points;	
 	
+	UPROPERTY(EditAnywhere, Category="Points System")
+    int MaxPoints = 5;
+
+	class AMainCharacter* Player;
+	
+	TArray<AActor*> EnemiesInLevel;
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -40,4 +47,12 @@ public:
 	UFUNCTION()
 	void AddPoints(int PointsCount);
 
+	FORCEINLINE int GetPoints() { return Points; }
+	FORCEINLINE int GetMaxPoints() { return MaxPoints; }
+	
+	// Play the win animation for the player and the defeat animation for all enemies spawned in the map
+	void PlayerWin();
+
+	//Play the win animation for all enemies spawned in the map and the defeat animation for the player
+	void PlayerLoose();
 };

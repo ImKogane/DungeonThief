@@ -13,5 +13,9 @@ UCLASS()
 class DUNGEONSTHIEF_API ADungeonsThiefGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+
+public:
+
 	
 };

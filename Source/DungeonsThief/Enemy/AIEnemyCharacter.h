@@ -83,6 +83,14 @@ protected:
 	
 
 
+	class AAnimationsHandler* AnimationHandler;
+
+	UPROPERTY(EditAnywhere, Category = "Animations")
+	class UAnimMontage* WinMontage;
+	
+	UPROPERTY(EditAnywhere, Category = "Animations")
+	class UAnimMontage* LooseMontage;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -93,6 +101,10 @@ public:
 	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void WinGame();
+
+	void LooseGame();
 
 protected:
 
