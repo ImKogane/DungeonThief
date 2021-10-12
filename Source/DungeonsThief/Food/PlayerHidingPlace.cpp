@@ -3,8 +3,9 @@
 
 #include "PlayerHidingPlace.h"
 #include "DungeonsThief/Food/Food.h"
-#include "DungeonsThief/GameManager.h"
+#include "DungeonsThief/Managers/ScoreManager.h"
 #include "DungeonsThief/Player/MainCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APlayerHidingPlace::APlayerHidingPlace()
@@ -25,6 +26,12 @@ APlayerHidingPlace::APlayerHidingPlace()
 void APlayerHidingPlace::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AActor* AManager = UGameplayStatics::GetActorOfClass(GetWorld(), AScoreManager::StaticClass());
+	if (AManager)
+	{
+		ScoreManager = Cast<AScoreManager>(AManager);
+	}
 }
 
 // Called every frame
@@ -33,17 +40,18 @@ void APlayerHidingPlace::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void APlayerHidingPlace::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+void APlayerHidingPlace::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
 	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
-	if(Player != nullptr)
+	if (Player != nullptr)
 	{
-		if(Player->GetIsCarryFood())
+		if (Player->GetIsCarryFood())
 		{
-			AFood* TempFood = Cast<AFood>(Player->GetWornFood());
-			if(TempFood != nullptr)
+			AFood* HeldFood = Cast<AFood>(Player->GetWornFood());
+
+			if (HeldFood && ScoreManager)
 			{
-				GameManager->AddPoints(TempFood->GetFoodPoints());
+				ScoreManager->AddPoints(HeldFood->GetFoodPoints());
 			}
 
 			

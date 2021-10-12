@@ -4,55 +4,44 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "GameManager.generated.h"
+#include "ScoreManager.generated.h"
 
 UCLASS()
-class DUNGEONSTHIEF_API AGameManager : public AActor
+class DUNGEONSTHIEF_API AScoreManager : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AGameManager();
+	AScoreManager();
 
 protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 
-	UFUNCTION()
-	void SpawnFood();
-			
-
-	UPROPERTY(EditAnywhere, Category="Food System")
-	TArray<class AFoodSpot*> SpotsArray;
-
-	UPROPERTY(EditAnywhere, Category="Food System")
-	TSubclassOf<class AFood> FoodActor;
-
-	UPROPERTY(VisibleAnywhere, Category="Points System")
+	UPROPERTY(VisibleAnywhere, Category = "Points System")
 	int Points;	
 	
-	UPROPERTY(EditAnywhere, Category="Points System")
-    int MaxPoints = 5;
-
+	UPROPERTY(EditAnywhere, Category = "Points System")
+	int MaxPoints = 5;
+	
 	class AMainCharacter* Player;
 	
 	TArray<AActor*> EnemiesInLevel;
-	
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-	void AddPoints(int PointsCount);
+    void AddPoints(int PointsCount);
 
 	FORCEINLINE int GetPoints() { return Points; }
 	FORCEINLINE int GetMaxPoints() { return MaxPoints; }
-	
+
 	// Play the win animation for the player and the defeat animation for all enemies spawned in the map
 	void PlayerWin();
 
 	//Play the win animation for all enemies spawned in the map and the defeat animation for the player
-	void PlayerLoose();
+	void PlayerLoose();	
 };
