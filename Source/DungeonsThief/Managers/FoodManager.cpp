@@ -18,7 +18,13 @@ void AFoodManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SpawnFood();	
+	int RandomIndex = FMath::FRandRange(0, SpotsArray.Num() - 1);
+
+	AFoodSpot* FoodSpot = SpotsArray[RandomIndex];
+	if (FoodSpot)
+	{
+		SpawnFood(FoodSpot->GetSpawnPoint()->GetComponentLocation());	
+	}
 }
 
 // Called every frame
@@ -27,15 +33,8 @@ void AFoodManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AFoodManager::SpawnFood()
+AFood* AFoodManager::SpawnFood(FVector SpawnLocation)
 {
-	int RandomIndex = FMath::FRandRange(0, SpotsArray.Num() - 1);
-
-	AFoodSpot* FoodSpot = SpotsArray[RandomIndex];
-
-	if(FoodSpot != nullptr)
-	{
-		GetWorld()->SpawnActor<AFood>(FoodActor, FoodSpot->GetSpawnPoint()->GetComponentLocation(), FoodSpot->GetSpawnPoint()->GetComponentRotation());
-	}	
+	return GetWorld()->SpawnActor<AFood>(FoodActor, SpawnLocation, GetActorRotation());
 }
 
