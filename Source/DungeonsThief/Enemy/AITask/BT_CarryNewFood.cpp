@@ -3,9 +3,11 @@
 
 #include "DungeonsThief/Enemy/AITask/BT_CarryNewFood.h"
 
+#include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
 #include "DungeonsThief/Enemy/AIEnemyController.h"
 #include "DungeonsThief/Food/Food.h"
+#include "DungeonsThief/Managers/FoodManager.h"
 
 EBTNodeResult::Type UBT_CarryNewFood::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
@@ -16,14 +18,21 @@ EBTNodeResult::Type UBT_CarryNewFood::ExecuteTask(UBehaviorTreeComponent& OwnerC
 		AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();
 		if(AICharacter)
 		{
-			
-			AActor* TempActor = GetWorld()->SpawnActor<AFood>(AICharacter->GetFoodActorBP(), AICharacter->GetActorLocation(), AICharacter->GetActorRotation());
-			if(TempActor)
+			UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
+			//TODO avoir une référence foodmanager dans le blackboard
+			/*
+			AActor* FoodToCarry = GetWorld()->SpawnActor<AFood>(/*Ici#1#, AICharacter->GetActorLocation(), AICharacter->GetActorRotation());
+			if(FoodToCarry)
 			{
-				AICharacter->SetPlayerActor(TempActor);
+				AICharacter->SetPlayerActor(FoodToCarry);
 				AICharacter->InteractWithItem();
+				BlackboardComponent->SetValueAsObject("FoodCarrying", FoodToCarry);
+				BlackboardComponent->SetValueAsInt("HasARole", 1);
 				return EBTNodeResult::Succeeded;
-			}
+			}*/
+
+			BlackboardComponent->SetValueAsInt("HasARole", 1);
+			return EBTNodeResult::Succeeded;
 		}
 	}
 	

@@ -29,6 +29,10 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	//return all spot in game
+	FORCEINLINE TArray<class AFoodSpot*> getAllSpotInGame() { return SpotsArray;}
+	FORCEINLINE TSubclassOf<class AFood> getBPFoodActor() {return FoodActor;}
 	
 protected:
 
