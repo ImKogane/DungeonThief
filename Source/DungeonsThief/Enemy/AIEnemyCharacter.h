@@ -76,7 +76,13 @@ protected:
 	float WanderDelay;
 	float WanderCooldown;
 
+	UPROPERTY(EditAnywhere, Category="Models")
+	TArray<class USkeletalMesh*> MeshArray;
+	
+	UPROPERTY(EditAnywhere, Category="Models")
+	TArray<class UMaterial*> MaterialArray;
 
+	
 	UPROPERTY(EditAnywhere, Category = "Food")
 	TSubclassOf<class AFood> FoodActorBP;
 
@@ -105,6 +111,8 @@ public:
 	void WinGame();
 
 	void LooseGame();
+
+	void SetRandomMesh();
 
 protected:
 
