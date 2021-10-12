@@ -57,17 +57,20 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "FoodSpot")
 	 AFoodSpot* SpotReference;
+
+	UPROPERTY(EditAnywhere, Category = "CameraZoom")
+	float MaxZoom;
 	
-	UFUNCTION()
-	void InteractWithItem();
+	UPROPERTY(EditAnywhere, Category = "CameraZoom")
+	float MinZoom;
 
-	UFUNCTION()
-	void CarryItem();
-	void PutItemOnSpot();
+	class AAnimationsHandler* AnimationHandler;
 
-	UFUNCTION()
-	void SetPlayerSpeed();
-
+	UPROPERTY(EditAnywhere, Category = "Animations")
+	class UAnimMontage* WinMontage;
+	
+	UPROPERTY(EditAnywhere, Category = "Animations")
+	class UAnimMontage* LooseMontage;
 	
 	
 protected:
@@ -88,11 +91,15 @@ protected:
 	/* Called for scrolling in or out the camera view*/
 	void ScrollInOut(float Value);
 
-	UPROPERTY(EditAnywhere, Category = "CameraZoom")
-	float MaxZoom;
+	UFUNCTION()
+    void InteractWithItem();
+
+	UFUNCTION()
+    void CarryItem();
 	
-	UPROPERTY(EditAnywhere, Category = "CameraZoom")
-	float MinZoom;
+	void PutItemOnSpot();
+
+	void SetPlayerSpeed();
 
 public:
 
@@ -114,6 +121,12 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
+	void WinGame();
+
+	void LooseGame();
+
+	void TestWin();
 
 	
 };

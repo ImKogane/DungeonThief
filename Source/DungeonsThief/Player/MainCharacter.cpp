@@ -2,12 +2,13 @@
 
 
 #include "MainCharacter.h"
-
+#include "DungeonsThief/AAnimationsHandler.h"
 #include "DungeonsThief/Food//Food.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-
+#include "Kismet/GameplayStatics.h"
+#include "DungeonsThief/GameManager.h"
 
 
 // Sets default values
@@ -46,6 +47,8 @@ AMainCharacter::AMainCharacter()
 
 	MaxZoom = 600.0f;
 	MinZoom = 200.0f;
+
+	AnimationHandler = CreateDefaultSubobject<AAnimationsHandler>(TEXT("AnimationHandler"));
 }
 
 void AMainCharacter::BeginPlay()
@@ -86,9 +89,12 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("ScrollCamera", this, &AMainCharacter::ScrollInOut);
 
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AMainCharacter::InteractWithItem);
+
+	PlayerInputComponent->BindAction("Test", IE_Pressed, this, &AMainCharacter::TestWin);
 }
 
-
+//////////////////// ITEM INTERACION ////////////////////
+#pragma region Item Interaction
 /**
 * @brief Pick random mesh from an array to set the UStaticMeshComponent mesh
 */
@@ -180,6 +186,9 @@ void AMainCharacter::SetSpotReference(AFoodSpot* Reference)
 	}
 }
 
+#pragma endregion 
+
+
 //////////////////// ITEM CARRY SYSTEM ////////////////////
 #pragma region Carry items system
 
@@ -228,8 +237,6 @@ void AMainCharacter::SetSpotReference(AFoodSpot* Reference)
 #pragma endregion 
 
 
-
-
 //////////////////// PLAYER MOVEMENT ////////////////////
 #pragma region Player movement
 
@@ -265,9 +272,6 @@ void AMainCharacter::MoveRight(float Value)
 #pragma endregion 
 
 
-
-
-
 //////////////////// CAMERA SYSTEM ////////////////////
 #pragma region Camera System
 
@@ -296,4 +300,41 @@ void AMainCharacter::MoveRight(float Value)
 		}
 	}
 
-#pragma endregion 
+#pragma endregion
+
+
+//////////////////// WIN / LOOSE BEHAVIOUR ////////////////////
+#pragma region Win/Loose Behvaiour
+void AMainCharacter::TestWin()
+{
+	AActor* AManager = UGameplayStatics::GetActorOfClass(GetWorld(), AGameManager::StaticClass());
+	if (AManager)
+	{
+		AGameManager* Manager = Cast<AGameManager>(AManager);
+
+		if (Manager)
+		{
+			Manager->PlayerWin();
+		}
+	}	
+}
+
+
+void AMainCharacter::WinGame()
+{
+	if (AnimationHandler && WinMontage)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("YOU WIN"));
+		AnimationHandler->PlayAnimation(this, WinMontage);
+	}
+}
+
+void AMainCharacter::LooseGame()
+{
+	if (AnimationHandler && LooseMontage)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("YOU LOOSE"));
+		AnimationHandler->PlayAnimation(this, LooseMontage);
+	}
+}
+#pragma endregion

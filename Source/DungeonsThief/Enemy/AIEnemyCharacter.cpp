@@ -2,7 +2,7 @@
 
 
 #include "AIEnemyCharacter.h"
-
+#include "DungeonsThief/AAnimationsHandler.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
@@ -16,13 +16,15 @@ AAIEnemyCharacter::AAIEnemyCharacter()
 
 	WanderDelay = 3.0f;
 	WanderCooldown = 0.0f;
+
+	AnimationHandler = CreateDefaultSubobject<AAnimationsHandler>(TEXT("AnimationHandler"));
 }
 
 // Called when the game starts or when spawned
 void AAIEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	GetCharacterMovement()->MaxWalkSpeed = 450.f;	
 }
 
@@ -52,4 +54,22 @@ void AAIEnemyCharacter::ProcessWanderCooldown(float DeltaTime)
 		}		
 	}
 }
+
+void AAIEnemyCharacter::WinGame()
+{
+	if (AnimationHandler && WinMontage)
+	{
+		AnimationHandler->PlayAnimation(this, WinMontage);
+	}
+}
+
+void AAIEnemyCharacter::LooseGame()
+{
+	if (AnimationHandler && LooseMontage)
+	{
+		AnimationHandler->PlayAnimation(this, LooseMontage);
+	}
+}
+
+
 

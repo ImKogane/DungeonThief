@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Components/StaticMeshComponent.h"
-#include "Components/BoxComponent.h"
 #include "Food.generated.h"
 
 UCLASS()
@@ -20,28 +18,28 @@ public:
 protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category="Global")
-		TArray<UStaticMesh*> FoodArray;
+	TArray<class UStaticMesh*> FoodArray;
 
 	UPROPERTY(EditDefaultsOnly, Category="Global")
-		int FoodPoints = 1;
+	int FoodPoints = 1;
 	
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* FoodMesh;
+	class UStaticMeshComponent* FoodMesh;
 
 	UPROPERTY(VisibleAnywhere)
-		UBoxComponent* CollisionBox;
+	class UBoxComponent* CollisionBox;
 
 	UPROPERTY(VisibleAnywhere, Category="SuperFood")
-		bool IsSuperFood;
+	bool IsSuperFood;
 
 	UPROPERTY(EditDefaultsOnly, Category="SuperFood")
-		UStaticMesh* SuperFoodMesh;
+	class UStaticMesh* SuperFoodMesh;
 	
 	UPROPERTY(VisibleAnywhere, Category="SuperFood")
-		int SuperFoodRate = 10;
+	int SuperFoodRate = 10;
 
 	UPROPERTY(VisibleAnywhere, Category="SuperFood")
-		float SpeedReduction = 0.5;
+	float SpeedReduction = 0.5;
 	
 			
 	// Called when the game starts or when spawned
@@ -51,10 +49,10 @@ protected:
 	void BecomeSuperFood();
 
 	UFUNCTION()
-		void OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+	void OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 
 	UFUNCTION()
-		void OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	void OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	
 	
