@@ -21,7 +21,7 @@ EBTNodeResult::Type UBT_CarryNewFood::ExecuteTask(UBehaviorTreeComponent& OwnerC
 			UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
 
 			//A VOIR SI CA FONCTIONNE BIEN
-			AFoodManager* FoodManager = BlackboardComponent->GetValueAsObject("FoodManager");
+			AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
 
 			if (FoodManager)
 			{
