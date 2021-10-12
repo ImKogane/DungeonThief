@@ -3,6 +3,7 @@
 
 #include "Food.h"
 #include "DungeonsThief/Player/MainCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AFood::AFood()
@@ -24,6 +25,7 @@ AFood::AFood()
 
 void AFood::BeTake()
 {
+	UGameplayStatics::PlaySoundAtLocation(this, PickUpSound, GetActorLocation());
 	FoodMesh->SetCollisionProfileName(TEXT("OverlapAll"));
 }
 
