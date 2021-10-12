@@ -93,7 +93,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Test", IE_Pressed, this, &AMainCharacter::TestWin);
 }
 
-
+//////////////////// ITEM INTERACION ////////////////////
+#pragma region Item Interaction
 /**
 * @brief Pick random mesh from an array to set the UStaticMeshComponent mesh
 */
@@ -185,6 +186,9 @@ void AMainCharacter::SetSpotReference(AFoodSpot* Reference)
 	}
 }
 
+#pragma endregion 
+
+
 //////////////////// ITEM CARRY SYSTEM ////////////////////
 #pragma region Carry items system
 
@@ -233,8 +237,6 @@ void AMainCharacter::SetSpotReference(AFoodSpot* Reference)
 #pragma endregion 
 
 
-
-
 //////////////////// PLAYER MOVEMENT ////////////////////
 #pragma region Player movement
 
@@ -270,9 +272,6 @@ void AMainCharacter::MoveRight(float Value)
 #pragma endregion 
 
 
-
-
-
 //////////////////// CAMERA SYSTEM ////////////////////
 #pragma region Camera System
 
@@ -304,6 +303,8 @@ void AMainCharacter::MoveRight(float Value)
 #pragma endregion
 
 
+//////////////////// WIN / LOOSE BEHAVIOUR ////////////////////
+#pragma region Win/Loose Behvaiour
 void AMainCharacter::TestWin()
 {
 	AActor* AManager = UGameplayStatics::GetActorOfClass(GetWorld(), AGameManager::StaticClass());
@@ -336,3 +337,4 @@ void AMainCharacter::LooseGame()
 		AnimationHandler->PlayAnimation(this, LooseMontage);
 	}
 }
+#pragma endregion

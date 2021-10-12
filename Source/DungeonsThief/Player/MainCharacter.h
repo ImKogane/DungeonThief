@@ -99,6 +99,8 @@ protected:
 	
 	void PutItemOnSpot();
 
+	void SetPlayerSpeed();
+
 public:
 
 	FORCEINLINE void SetPlayerActor(AActor* NewActor) { TempActor = NewActor; }
@@ -119,10 +121,12 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
 	void WinGame();
 
 	void LooseGame();
 
 	void TestWin();
+
+	
 };
