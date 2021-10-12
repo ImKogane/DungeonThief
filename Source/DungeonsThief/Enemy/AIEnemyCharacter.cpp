@@ -102,11 +102,11 @@ void AAIEnemyCharacter::LooseGame()
 void AAIEnemyCharacter::SetRandomMesh()
 {
 	//Choose random index
-	int random = FMath::FRandRange(0,MeshArray.Num());
-	GetMesh()->SetSkeletalMesh(MeshArray[random]);
+	int Random = FMath::FRandRange(0,MeshArray.Num());
+	GetMesh()->SetSkeletalMesh(MeshArray[Random]);
 	
-	random = FMath::FRandRange(0,MaterialArray.Num());
-	GetMesh()->SetMaterial(0, MaterialArray[random]);
+	Random = FMath::FRandRange(0,MaterialArray.Num());
+	GetMesh()->SetMaterial(0, MaterialArray[Random]);
 	
 }
 
