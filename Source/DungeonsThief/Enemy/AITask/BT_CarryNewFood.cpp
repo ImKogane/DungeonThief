@@ -19,17 +19,22 @@ EBTNodeResult::Type UBT_CarryNewFood::ExecuteTask(UBehaviorTreeComponent& OwnerC
 		if(AICharacter)
 		{
 			UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
-			//TODO avoir une référence foodmanager dans le blackboard
-			/*
-			AActor* FoodToCarry = GetWorld()->SpawnActor<AFood>(/*Ici#1#, AICharacter->GetActorLocation(), AICharacter->GetActorRotation());
-			if(FoodToCarry)
+
+			//A VOIR SI CA FONCTIONNE BIEN
+			AFoodManager* FoodManager = BlackboardComponent->GetValueAsObject("FoodManager");
+
+			if (FoodManager)
 			{
-				AICharacter->SetPlayerActor(FoodToCarry);
-				AICharacter->InteractWithItem();
-				BlackboardComponent->SetValueAsObject("FoodCarrying", FoodToCarry);
-				BlackboardComponent->SetValueAsInt("HasARole", 1);
-				return EBTNodeResult::Succeeded;
-			}*/
+				AActor* FoodToCarry = FoodManager->SpawnFood(AICharacter->GetActorLocation());
+				if(FoodToCarry)
+				{
+					AICharacter->SetPlayerActor(FoodToCarry);
+					AICharacter->InteractWithItem();
+					BlackboardComponent->SetValueAsObject("FoodCarrying", FoodToCarry);
+					BlackboardComponent->SetValueAsInt("HasARole", 1);
+					return EBTNodeResult::Succeeded;
+				}
+			}
 
 			BlackboardComponent->SetValueAsInt("HasARole", 1);
 			return EBTNodeResult::Succeeded;

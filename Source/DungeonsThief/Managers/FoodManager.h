@@ -34,7 +34,6 @@ public:
 	FORCEINLINE TArray<class AFoodSpot*> getAllSpotInGame() { return SpotsArray;}
 	FORCEINLINE TSubclassOf<class AFood> getBPFoodActor() {return FoodActor;}
 	
-protected:
-
-	void SpawnFood();
+	class AFood* SpawnFood(FVector SpawnLocation);
+	
 };
