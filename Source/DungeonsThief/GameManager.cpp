@@ -7,6 +7,7 @@
 #include "DungeonsThief/HUD/UI_MainClass.h"
 #include "DungeonsThief/Food/Food.h"
 #include "Enemy/AIEnemyCharacter.h"
+#include "Enemy/AIEnemyController.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -40,6 +41,7 @@ void AGameManager::PlayerWin()
 {
 	if (Player)
 	{
+		Player->SetCanMove(false);
 		Player->WinGame();		
 	}
 
@@ -54,16 +56,17 @@ void AGameManager::PlayerWin()
 			if (EnemyCharacter)
 			{
 				EnemyCharacter->LooseGame();
+				EnemyCharacter->GetController()->StopMovement();
 			}
 		}
 	}
-
 }
 
 void AGameManager::PlayerLoose()
 {
 	if (Player)
 	{
+		Player->SetCanMove(false);
 		Player->LooseGame();		
 	}
 	
@@ -78,6 +81,7 @@ void AGameManager::PlayerLoose()
 			if (EnemyCharacter)
 			{
 				EnemyCharacter->WinGame();
+				EnemyCharacter->GetController()->StopMovement();
 			}
 		}
 	}

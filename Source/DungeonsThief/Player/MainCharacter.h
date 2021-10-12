@@ -72,6 +72,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Animations")
 	class UAnimMontage* LooseMontage;
 	
+	bool bCanMove;
 	
 protected:
 	//For function declaration
@@ -112,6 +113,8 @@ public:
 	FORCEINLINE bool GetIsCarryFood() { return IsCarryFood; }
 	FORCEINLINE AActor* GetWornFood() { return WornFood; }
 	FORCEINLINE AActor* GetPlayerTempActor() { return TempActor; }
+
+	FORCEINLINE void SetCanMove(bool value) { bCanMove = value; }
 	
 	UFUNCTION()
 	void DropItem();
@@ -126,7 +129,5 @@ public:
 
 	void LooseGame();
 
-	void TestWin();
-
-	
+	void TestWin();	
 };
