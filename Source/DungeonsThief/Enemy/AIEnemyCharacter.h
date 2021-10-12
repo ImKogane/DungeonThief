@@ -71,17 +71,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	bool bHasARole;
 	//End
-
 	
 	float WanderDelay;
 	float WanderCooldown;
 
-
 	UPROPERTY(EditAnywhere, Category = "Food")
 	TSubclassOf<class AFood> FoodActorBP;
-
-	
-
 
 	class AAnimationsHandler* AnimationHandler;
 

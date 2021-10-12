@@ -2,6 +2,8 @@
 
 
 #include "GameManager.h"
+
+#include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Player/MainCharacter.h"
 #include "DungeonsThief/Food/FoodSpot.h"
 #include "DungeonsThief/HUD/UI_MainClass.h"
@@ -56,7 +58,13 @@ void AGameManager::PlayerWin()
 			if (EnemyCharacter)
 			{
 				EnemyCharacter->LooseGame();
-				EnemyCharacter->GetController()->StopMovement();
+				AAIEnemyController* Controller = Cast<AAIEnemyController>(EnemyCharacter->GetController());
+
+				if (Controller)
+				{
+					Controller->GetBlackBoardComponent()->PauseObserverNotifications();
+					Controller->StopMovement();
+				}				
 			}
 		}
 	}
@@ -81,7 +89,14 @@ void AGameManager::PlayerLoose()
 			if (EnemyCharacter)
 			{
 				EnemyCharacter->WinGame();
-				EnemyCharacter->GetController()->StopMovement();
+				AAIEnemyController* Controller = Cast<AAIEnemyController>(EnemyCharacter->GetController());
+
+				if (Controller)
+				{
+					
+					Controller->GetBlackBoardComponent()->PauseObserverNotifications();
+					Controller->StopMovement();
+				}	
 			}
 		}
 	}
