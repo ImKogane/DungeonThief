@@ -134,11 +134,11 @@ void AMainCharacter::InteractWithItem()
 */
 void AMainCharacter::PutItemOnSpot()
 {
-	SetPlayerSpeed();
 	WornFood->SetActorLocation(SpotReference->GetSpawnPoint()->GetComponentLocation());
 	TempActor = WornFood;
 	WornFood = nullptr;
 	IsCarryFood = false;
+	SetPlayerSpeed();
 }
 
 
