@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
+#include "DungeonsThief/Food/FoodSpot.h"
+#include "DungeonsThief/Managers/FoodManager.h"
 #include "BT_SelectSpotFood.generated.h"
 
 /**
@@ -18,5 +20,5 @@ protected:
 	/* Execute this function each time this Task is going to fire */
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
-	AActor* SelectRandomActor(TArray<AActor*> ActorList);
+	AActor* SelectRandomFoodSpot(TArray<AFoodSpot*> ActorList);
 };

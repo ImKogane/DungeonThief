@@ -40,6 +40,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category="SuperFood")
 	float SpeedReduction = 0.5;
+
+	UPROPERTY(EditDefaultsOnly, Category="Sound")
+	USoundBase* PickUpSound;
 	
 			
 	// Called when the game starts or when spawned

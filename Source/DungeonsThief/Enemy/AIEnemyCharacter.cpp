@@ -5,6 +5,7 @@
 
 
 #include "AIEnemyController.h"
+#include "BehaviorTree/BehaviorTree.h"
 #include "DungeonsThief/Food/Food.h"
 #include "DungeonsThief/AAnimationsHandler.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -23,10 +24,6 @@ AAIEnemyCharacter::AAIEnemyCharacter()
 
 	WanderDelay = 3.0f;
 	WanderCooldown = 0.0f;
-	bIsAPatrol = false;
-	bHasARole = false;
-	bHadFood = false;
-	bFollowedAPlayer = false;
 
 	AnimationHandler = CreateDefaultSubobject<AAnimationsHandler>(TEXT("AnimationHandler"));
 }

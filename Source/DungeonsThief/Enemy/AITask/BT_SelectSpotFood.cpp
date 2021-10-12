@@ -3,8 +3,10 @@
 
 #include "DungeonsThief/Enemy/AITask/BT_SelectSpotFood.h"
 
+#include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Enemy/AIEnemyController.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
+#include "DungeonsThief/Managers/FoodManager.h"
 #include "Kismet/GameplayStatics.h"
 
 EBTNodeResult::Type UBT_SelectSpotFood::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -16,23 +18,38 @@ EBTNodeResult::Type UBT_SelectSpotFood::ExecuteTask(UBehaviorTreeComponent& Owne
 		AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();
 		if(AICharacter)
 		{
-			TArray<AActor*> AllFoodSpot;
-			UGameplayStatics::GetAllActorsOfClass(GetWorld(), AFoodSpot::StaticClass(), AllFoodSpot);
+			UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
+
+			//TODO avoir une référence pour le foodmanager dans le blackboard
+			/*//get all spots from food manager
+			TArray<AFoodSpot*> AllFoodSpot = //TODO
+
+			//temporary array for selecting spot for the AI
+			TArray<AFoodSpot*> SpotsForPatrol;
 			if(AllFoodSpot.Num() >= 2)
 			{
 				for (int i = 0; i < 2; i++)
 				{
-					AFoodSpot* TempAct = Cast<AFoodSpot>(SelectRandomActor(AllFoodSpot));
+					AFoodSpot* SelectedFoodSpot = Cast<AFoodSpot>(SelectRandomFoodSpot(AllFoodSpot));
 					
-					while(AICharacter->PatrolSpot.Contains(TempAct))
+					while(SpotsForPatrol.Contains(SelectedFoodSpot))
 					{
-						TempAct = Cast<AFoodSpot>(SelectRandomActor(AllFoodSpot));
+						SelectedFoodSpot = Cast<AFoodSpot>(SelectRandomFoodSpot(AllFoodSpot));
 					}
-					AICharacter->PatrolSpot.Add(TempAct);
+					SpotsForPatrol.Add(SelectedFoodSpot);
 				}
-				UE_LOG(LogTemp, Warning, TEXT("Leave with a size of %d"), AICharacter->PatrolSpot.Num())
-				return EBTNodeResult::Succeeded;
-			}
+
+				if(SpotsForPatrol.Num() == 2)
+				{
+					AICharacter->SetSpotsForPatrol(SpotsForPatrol);
+					BlackboardComponent->SetValueAsInt("HasARole", 1);
+					UE_LOG(LogTemp, Warning, TEXT("Leave with a size of %d"), SpotsForPatrol.Num())
+					return EBTNodeResult::Succeeded;
+				}
+			}*/
+			
+			BlackboardComponent->SetValueAsInt("HasARole", 1);
+			return EBTNodeResult::Succeeded;
 		}
 	}
 
@@ -40,9 +57,9 @@ EBTNodeResult::Type UBT_SelectSpotFood::ExecuteTask(UBehaviorTreeComponent& Owne
 	return EBTNodeResult::Failed;
 }
 
-AActor* UBT_SelectSpotFood::SelectRandomActor(TArray<AActor*> ActorList)
+AActor* UBT_SelectSpotFood::SelectRandomFoodSpot(TArray<AFoodSpot*> ActorList)
 {
-	int RandomIndex = FMath::FRandRange(0, ActorList.Num());
+	const int RandomIndex = FMath::FRandRange(0, ActorList.Num());
 	UE_LOG(LogTemp, Warning, TEXT("Select rand : %d"), RandomIndex);
 	return ActorList[RandomIndex];
 }
