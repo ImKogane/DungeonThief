@@ -91,6 +91,32 @@ void ACarryingCharacter::PutItemOnSpot()
 	IsCarryFood = false;
 }
 
+/**
+* @brief Set player speed in depend of it's worn item
+*/
+void ACarryingCharacter::SetPlayerSpeed()
+{
+	if(IsCarryFood)
+	{
+		AFood* TempFood = Cast<AFood>(WornFood);
+
+		if(TempFood !=nullptr)
+		{
+			GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * TempFood->GetSpeedReduction();
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Reduction."));
+		}
+		else
+		{
+			GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * 0.5;
+		}
+		
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
+	}
+}
+
 void ACarryingCharacter::SetSpotReference(AFoodSpot* Reference)
 {
 	if(Reference != nullptr)
@@ -110,15 +136,15 @@ void ACarryingCharacter::CarryItem()
 {
 	if(IsCarryFood == false)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Carry item."));
+			
 		IsCarryFood = true;
-		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * 0.5;
 
 		if(TempActor != nullptr)
 		{
 				
 			WornFood = TempActor;
 			TempActor = nullptr;
+			SetPlayerSpeed();
 			WornFood->SetActorLocation(this->GetActorLocation());			
 		}
 	}

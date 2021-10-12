@@ -35,22 +35,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	float BaseLookupRate;
-	
-	/*
-	UPROPERTY(VisibleAnywhere, Category = "Movement")
-	float BaseSpeed;*/
-	
-	UPROPERTY(VisibleAnywhere, Category = "Movement")
-	float Speed;
-	
-	UPROPERTY(VisibleAnywhere, Category = "Food")
-	AActor* WornFood;
-
-	UPROPERTY(VisibleAnywhere, Category = "FoodSpot")
-	bool NearToFoodSpot;
-
-	UPROPERTY(VisibleAnywhere, Category = "FoodSpot")
-	 AFoodSpot* SpotReference;
 
 	UPROPERTY(EditAnywhere, Category = "CameraZoom")
 	float MaxZoom;
@@ -86,32 +70,8 @@ protected:
 	/* Called for scrolling in or out the camera view*/
 	void ScrollInOut(float Value);
 
-	UFUNCTION()
-    void InteractWithItem();
-
-	UFUNCTION()
-    void CarryItem();
-	
-	void PutItemOnSpot();
-
-	void SetPlayerSpeed();
-
 public:
-
-	FORCEINLINE void SetPlayerActor(AActor* NewActor) { TempActor = NewActor; }
-	FORCEINLINE void SetSpeed(float NewSpeed) { GetCharacterMovement()->MaxWalkSpeed = NewSpeed; };
-	
-	FORCEINLINE void SetIsNearSpot(bool NewState){ NearToFoodSpot = NewState; }; 
-	void SetSpotReference(AFoodSpot* Reference);
-
-	FORCEINLINE bool GetIsCarryFood() { return IsCarryFood; }
-	FORCEINLINE AActor* GetWornFood() { return WornFood; }
-	FORCEINLINE AActor* GetPlayerTempActor() { return TempActor; }
-
 	FORCEINLINE void SetCanMove(bool value) { bCanMove = value; }
-	
-	UFUNCTION()
-	void DropItem();
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

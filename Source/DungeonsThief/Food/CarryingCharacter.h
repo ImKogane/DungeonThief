@@ -44,6 +44,7 @@ protected:
 	UFUNCTION()
 	void CarryItem();
 	void PutItemOnSpot();
+	void SetPlayerSpeed();
 
 public:	
 	// Called every frame
