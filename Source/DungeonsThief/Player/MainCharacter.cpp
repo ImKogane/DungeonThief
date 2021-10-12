@@ -86,8 +86,6 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("ScrollCamera", this, &AMainCharacter::ScrollInOut);
 
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AMainCharacter::InteractWithItem);
-
-	PlayerInputComponent->BindAction("Test", IE_Pressed, this, &AMainCharacter::TestWin);
 }
 
 
