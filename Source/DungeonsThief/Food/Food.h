@@ -39,6 +39,9 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, Category="SuperFood")
 		int SuperFoodRate = 10;
+
+	UPROPERTY(VisibleAnywhere, Category="SuperFood")
+		float SpeedReduction = 0.5;
 	
 			
 	// Called when the game starts or when spawned
@@ -65,6 +68,7 @@ public:
 	FORCEINLINE UStaticMeshComponent* GetMeshComponent() { return FoodMesh; } 
 	FORCEINLINE bool GetIsSuperFood() { return IsSuperFood; } 
 	FORCEINLINE int GetFoodPoints	() { return FoodPoints; } 
+	FORCEINLINE float GetSpeedReduction	() { return SpeedReduction; } 
 	
 	virtual void Tick(float DeltaTime) override;
 

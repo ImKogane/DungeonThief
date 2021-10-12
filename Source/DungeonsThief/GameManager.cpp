@@ -4,6 +4,7 @@
 #include "GameManager.h"
 #include "DungeonsThief/Player/MainCharacter.h"
 #include "DungeonsThief/Food/FoodSpot.h"
+#include "DungeonsThief/HUD/UI_MainClass.h"
 #include "DungeonsThief/Food/Food.h"
 #include "Enemy/AIEnemyCharacter.h"
 #include "Kismet/GameplayStatics.h"
@@ -111,4 +112,5 @@ void AGameManager::AddPoints(int PointsCount)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("YOU WIN"));
 	}
+	
 }
