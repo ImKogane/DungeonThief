@@ -49,12 +49,21 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category = "Animations")
 	class UAnimMontage* LooseMontage;
+
+	UPROPERTY(EditAnywhere, Category = "Animations")
+	bool IsCrouch;
 	
 	bool bCanMove;
 	
 protected:
 	//For function declaration
 
+	/* Called for crouch player */
+	void CrouchPlayer();
+	
+	/* Called for remove crouch state of player */
+	void UnCrouchPlayer();
+	
 	/* Called for forward and backward movement */
 	void MoveForward(float Value);
 
@@ -83,5 +92,9 @@ public:
 
 	void LooseGame();
 
-	void TestWin();	
+	void TestWin();
+
+	FORCEINLINE bool GetIsCrouching() { return IsCrouch; } 
 };
+
+

@@ -103,7 +103,7 @@ void ACarryingCharacter::SetPlayerSpeed()
 		if(TempFood !=nullptr)
 		{
 			GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * TempFood->GetSpeedReduction();
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Reduction."));
+			
 		}
 		else
 		{
