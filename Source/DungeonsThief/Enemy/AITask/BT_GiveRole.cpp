@@ -6,8 +6,6 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Enemy/AIEnemyController.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
-#include "DungeonsThief/Food/Food.h"
-#include "Kismet/GameplayStatics.h"
 
 EBTNodeResult::Type UBT_GiveRole::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
@@ -20,24 +18,21 @@ EBTNodeResult::Type UBT_GiveRole::ExecuteTask(UBehaviorTreeComponent& OwnerComp,
 		if(AICharacter)
 		{
 			UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
-			
-			TArray<AActor*> AllFood;
-			UGameplayStatics::GetAllActorsOfClass(GetWorld(), AFood::StaticClass(), AllFood);
+
+			//TODO Actualiser les nourritures présentes dans le World surement dans le FoodManager
 			
 			//2 is a temporary number for test can be changed
-			if(AllFood.Num() >= 2)
+			if(2 >= 2)
 			{
 				uint8 ByteEnum = (uint8)EEnemyState::EES_Patrolling;
 				BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
-				AICharacter->SetIsAPatrol(true);
 			}else
 			{
 				uint8 ByteEnum = (uint8)EEnemyState::EES_CarryFood;
 				BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
+				AIController->SetEnemyState(EEnemyState::EES_CarryFood);
 			}
-
-
-			AICharacter->SetHasARole(true);
+			
 			return EBTNodeResult::Succeeded;
 		}
 	}

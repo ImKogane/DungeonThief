@@ -17,4 +17,5 @@ class DUNGEONSTHIEF_API UBT_CarryNewFood : public UBTTaskNode
 protected:
 	/* Execute this function each time this Task is going to fire */
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+	
 };
