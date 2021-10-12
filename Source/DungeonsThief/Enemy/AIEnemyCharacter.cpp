@@ -2,8 +2,11 @@
 
 
 #include "AIEnemyCharacter.h"
+
+#include "DungeonsThief/Food/Food.h"
 #include "DungeonsThief/AAnimationsHandler.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AAIEnemyCharacter::AAIEnemyCharacter()
@@ -11,11 +14,17 @@ AAIEnemyCharacter::AAIEnemyCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	BaseSpeed = 450.0f;
+
 	bHasSeenPlayer = false;
 	bIsInSight = false;
 
 	WanderDelay = 3.0f;
 	WanderCooldown = 0.0f;
+	bIsAPatrol = false;
+	bHasARole = false;
+	bHadFood = false;
+	bFollowedAPlayer = false;
 
 	AnimationHandler = CreateDefaultSubobject<AAnimationsHandler>(TEXT("AnimationHandler"));
 }
@@ -24,8 +33,7 @@ AAIEnemyCharacter::AAIEnemyCharacter()
 void AAIEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	GetCharacterMovement()->MaxWalkSpeed = 450.f;	
+	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;	
 }
 
 // Called every frame

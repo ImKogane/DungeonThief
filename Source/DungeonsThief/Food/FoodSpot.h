@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/Engine.h"
 #include "Components/BoxComponent.h"
+#include "Engine/TargetPoint.h"
 #include "GameFramework/Actor.h"
 #include "FoodSpot.generated.h"
 
