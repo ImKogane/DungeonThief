@@ -5,6 +5,7 @@
 
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Components/BoxComponent.h"
+#include "DungeonsThief/Managers/FoodManager.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
 #include "DungeonsThief/Enemy/AIEnemyController.h"
 

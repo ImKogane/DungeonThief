@@ -30,14 +30,12 @@ EBTNodeResult::Type UBT_CarryNewFood::ExecuteTask(UBehaviorTreeComponent& OwnerC
 				{
 					AICharacter->SetPlayerActor(FoodToCarry);
 					AICharacter->InteractWithItem();
+					FoodManager->GlobalWaitTest = false;
 					BlackboardComponent->SetValueAsObject("FoodCarrying", FoodToCarry);
 					BlackboardComponent->SetValueAsInt("HasARole", 1);
 					return EBTNodeResult::Succeeded;
 				}
 			}
-
-			BlackboardComponent->SetValueAsInt("HasARole", 1);
-			return EBTNodeResult::Succeeded;
 		}
 	}
 	

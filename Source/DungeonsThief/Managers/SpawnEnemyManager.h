@@ -36,7 +36,7 @@ protected:
 	class USceneComponent* SpawnLocation;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn Enemy")
-	TSubclassOf<class AActor> FoodManager;
+	class AFoodManager* FoodManager;
 	
 	UPROPERTY(EditAnywhere, Category = "Spawn Enemy")
 	TSubclassOf<class AAIEnemyCharacter> EnemyToSpawn;

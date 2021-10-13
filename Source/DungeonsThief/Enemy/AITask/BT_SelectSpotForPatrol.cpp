@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DungeonsThief/Enemy/AITask/BT_SelectSpotFood.h"
+#include "DungeonsThief/Enemy/AITask/BT_SelectSpotForPatrol.h"
 
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Enemy/AIEnemyController.h"
@@ -9,20 +9,21 @@
 #include "DungeonsThief/Managers/FoodManager.h"
 #include "Kismet/GameplayStatics.h"
 
-EBTNodeResult::Type UBT_SelectSpotFood::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBT_SelectSpotForPatrol::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AAIEnemyController* AIController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
-
+	
 	if(AIController)
 	{
 		AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();
 		if(AICharacter)
 		{
 			UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
-
-			//TODO avoir une référence pour le foodmanager dans le blackboard
-			/*//get all spots from food manager
-			TArray<AFoodSpot*> AllFoodSpot = //TODO
+			
+			//get all spots from food manager
+			AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
+			
+			TArray<AFoodSpot*> AllFoodSpot = FoodManager->getAllSpotInGame();
 
 			//temporary array for selecting spot for the AI
 			TArray<AFoodSpot*> SpotsForPatrol;
@@ -43,12 +44,10 @@ EBTNodeResult::Type UBT_SelectSpotFood::ExecuteTask(UBehaviorTreeComponent& Owne
 				{
 					AICharacter->SetSpotsForPatrol(SpotsForPatrol);
 					BlackboardComponent->SetValueAsInt("HasARole", 1);
-					UE_LOG(LogTemp, Warning, TEXT("Leave with a size of %d"), SpotsForPatrol.Num())
+					FoodManager->GlobalWaitTest = false;
 					return EBTNodeResult::Succeeded;
 				}
-			}*/
-			
-			BlackboardComponent->SetValueAsInt("HasARole", 1);
+			}
 			return EBTNodeResult::Succeeded;
 		}
 	}
@@ -57,9 +56,8 @@ EBTNodeResult::Type UBT_SelectSpotFood::ExecuteTask(UBehaviorTreeComponent& Owne
 	return EBTNodeResult::Failed;
 }
 
-AActor* UBT_SelectSpotFood::SelectRandomFoodSpot(TArray<AFoodSpot*> ActorList)
+AActor* UBT_SelectSpotForPatrol::SelectRandomFoodSpot(TArray<AFoodSpot*> ActorList)
 {
 	const int RandomIndex = FMath::FRandRange(0, ActorList.Num());
-	UE_LOG(LogTemp, Warning, TEXT("Select rand : %d"), RandomIndex);
 	return ActorList[RandomIndex];
 }
