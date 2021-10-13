@@ -52,7 +52,7 @@ void AFoodSpot::Tick(float DeltaTime)
 
 void AFoodSpot::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
+	ACarryingCharacter* Player = Cast<ACarryingCharacter>(OtherActor);
 	
 	if(Player != nullptr)
 	{
@@ -63,7 +63,7 @@ void AFoodSpot::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AAc
 
 void AFoodSpot::OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
+	ACarryingCharacter* Player = Cast<ACarryingCharacter>(OtherActor);
 	if(Player != nullptr)
 	{
 		Player->SetSpotReference(nullptr);

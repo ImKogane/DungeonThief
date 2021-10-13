@@ -33,8 +33,16 @@ void AFoodManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void AFoodManager::RemoveFoodFromWorld(AFood* FoodToRemove)
+{
+	if(AllFoodInWorld.Contains(FoodToRemove))
+		AllFoodInWorld.Remove(FoodToRemove);
+}
+
 AFood* AFoodManager::SpawnFood(FVector SpawnLocation)
 {
-	return GetWorld()->SpawnActor<AFood>(FoodActor, SpawnLocation, GetActorRotation());
+	AFood* SpawnedFood = GetWorld()->SpawnActor<AFood>(FoodActor, SpawnLocation, GetActorRotation());
+	AllFoodInWorld.Add(SpawnedFood);
+	return SpawnedFood;
 }
 

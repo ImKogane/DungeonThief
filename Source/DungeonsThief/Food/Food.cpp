@@ -88,7 +88,7 @@ void AFood::BecomeSuperFood()
 
 void AFood::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
+	ACarryingCharacter* Player = Cast<ACarryingCharacter>(OtherActor);
 	
 	if(Player != nullptr)
 	{
@@ -98,7 +98,7 @@ void AFood::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor*
 
 void AFood::OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
+	ACarryingCharacter* Player = Cast<ACarryingCharacter>(OtherActor);
 	
 	if(Player != nullptr)
 	{
