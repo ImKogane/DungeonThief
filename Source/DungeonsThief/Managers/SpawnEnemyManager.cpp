@@ -2,6 +2,8 @@
 
 
 #include "DungeonsThief/Managers/SpawnEnemyManager.h"
+
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Components/BoxComponent.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
 #include "DungeonsThief/Enemy/AIEnemyController.h"
@@ -49,7 +51,7 @@ void ASpawnEnemyManager::SetupEnemy(AAIEnemyCharacter* EnemyCharacter)
 {
 	if (EnemyCharacter)
 	{
-		AAIEnemyController* AIController = Cast<AAIEnemyController>(EnemeyCharacter->GetController());
+		AAIEnemyController* AIController = Cast<AAIEnemyController>(EnemyCharacter->GetController());
 
 		if (AIController && FoodManager)
 		{
@@ -60,7 +62,7 @@ void ASpawnEnemyManager::SetupEnemy(AAIEnemyCharacter* EnemyCharacter)
 
 void ASpawnEnemyManager::CreateEnemy()
 {
-	AAIEnemyCharacter* EnemyCharacter = GetWorld()->SpawnActor<AAIEnemyCharacter>(EnemyToSpawn, SpawnLocation->GetActorLocation(), GetActorRotation());
+	AAIEnemyCharacter* EnemyCharacter = GetWorld()->SpawnActor<AAIEnemyCharacter>(EnemyToSpawn, SpawnLocation->GetComponentLocation(), GetActorRotation());
 	SetupEnemy(EnemyCharacter);
 	EnemiesSpawned.Add(EnemyCharacter);
 }
@@ -102,14 +104,14 @@ void ASpawnEnemyManager::DeleteBoxOnOverlapBegin(UPrimitiveComponent* Overlapped
 			AICharacter->Destroy();
 
 			//check if the array is empty : true -> no more IA in the maps -> we need to instanciate one immediately
-			if (EnemiesSpawned.Size() <= 0)
+			if (EnemiesSpawned.Num() <= 0)
 			{
 				SpawnEnemy(0);
 			}
 			//else : we wait a random delay between 0 and 5s
 			else
 			{
-				SpawnEnemy(FMath::RandomRange(MinSpawnDelay, MawSpawnDelay));
+				SpawnEnemy(FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay));
 			}
 		}	
 	}
