@@ -2,9 +2,10 @@
 
 
 #include "DungeonsThief/Managers/SpawnEnemyManager.h"
-
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/SphereComponent.h"
+#include "DungeonsThief/Managers/FoodManager.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
 #include "DungeonsThief/Enemy/AIEnemyController.h"
 
@@ -18,8 +19,10 @@ ASpawnEnemyManager::ASpawnEnemyManager()
 	DeleteEnemyBoxComponent->SetupAttachment(GetRootComponent());
 	DeleteEnemyBoxComponent->InitBoxExtent(FVector(100, 10, 100));
 
-	SpawnLocation = CreateDefaultSubobject<USceneComponent>(TEXT("SpawnLocation"));
+	SpawnLocation = CreateDefaultSubobject<USphereComponent>(TEXT("SpawnLocation"));
 	SpawnLocation->SetupAttachment(DeleteEnemyBoxComponent);
+	SpawnLocation->InitSphereRadius(10);
+	SpawnLocation->SetSimulatePhysics(false);
 	
 	MinSpawnDelay = 0;
 	MaxSpawnDelay = 5;

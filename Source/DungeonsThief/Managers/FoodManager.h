@@ -31,8 +31,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	//return all spot in game
-	FORCEINLINE TArray<class AFoodSpot*> getAllSpotInGame() { return SpotsArray;}
-	FORCEINLINE TSubclassOf<class AFood> getBPFoodActor() {return FoodActor;}
+	FORCEINLINE TArray<class AFoodSpot*> GetAllSpotInGame() { return SpotsArray;}
+	FORCEINLINE TSubclassOf<class AFood> GetBPFoodActor() {return FoodActor;}
 	
 	class AFood* SpawnFood(FVector SpawnLocation);
 	
