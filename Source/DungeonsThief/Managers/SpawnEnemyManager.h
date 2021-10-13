@@ -33,7 +33,7 @@ protected:
 	class UBoxComponent* DeleteEnemyBoxComponent;
 
 	//The object is placed in such a way that the enemies do not touch the collision box when they are instantiated
-	class USceneComponent* SpawnLocation;
+	class USphereComponent* SpawnLocation;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn Enemy")
 	class AFoodManager* FoodManager;
