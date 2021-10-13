@@ -6,6 +6,7 @@
 #include "DungeonsThief/Food//Food.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "DungeonsThief/Managers/ScoreManager.h"
@@ -44,6 +45,7 @@ AMainCharacter::AMainCharacter()
 	GetCharacterMovement()->AirControl = .2f;
 
 	BaseSpeed = GetCharacterMovement()->MaxWalkSpeed;
+	CrouchSpeed = BaseSpeed/2;
 
 	MaxZoom = 600.0f;
 	MinZoom = 200.0f;
@@ -86,6 +88,9 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis("ScrollCamera", this, &AMainCharacter::ScrollInOut);
 
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AMainCharacter::InteractWithItem);
+
+	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AMainCharacter::CrouchPlayer);
+	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AMainCharacter::UnCrouchPlayer);
 }
 
 
@@ -106,6 +111,24 @@ void AMainCharacter::MoveForward(float Value)
 		AddMovementInput(Direction, Value);
 	}
 }
+
+void AMainCharacter::CrouchPlayer()
+{
+	GetCharacterMovement()->MaxWalkSpeed = (BaseSpeed/2);
+	GetCapsuleComponent()->SetCapsuleHalfHeight(34);
+	IsCrouch = true;
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Crouch."));
+}
+
+void AMainCharacter::UnCrouchPlayer()
+{
+	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
+	GetCapsuleComponent()->SetCapsuleHalfHeight(90);
+	IsCrouch = false;
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("UnCrouch."));
+}
+
+
 
 /*
  * Move the character in the right or left direction

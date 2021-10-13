@@ -29,6 +29,7 @@ void UMainCharacterAnimInstance::UpdateAnimationProperties()
 
 		MovementSpeed = LateralVelocity.Size();
 		IsCarryItem = MainCharacter->GetIsCarryFood();
+		IsCrouching = MainCharacter->GetIsCrouching();
 	}
 }
 

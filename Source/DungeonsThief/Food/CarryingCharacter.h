@@ -24,6 +24,9 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, Category = "Movement")
 	float BaseSpeed;
+
+	UPROPERTY(VisibleAnywhere, Category = "Movement")
+	float CrouchSpeed;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Food")
 	bool IsCarryFood;
