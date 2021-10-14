@@ -58,6 +58,8 @@ protected:
 	void OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	
+
+	bool bIsOnSpot;
 	
 public:	
 	// Called every frame
@@ -69,7 +71,10 @@ public:
 	FORCEINLINE UStaticMeshComponent* GetMeshComponent() { return FoodMesh; } 
 	FORCEINLINE bool GetIsSuperFood() { return IsSuperFood; } 
 	FORCEINLINE int GetFoodPoints	() { return FoodPoints; } 
-	FORCEINLINE float GetSpeedReduction	() { return SpeedReduction; } 
+	FORCEINLINE float GetSpeedReduction	() { return SpeedReduction; }
+
+	FORCEINLINE bool GetIsOnSpot(){return bIsOnSpot;}
+	FORCEINLINE void SetIsOnSpot(bool value){bIsOnSpot = value;}
 	
 	virtual void Tick(float DeltaTime) override;
 
