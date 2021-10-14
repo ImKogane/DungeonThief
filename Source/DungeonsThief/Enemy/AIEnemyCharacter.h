@@ -33,6 +33,8 @@ public:
 	FORCEINLINE bool IsInWanderCooldown() { return WanderCooldown > 0; }
 
 	FORCEINLINE void SetSpotsForPatrol(TArray<AFoodSpot*> Spots){ SpotsForPatrol = Spots; }
+	FORCEINLINE TArray<AFoodSpot*> GetSpotsForPatrol(){ return SpotsForPatrol; }
+	FORCEINLINE void RemoveASpotForPatrol(AFoodSpot* SpotToRemove){ if(SpotsForPatrol.Contains(SpotToRemove)) SpotsForPatrol.Remove(SpotToRemove); }
 
 protected:
 	// Called when the game starts or when spawned
