@@ -51,7 +51,7 @@ protected:
 	class UAnimMontage* LooseMontage;
 
 	UPROPERTY(EditAnywhere, Category = "Animations")
-	bool IsCrouch;
+	bool IsCrouch = false;
 	
 	bool bCanMove;
 	
