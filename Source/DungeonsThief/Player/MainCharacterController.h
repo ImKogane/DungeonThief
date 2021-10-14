@@ -36,8 +36,15 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
 	UUserWidget* WinScreenWidget;
 
+	UPROPERTY(EditAnywhere, Category = "Widget")
+	TSubclassOf<UUserWidget> WLooseScreen;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
+	UUserWidget* LooseScreenWidget;
+
 public :
 
 	void ShowWinScreen(bool Visibility);
+	void ShowLooseScreen(bool Visibility);
 
 };

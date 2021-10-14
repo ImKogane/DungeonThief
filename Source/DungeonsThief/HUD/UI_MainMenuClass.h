@@ -13,5 +13,4 @@ UCLASS()
 class DUNGEONSTHIEF_API UUI_MainMenuClass : public UUserWidget
 {
 	GENERATED_BODY()
-	
 };

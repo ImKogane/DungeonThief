@@ -32,7 +32,6 @@ public:
 	FORCEINLINE void SetEnemyState(EEnemyState State) { EnemyState = State; }
 	
 	FORCEINLINE UBlackboardComponent* GetBlackBoardComponent() const { return BlackboardComponent; }
-	FORCEINLINE TArray<AActor*> GetAvailableTargetPoints() { return NPCTargetPoints; }
 
 	FORCEINLINE class AAIEnemyCharacter* GetAICharacter() { return AICharacter; }
 
@@ -56,8 +55,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
 	FName LocationToGoKey;
 
-	TArray<AActor*> NPCTargetPoints;
-
 	class AAIEnemyCharacter* AICharacter;
 
 	UPROPERTY(VisibleAnywhere, Category= "AI")
@@ -66,6 +63,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	float SightDistance;
 
+public:
+
+	void StopBehaviouTree();
+	
 protected:
 
 	/* This function is called when the enemy is spawned */

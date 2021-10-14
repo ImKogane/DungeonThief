@@ -213,7 +213,6 @@ void AMainCharacter::WinGame()
 {
 	if (AnimationHandler && WinMontage)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("YOU WIN"));
 		AnimationHandler->PlayAnimation(this, WinMontage);
 		bCanMove = false;
 		
@@ -228,8 +227,13 @@ void AMainCharacter::LooseGame()
 {
 	if (AnimationHandler && LooseMontage)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("YOU LOOSE"));
 		AnimationHandler->PlayAnimation(this, LooseMontage);
+		bCanMove = false;
+
+		if (MainCharacterController)
+		{
+			MainCharacterController->ShowLooseScreen(true);
+		}
 	}
 }
 #pragma endregion
