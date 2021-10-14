@@ -46,9 +46,11 @@ void AMainCharacterController::BeginPlay()
 void AMainCharacterController::ShowWinScreen(bool Visibility)
 {
 	WinScreenWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+	bShowMouseCursor = true;
 }
 
 void AMainCharacterController::ShowLooseScreen(bool Visibility)
 {
 	LooseScreenWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+	bShowMouseCursor = true;
 }

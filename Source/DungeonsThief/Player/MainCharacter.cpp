@@ -229,6 +229,7 @@ void AMainCharacter::WinGame()
 	{
 		MainCharacterController->ShowWinScreen(true);
 	}
+	
 }
 
 void AMainCharacter::LooseGame()
@@ -241,7 +242,7 @@ void AMainCharacter::LooseGame()
 
 	if (MainCharacterController)
 	{
-		MainCharacterController->ShowWinScreen(true);
+		MainCharacterController->ShowLooseScreen(true);
 	}
 }
 #pragma endregion
