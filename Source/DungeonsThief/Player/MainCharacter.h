@@ -95,6 +95,10 @@ public:
 	void TestWin();
 
 	FORCEINLINE bool GetIsCrouching() { return IsCrouch; } 
+	
+
+
+	
 };
 
 

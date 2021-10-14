@@ -28,7 +28,7 @@ void ACarryingCharacter::Tick(float DeltaTime)
 	
 	if(FoodCarriedActor != nullptr)
 	{
-		FoodCarriedActor->SetActorLocation(this->GetActorLocation());
+		FoodCarriedActor->SetActorLocation(this->GetItemSocket());
 	}
 }
 
@@ -46,18 +46,18 @@ void ACarryingCharacter::InteractWithItem()
 {
 	if(NearFoodActor != nullptr)
 	{
-		AFood* TempFood = Cast<AFood>(NearFoodActor);
-		if(TempFood != nullptr)
+		AFood* NearFood = Cast<AFood>(NearFoodActor);
+		if(NearFood != nullptr)
 		{
 			if(IsCarryFood == false)
 			{
 				CarryItem();
-				TempFood->BeTake();			
+				NearFood->BeTake();			
 			}
 			else
 			{
 				DropItem();
-				TempFood->BeDrop();
+				NearFood->BeDrop();
 			}			
 		}
 	}
@@ -100,11 +100,11 @@ void ACarryingCharacter::SetPlayerSpeed()
 {
 	if(IsCarryFood)
 	{
-		AFood* TempFood = Cast<AFood>(FoodCarriedActor);
+		AFood* FoodCarried = Cast<AFood>(FoodCarriedActor);
 
-		if(TempFood !=nullptr)
+		if(FoodCarried !=nullptr)
 		{
-			GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * TempFood->GetSpeedReduction();
+			GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * FoodCarried->GetSpeedReduction();
 			
 		}
 		else
@@ -159,13 +159,13 @@ void ACarryingCharacter::DropItem()
 {
 	if(IsCarryFood == true)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Drop item."));
 		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 		IsCarryFood = false;
 
 		if(FoodCarriedActor != nullptr)
 		{
 			NearFoodActor = FoodCarriedActor;
+			FoodCarriedActor->SetActorLocation(GetFloorSocket());
 			FoodCarriedActor = nullptr;
 			IsCarryFood = false;
 		}

@@ -116,7 +116,7 @@ void AMainCharacter::MoveForward(float Value)
 
 void AMainCharacter::CrouchPlayer()
 {
-	if(IsCrouch == false)
+	if(IsCrouch == false && IsCarryFood == false)
 	{
 		/*
 		UnCrouch();
