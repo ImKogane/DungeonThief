@@ -26,8 +26,11 @@ protected:
 	int MaxPoints = 5;
 	
 	class AMainCharacter* Player;
+
+	UPROPERTY(EditAnywhere, Category = "SpawnManager")
+	class ASpawnEnemyManager* SpawnManager;
 	
-	TArray<AActor*> EnemiesInLevel;
+	TArray<class AAIEnemyCharacter*> EnemiesInLevel;
 	
 public:	
 	// Called every frame

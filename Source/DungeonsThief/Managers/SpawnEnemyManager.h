@@ -60,6 +60,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	FORCEINLINE TArray<class AAIEnemyCharacter*> GetEnemiesSpawned() { return EnemiesSpawned; }
+
 protected:
 
 	void SetupEnemy(class AAIEnemyCharacter* EnemyCharacter);
