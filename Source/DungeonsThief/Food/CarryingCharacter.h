@@ -32,10 +32,10 @@ protected:
 	bool IsCarryFood;
 
 	UPROPERTY(VisibleAnywhere, Category = "Other")
-	class AActor* TempActor;
+	class AActor* NearFoodActor;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Food")
-	AActor* WornFood;
+	AActor* FoodCarriedActor;
 
 	UPROPERTY(VisibleAnywhere, Category = "FoodSpot")
 	bool NearToFoodSpot;
@@ -56,17 +56,15 @@ public:
 	UFUNCTION()
 	void InteractWithItem();
 	
-	FORCEINLINE void SetPlayerActor(AActor* NewActor) { TempActor = NewActor; }
+	FORCEINLINE void SetNearFoodActor(AActor* NewActor) { NearFoodActor = NewActor; }
 	FORCEINLINE void SetSpeed(float NewSpeed) { GetCharacterMovement()->MaxWalkSpeed = NewSpeed; };
 	
 	FORCEINLINE void SetIsNearSpot(bool NewState){ NearToFoodSpot = NewState; }; 
 	void SetSpotReference(AFoodSpot* Reference);
 
 	FORCEINLINE bool GetIsCarryFood() { return IsCarryFood; }
-	FORCEINLINE AActor* GetWornFood() { return WornFood; }
-	FORCEINLINE AActor* GetPlayerTempActor() { return TempActor; }
-	FORCEINLINE FVector  GetItemSocket() { return GetMesh()->GetSocketLocation("ItemSocket");};
-	FORCEINLINE FVector  GetFloorSocket() { return GetMesh()->GetSocketLocation("FloorSocket");};
+	FORCEINLINE AActor* GetWornFood() { return FoodCarriedActor; }
+	FORCEINLINE AActor* GetPlayerTempActor() { return NearFoodActor; }
 	
 	UFUNCTION()
 	void DropItem();
