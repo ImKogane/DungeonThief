@@ -65,6 +65,8 @@ public:
 	FORCEINLINE bool GetIsCarryFood() { return IsCarryFood; }
 	FORCEINLINE AActor* GetFoodCarried() { return FoodCarriedActor; }
 	FORCEINLINE AActor* GetPlayerNearFoodActor() { return NearFoodActor; }
+	FORCEINLINE FVector  GetItemSocket() { return GetMesh()->GetSocketLocation("ItemSocket");};
+	FORCEINLINE FVector  GetFloorSocket() { return GetMesh()->GetSocketLocation("FloorSocket");};
 	
 	UFUNCTION()
 	void DropItem();
