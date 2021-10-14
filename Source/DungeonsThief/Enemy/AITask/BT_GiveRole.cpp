@@ -8,43 +8,27 @@
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
 #include "DungeonsThief/Managers/FoodManager.h"
 
-EBTNodeResult::Type UBT_GiveRole::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBT_GiveRole::CodeToExecute()
 {
-	AAIEnemyController* AIController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
+	AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
 
-	if(AIController)
+	if (FoodManager && !FoodManager->GlobalWaitTest)
 	{
-		AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();
-		if(AICharacter)
+		FoodManager->GlobalWaitTest = true;
+		const int NumberOfFoodInWorld = FoodManager->getAllFoodInWorld().Num();
+		if(NumberOfFoodInWorld >= FoodManager->getAllSpotInGame().Num())
 		{
-			UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
-
-			
-			AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
-			
-			if (FoodManager && !FoodManager->GlobalWaitTest)
-			{
-				FoodManager->GlobalWaitTest = true;
-				const int NumberOfFoodInWorld = FoodManager->getAllFoodInWorld().Num();
-				if(NumberOfFoodInWorld >= FoodManager->getAllSpotInGame().Num())
-				{
-					uint8 ByteEnum = (uint8)EEnemyState::EES_Patrolling;
-					BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
-				}else
-				{
-					uint8 ByteEnum = (uint8)EEnemyState::EES_CarryFood;
-					BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
-					AIController->SetEnemyState(EEnemyState::EES_CarryFood);
-				}
-				return EBTNodeResult::Succeeded;
-			}
-			
-			UE_LOG(LogTemp, Warning, TEXT("Waiting %s"), *AICharacter->GetName())
+			uint8 ByteEnum = (uint8)EEnemyState::EES_Patrolling;
+			BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
+		}else
+		{
+			uint8 ByteEnum = (uint8)EEnemyState::EES_CarryFood;
+			BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
+			AIController->SetEnemyState(EEnemyState::EES_CarryFood);
 		}
+		return EBTNodeResult::Succeeded;
 	}
-
-	
+			
+	UE_LOG(LogTemp, Warning, TEXT("Waiting %s"), *AICharacter->GetName())
 	return EBTNodeResult::Failed;
-
-	
 }

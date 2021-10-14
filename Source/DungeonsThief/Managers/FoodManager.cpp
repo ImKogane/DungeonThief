@@ -23,7 +23,8 @@ void AFoodManager::BeginPlay()
 	AFoodSpot* FoodSpot = SpotsArray[RandomIndex];
 	if (FoodSpot)
 	{
-		SpawnFood(FoodSpot->GetSpawnPoint()->GetComponentLocation());	
+		AFood * SpawnedFood = SpawnFood(FoodSpot->GetSpawnPoint()->GetComponentLocation());
+		SpawnedFood->SetIsOnSpot(true);
 	}
 }
 
@@ -33,7 +34,7 @@ void AFoodManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AFoodManager::RemoveFoodFromWorld(AFood* FoodToRemove)
+void AFoodManager::RemoveFoodFromWorldList(AFood* FoodToRemove)
 {
 	if(AllFoodInWorld.Contains(FoodToRemove))
 		AllFoodInWorld.Remove(FoodToRemove);

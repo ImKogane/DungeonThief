@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BT_BaseTaskDungeonsThief.h"
 #include "BehaviorTree/BTTaskNode.h"
 #include "BT_SelectSpotCarryFood.generated.h"
 
@@ -10,14 +11,11 @@
  * 
  */
 UCLASS()
-class DUNGEONSTHIEF_API UBT_SelectSpotCarryFood : public UBTTaskNode
+class DUNGEONSTHIEF_API UBT_SelectSpotCarryFood : public UBT_BaseTaskDungeonsThief
 {
 	GENERATED_BODY()
 protected:
-	/* Execute this function each time this Task is going to fire */
-	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+	virtual EBTNodeResult::Type CodeToExecute() override;
 
 	TArray<class AFoodSpot*> AlreadyVisitedSpot;
-
-	class AFoodSpot* SelectRandomFoodSpot(TArray<AFoodSpot*> ActorList);
 };

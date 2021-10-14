@@ -7,27 +7,14 @@
 #include "DungeonsThief/Enemy/AIEnemyController.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
 
-EBTNodeResult::Type UBT_DropFood::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBT_DropFood::CodeToExecute()
 {
-	AAIEnemyController* AIController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
+	AICharacter->InteractWithItem();
 
-	if(AIController)
-	{
-		AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();
-		if(AICharacter)
-		{
-			UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
-
-			AICharacter->InteractWithItem();
-			
-			UObject* StoreFood = BlackboardComponent->GetValueAsObject("FoodCarrying");
-			BlackboardComponent->SetValueAsObject("HadFood", StoreFood);
-			BlackboardComponent->ClearValue("FoodCarrying");
-			
-			
-			return EBTNodeResult::Failed;
-		}
-	}
-
-	return EBTNodeResult::Failed;
+	
+	UObject* StoreFood = BlackboardComponent->GetValueAsObject("FoodCarrying");
+	BlackboardComponent->SetValueAsObject("HadFood", StoreFood);
+	BlackboardComponent->ClearValue("FoodCarrying");
+	return EBTNodeResult::Succeeded;
+	
 }

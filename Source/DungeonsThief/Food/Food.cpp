@@ -21,6 +21,8 @@ AFood::AFood()
 	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AFood::OnBoxOverlapBegin);
 	CollisionBox->OnComponentEndOverlap.AddDynamic(this, &AFood::OnBoxOverlapEnd);
 
+
+	bIsOnSpot = false;
 }
 
 void AFood::BeTake()

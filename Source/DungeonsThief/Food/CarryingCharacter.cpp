@@ -87,6 +87,8 @@ void ACarryingCharacter::PutItemOnSpot()
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 	WornFood->SetActorLocation(SpotReference->GetSpawnPoint()->GetComponentLocation());
 	TempActor = WornFood;
+	AFood* ModifyFoodData = Cast<AFood>(TempActor);
+	ModifyFoodData->SetIsOnSpot(true);
 	WornFood = nullptr;
 	IsCarryFood = false;
 }
@@ -136,13 +138,13 @@ void ACarryingCharacter::CarryItem()
 {
 	if(IsCarryFood == false)
 	{
-			
 		IsCarryFood = true;
 
 		if(TempActor != nullptr)
 		{
-				
 			WornFood = TempActor;
+			AFood* ModifyFoodData = Cast<AFood>(WornFood);
+			ModifyFoodData->SetIsOnSpot(false);
 			TempActor = nullptr;
 			SetPlayerSpeed();
 			WornFood->SetActorLocation(this->GetActorLocation());			
