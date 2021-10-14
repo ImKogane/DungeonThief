@@ -6,39 +6,29 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Enemy/AIEnemyController.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
+#include "DungeonsThief/Managers/FoodManager.h"
 
-EBTNodeResult::Type UBT_GiveRole::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBT_GiveRole::CodeToExecute()
 {
+	AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
 
-	AAIEnemyController* AIController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
-
-	if(AIController)
+	if (FoodManager && !FoodManager->GlobalWaitTest)
 	{
-		AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();
-		if(AICharacter)
+		FoodManager->GlobalWaitTest = true;
+		const int NumberOfFoodInWorld = FoodManager->getAllFoodInWorld().Num();
+		if(NumberOfFoodInWorld >= FoodManager->getAllSpotInGame().Num())
 		{
-			UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
-
-			//TODO Actualiser les nourritures présentes dans le World surement dans le FoodManager
-			
-			//2 is a temporary number for test can be changed
-			if(2 >= 2)
-			{
-				uint8 ByteEnum = (uint8)EEnemyState::EES_Patrolling;
-				BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
-			}else
-			{
-				uint8 ByteEnum = (uint8)EEnemyState::EES_CarryFood;
-				BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
-				AIController->SetEnemyState(EEnemyState::EES_CarryFood);
-			}
-			
-			return EBTNodeResult::Succeeded;
+			uint8 ByteEnum = (uint8)EEnemyState::EES_Patrolling;
+			BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
+		}else
+		{
+			uint8 ByteEnum = (uint8)EEnemyState::EES_CarryFood;
+			BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
+			AIController->SetEnemyState(EEnemyState::EES_CarryFood);
 		}
+		return EBTNodeResult::Succeeded;
 	}
-
-	
+			
+	UE_LOG(LogTemp, Warning, TEXT("Waiting %s"), *AICharacter->GetName())
 	return EBTNodeResult::Failed;
-
-	
 }

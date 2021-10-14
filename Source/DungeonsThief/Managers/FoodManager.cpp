@@ -18,7 +18,14 @@ void AFoodManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SpawnFood();	
+	int RandomIndex = FMath::FRandRange(0, SpotsArray.Num() - 1);
+
+	AFoodSpot* FoodSpot = SpotsArray[RandomIndex];
+	if (FoodSpot)
+	{
+		AFood * SpawnedFood = SpawnFood(FoodSpot->GetSpawnPoint()->GetComponentLocation());
+		SpawnedFood->SetIsOnSpot(true);
+	}
 }
 
 // Called every frame
@@ -27,15 +34,16 @@ void AFoodManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AFoodManager::SpawnFood()
+void AFoodManager::RemoveFoodFromWorldList(AFood* FoodToRemove)
 {
-	int RandomIndex = FMath::FRandRange(0, SpotsArray.Num() - 1);
+	if(AllFoodInWorld.Contains(FoodToRemove))
+		AllFoodInWorld.Remove(FoodToRemove);
+}
 
-	AFoodSpot* FoodSpot = SpotsArray[RandomIndex];
-
-	if(FoodSpot != nullptr)
-	{
-		GetWorld()->SpawnActor<AFood>(FoodActor, FoodSpot->GetSpawnPoint()->GetComponentLocation(), FoodSpot->GetSpawnPoint()->GetComponentRotation());
-	}	
+AFood* AFoodManager::SpawnFood(FVector SpawnLocation)
+{
+	AFood* SpawnedFood = GetWorld()->SpawnActor<AFood>(FoodActor, SpawnLocation, GetActorRotation());
+	AllFoodInWorld.Add(SpawnedFood);
+	return SpawnedFood;
 }
 

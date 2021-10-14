@@ -23,6 +23,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Food System")
 	TArray<class AFoodSpot*> SpotsArray;
 
+	UPROPERTY(VisibleAnywhere, Category="Food System")
+	TArray<class AFood*>  AllFoodInWorld;
+
 	UPROPERTY(EditAnywhere, Category="Food System")
 	TSubclassOf<class AFood> FoodActor;
 	
@@ -33,8 +36,14 @@ public:
 	//return all spot in game
 	FORCEINLINE TArray<class AFoodSpot*> getAllSpotInGame() { return SpotsArray;}
 	FORCEINLINE TSubclassOf<class AFood> getBPFoodActor() {return FoodActor;}
-	
-protected:
+	FORCEINLINE TArray<class AFood*> getAllFoodInWorld() {return AllFoodInWorld;}
 
-	void SpawnFood();
+	void RemoveFoodFromWorldList(AFood* FoodToRemove);
+	
+	//put it somewhere else juste a test here
+	bool GlobalWaitTest = false;
+	
+	
+	class AFood* SpawnFood(FVector SpawnLocation);
+	
 };
