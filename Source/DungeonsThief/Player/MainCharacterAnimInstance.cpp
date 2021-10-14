@@ -17,6 +17,7 @@ void UMainCharacterAnimInstance::NativeInitializeAnimation()
 	{
 		MainCharacter = Cast<AMainCharacter>(Pawn);
 	}
+
 	
 }
 
@@ -28,8 +29,11 @@ void UMainCharacterAnimInstance::UpdateAnimationProperties()
 		FVector LateralVelocity = FVector(Velocity.X, Velocity.Y, 0.0f);
 
 		MovementSpeed = LateralVelocity.Size();
+
+		CharacterNum = MainCharacter->GetCharacterID();
 		IsCarryItem = MainCharacter->GetIsCarryFood();
 		IsCrouching = MainCharacter->GetIsCrouching();
+		
 	}
 }
 

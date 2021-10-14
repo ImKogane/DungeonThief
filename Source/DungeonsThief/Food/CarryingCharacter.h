@@ -42,6 +42,16 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "FoodSpot")
 	AFoodSpot* SpotReference;
+
+	UPROPERTY(VisibleAnywhere, Category = "Stats")
+	float SpeedBonus = 1;
+
+	UPROPERTY(VisibleAnywhere, Category = "Stats")
+	float CarrySpeedBonus = 1;
+
+	UPROPERTY(VisibleAnywhere, Category = "Stats")
+	float CrouchSpeedBonus = 1;
+	
 	
 
 	UFUNCTION()

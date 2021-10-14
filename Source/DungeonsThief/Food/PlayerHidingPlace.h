@@ -29,6 +29,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	class AScoreManager* ScoreManager;
 
+	UPROPERTY(EditDefaultsOnly, Category="Sound")
+	USoundBase* WinPointsSound;
+
 	UPROPERTY(EditAnywhere)
 	class AFoodManager* FoodManager;
 
