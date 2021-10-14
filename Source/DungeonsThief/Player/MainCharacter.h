@@ -54,6 +54,9 @@ protected:
 	bool IsCrouch = false;
 	
 	bool bCanMove;
+
+	UPROPERTY(VisibleAnywhere, Category = "HUD")
+	class AMainCharacterController* MainCharacterController;
 	
 protected:
 	//For function declaration

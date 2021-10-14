@@ -6,6 +6,7 @@
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
 #include "DungeonsThief/Enemy/AIEnemyController.h"
 #include "DungeonsThief/Player/MainCharacter.h"
+#include "Engine/World.h"
 
 // Sets default values
 AScoreManager::AScoreManager()
@@ -19,14 +20,14 @@ AScoreManager::AScoreManager()
 void AScoreManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	Player = Cast<AMainCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 }
 
 // Called every frame
 void AScoreManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AScoreManager::AddPoints(int PointsCount)
@@ -37,7 +38,6 @@ void AScoreManager::AddPoints(int PointsCount)
 
 	if (Points >= 5)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("YOU WIN"));
 		PlayerWin();
 	}
 }
@@ -46,7 +46,6 @@ void AScoreManager::PlayerWin()
 {
 	if (Player)
 	{
-		Player->SetCanMove(false);
 		Player->WinGame();		
 	}
 

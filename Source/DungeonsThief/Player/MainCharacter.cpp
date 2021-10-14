@@ -2,14 +2,13 @@
 
 
 #include "MainCharacter.h"
+
+#include "MainCharacterController.h"
 #include "DungeonsThief/AAnimationsHandler.h"
-#include "DungeonsThief/Food//Food.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "DungeonsThief/Managers/ScoreManager.h"
 
 
 // Sets default values
@@ -63,6 +62,8 @@ void AMainCharacter::BeginPlay()
 	
 	//set where the camera is looking at
 	CameraBoom->SetRelativeLocation(FVector(0,0,60));
+	
+	MainCharacterController = Cast<AMainCharacterController>(GetController());
 }
 
 void AMainCharacter::Tick(float DeltaTime)
@@ -93,6 +94,9 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AMainCharacter::CrouchPlayer);
 	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AMainCharacter::UnCrouchPlayer);
+
+	PlayerInputComponent->BindAction("Test", IE_Pressed, this, &AMainCharacter::WinGame);
+
 }
 
 
@@ -211,6 +215,12 @@ void AMainCharacter::WinGame()
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("YOU WIN"));
 		AnimationHandler->PlayAnimation(this, WinMontage);
+		bCanMove = false;
+		
+		if (MainCharacterController)
+		{
+			MainCharacterController->ShowWinScreen(true);
+		}
 	}
 }
 

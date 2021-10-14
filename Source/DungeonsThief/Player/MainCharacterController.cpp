@@ -22,5 +22,19 @@ void AMainCharacterController::BeginPlay()
         HUDOverlay->SetVisibility(ESlateVisibility::Visible);
 	}
 
+	if (WWinScreen)
+	{
+		WinScreenWidget = CreateWidget<UUserWidget>(this, WWinScreen);
+		if (WinScreenWidget)
+		{
+			WinScreenWidget->AddToViewport();
+			WinScreenWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
 	
+}
+
+void AMainCharacterController::ShowWinScreen(bool Visibility)
+{
+	WinScreenWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 }

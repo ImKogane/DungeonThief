@@ -28,6 +28,16 @@ protected:
 
 	/** Variable to hold the wodget after creating it */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
-	UUserWidget* HUDOverlay; 
-	
+	UUserWidget* HUDOverlay;
+
+	UPROPERTY(EditAnywhere, Category = "Widget")
+	TSubclassOf<UUserWidget> WWinScreen;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
+	UUserWidget* WinScreenWidget;
+
+public :
+
+	void ShowWinScreen(bool Visibility);
+
 };
