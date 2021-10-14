@@ -22,6 +22,7 @@ EBTNodeResult::Type UBT_TryPuttingFoodOnSpot::CodeToExecute()
 		if(FoodDroped->GetIsOnSpot())
 		{
 			BlackboardComponent->ClearValue("FoodCarrying");
+			BlackboardComponent->ClearValue("SpotLocationToGo");
 			return EBTNodeResult::Succeeded;
 		}
 		AICharacter->InteractWithItem();
