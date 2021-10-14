@@ -104,18 +104,18 @@ void ACarryingCharacter::SetPlayerSpeed()
 
 		if(FoodCarried !=nullptr)
 		{
-			GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * FoodCarried->GetSpeedReduction();
+			GetCharacterMovement()->MaxWalkSpeed = (BaseSpeed * FoodCarried->GetSpeedReduction()) * CarrySpeedBonus;
 			
 		}
 		else
 		{
-			GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * 0.5;
+			GetCharacterMovement()->MaxWalkSpeed = (BaseSpeed * 0.5) * CarrySpeedBonus;
 		}
 		
 	}
 	else
 	{
-		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
+		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * SpeedBonus;
 	}
 }
 

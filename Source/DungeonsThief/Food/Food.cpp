@@ -23,7 +23,6 @@ AFood::AFood()
 
 
 	bIsOnSpot = false;
-	Collision = FoodMesh->GetCollisionProfileName();
 }
 
 void AFood::BeTake()

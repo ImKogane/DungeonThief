@@ -52,6 +52,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Animations")
 	bool IsCrouch = false;
+
+	UPROPERTY(VisibleAnywhere, Category = "PlayeModel")
+	int CharacterID = 0;
+	
+	UPROPERTY(EditAnywhere, Category = "PlayeModel")
+	TArray<USkeletalMesh*> PlayableCharacters;
 	
 	bool bCanMove;
 
@@ -82,6 +88,10 @@ protected:
 	/* Called for scrolling in or out the camera view*/
 	void ScrollInOut(float Value);
 
+	/* Called in UI to pick up a character for player */
+	UFUNCTION()
+	void DefinePlayerCharacter(int CharacterIndex);
+
 public:
 	FORCEINLINE void SetCanMove(bool value) { bCanMove = value; }
 	
@@ -97,7 +107,9 @@ public:
 
 	void TestWin();
 
-	FORCEINLINE bool GetIsCrouching() { return IsCrouch; } 
+	FORCEINLINE bool GetIsCrouching() { return IsCrouch; }
+	
+	FORCEINLINE int GetCharacterID() { return CharacterID; } 
 	
 
 

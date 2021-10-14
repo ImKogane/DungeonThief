@@ -2,13 +2,14 @@
 
 
 #include "MainCharacter.h"
-
-#include "MainCharacterController.h"
 #include "DungeonsThief/AAnimationsHandler.h"
+#include "DungeonsThief/Food//Food.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "DungeonsThief/Managers/ScoreManager.h"
 
 
 // Sets default values
@@ -62,8 +63,13 @@ void AMainCharacter::BeginPlay()
 	
 	//set where the camera is looking at
 	CameraBoom->SetRelativeLocation(FVector(0,0,60));
-	
-	MainCharacterController = Cast<AMainCharacterController>(GetController());
+
+	//Choose random index
+	int Random = FMath::FRandRange(0,PlayableCharacters.Num());
+	DefinePlayerCharacter(Random);
+
+	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * SpeedBonus;
+
 }
 
 void AMainCharacter::Tick(float DeltaTime)
@@ -94,9 +100,6 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AMainCharacter::CrouchPlayer);
 	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AMainCharacter::UnCrouchPlayer);
-
-	PlayerInputComponent->BindAction("Test", IE_Pressed, this, &AMainCharacter::WinGame);
-
 }
 
 
@@ -129,7 +132,7 @@ void AMainCharacter::CrouchPlayer()
 		*/
 		
 		Crouch();
-		GetCharacterMovement()->MaxWalkSpeed = (BaseSpeed/1.75);
+		GetCharacterMovement()->MaxWalkSpeed = (BaseSpeed/1.75) * CrouchSpeedBonus;
 		IsCrouch = true;
 		GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Crouch."));
@@ -144,7 +147,7 @@ void AMainCharacter::UnCrouchPlayer()
 	if(IsCrouch == true)
 	{
 		UnCrouch();
-		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
+		SetPlayerSpeed();
 		IsCrouch = false;
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("UnCrouch."));
 	}
@@ -203,6 +206,7 @@ void AMainCharacter::MoveRight(float Value)
 		}
 	}
 
+
 #pragma endregion
 
 
@@ -213,13 +217,8 @@ void AMainCharacter::WinGame()
 {
 	if (AnimationHandler && WinMontage)
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("YOU WIN"));
 		AnimationHandler->PlayAnimation(this, WinMontage);
-		bCanMove = false;
-		
-		if (MainCharacterController)
-		{
-			MainCharacterController->ShowWinScreen(true);
-		}
 	}
 }
 
@@ -227,13 +226,36 @@ void AMainCharacter::LooseGame()
 {
 	if (AnimationHandler && LooseMontage)
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("YOU LOOSE"));
 		AnimationHandler->PlayAnimation(this, LooseMontage);
-		bCanMove = false;
-
-		if (MainCharacterController)
-		{
-			MainCharacterController->ShowLooseScreen(true);
-		}
 	}
 }
 #pragma endregion
+
+/**
+ * @brief Define a character and his specification for the player
+ * @param CharacterIndex Index for character in character array
+ */
+void AMainCharacter::DefinePlayerCharacter(int CharacterIndex)
+{
+	CharacterID = CharacterIndex;
+	GetMesh()->SetSkeletalMesh(PlayableCharacters[CharacterIndex]);
+
+	switch (CharacterIndex)
+	{
+	case 0:
+		CarrySpeedBonus = 1.1;
+		break;
+		
+	case 1:
+		SpeedBonus = 1.1;
+		break;
+		
+	case 2:
+		CrouchSpeedBonus = 1.05;
+		break;
+		
+	default:
+		break;
+	}
+}
