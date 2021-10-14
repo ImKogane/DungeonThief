@@ -21,6 +21,7 @@ AAIEnemyCharacter::AAIEnemyCharacter()
 
 	bHasSeenPlayer = false;
 	bIsInSight = false;
+	bIsInWanderCooldown = false;
 
 	WanderDelay = 3.0f;
 	WanderCooldown = 0.0f;
@@ -58,7 +59,9 @@ void AAIEnemyCharacter::ProcessWanderCooldown(float DeltaTime)
 
 		if (WanderCooldown <= 0.0f) //Cooldown has ended
 		{
-			WanderCooldown = 0.0f;			
+			WanderCooldown = 0.0f;
+			bIsInWanderCooldown = false;
+			bHasSeenPlayer = false;
 		}		
 	}
 }

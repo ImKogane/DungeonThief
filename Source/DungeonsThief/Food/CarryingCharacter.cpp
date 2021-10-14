@@ -26,9 +26,9 @@ void ACarryingCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	if(WornFood != nullptr)
+	if(FoodCarriedActor != nullptr)
 	{
-		WornFood->SetActorLocation(this->GetActorLocation());
+		FoodCarriedActor->SetActorLocation(this->GetActorLocation());
 	}
 }
 
@@ -44,9 +44,9 @@ void ACarryingCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 */
 void ACarryingCharacter::InteractWithItem()
 {
-	if(TempActor != nullptr)
+	if(NearFoodActor != nullptr)
 	{
-		AFood* TempFood = Cast<AFood>(TempActor);
+		AFood* TempFood = Cast<AFood>(NearFoodActor);
 		if(TempFood != nullptr)
 		{
 			if(IsCarryFood == false)
@@ -85,11 +85,11 @@ void ACarryingCharacter::InteractWithItem()
 void ACarryingCharacter::PutItemOnSpot()
 {
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
-	WornFood->SetActorLocation(SpotReference->GetSpawnPoint()->GetComponentLocation());
-	TempActor = WornFood;
-	AFood* ModifyFoodData = Cast<AFood>(TempActor);
+	FoodCarriedActor->SetActorLocation(SpotReference->GetSpawnPoint()->GetComponentLocation());
+	NearFoodActor = FoodCarriedActor;
+	AFood* ModifyFoodData = Cast<AFood>(NearFoodActor);
 	ModifyFoodData->SetIsOnSpot(true);
-	WornFood = nullptr;
+	FoodCarriedActor = nullptr;
 	IsCarryFood = false;
 }
 
@@ -100,7 +100,7 @@ void ACarryingCharacter::SetPlayerSpeed()
 {
 	if(IsCarryFood)
 	{
-		AFood* TempFood = Cast<AFood>(WornFood);
+		AFood* TempFood = Cast<AFood>(FoodCarriedActor);
 
 		if(TempFood !=nullptr)
 		{
@@ -140,14 +140,14 @@ void ACarryingCharacter::CarryItem()
 	{
 		IsCarryFood = true;
 
-		if(TempActor != nullptr)
+		if(NearFoodActor != nullptr)
 		{
-			WornFood = TempActor;
-			AFood* ModifyFoodData = Cast<AFood>(WornFood);
+			FoodCarriedActor = NearFoodActor;
+			AFood* ModifyFoodData = Cast<AFood>(FoodCarriedActor);
 			ModifyFoodData->SetIsOnSpot(false);
-			TempActor = nullptr;
+			NearFoodActor = nullptr;
 			SetPlayerSpeed();
-			WornFood->SetActorLocation(this->GetActorLocation());			
+			FoodCarriedActor->SetActorLocation(this->GetActorLocation());			
 		}
 	}
 }
@@ -163,10 +163,10 @@ void ACarryingCharacter::DropItem()
 		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 		IsCarryFood = false;
 
-		if(WornFood != nullptr)
+		if(FoodCarriedActor != nullptr)
 		{
-			TempActor = WornFood;
-			WornFood = nullptr;
+			NearFoodActor = FoodCarriedActor;
+			FoodCarriedActor = nullptr;
 			IsCarryFood = false;
 		}
 			

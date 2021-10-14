@@ -13,7 +13,7 @@ EBTNodeResult::Type UBT_SelectSpotForPatrol::CodeToExecute()
 {
 	AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
 			
-	TArray<AFoodSpot*> AllFoodSpot = FoodManager->getAllSpotInGame();
+	TArray<AFoodSpot*> AllFoodSpot = FoodManager->GetAllSpotInGame();
 
 	//temporary array for selecting spot for the AI
 	TArray<AFoodSpot*> SpotsForPatrol;

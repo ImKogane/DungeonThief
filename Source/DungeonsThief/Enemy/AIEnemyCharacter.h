@@ -24,13 +24,16 @@ public:
 	FORCEINLINE bool GetIsInSight() {return bIsInSight;}
 	FORCEINLINE void SetIsInSight(bool value) {bIsInSight = value;}
 
-	FORCEINLINE void ResetSetWanderCooldown()
+	FORCEINLINE void SetWanderCooldown()
 	{
-		WanderCooldown = WanderDelay;
-		bHasSeenPlayer = false;
+		if (!bIsInWanderCooldown)
+		{
+			WanderCooldown = WanderDelay;
+			bIsInWanderCooldown = true;
+		}
 	}
 	
-	FORCEINLINE bool IsInWanderCooldown() { return WanderCooldown > 0; }
+	FORCEINLINE bool IsInWanderCooldown() { return bIsInWanderCooldown; }
 
 	FORCEINLINE void SetSpotsForPatrol(TArray<AFoodSpot*> Spots){ SpotsForPatrol = Spots; }
 
@@ -43,6 +46,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	bool bIsInSight;
+
+	UPROPERTY(VisibleAnywhere, Category = "AI")
+	bool bIsInWanderCooldown;
 	
 	float WanderDelay;
 	float WanderCooldown;

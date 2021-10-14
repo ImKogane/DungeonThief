@@ -5,6 +5,7 @@
 
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/SphereComponent.h"
 #include "DungeonsThief/Managers/FoodManager.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
 #include "DungeonsThief/Enemy/AIEnemyController.h"
@@ -19,8 +20,9 @@ ASpawnEnemyManager::ASpawnEnemyManager()
 	DeleteEnemyBoxComponent->SetupAttachment(GetRootComponent());
 	DeleteEnemyBoxComponent->InitBoxExtent(FVector(100, 10, 100));
 
-	SpawnLocation = CreateDefaultSubobject<USceneComponent>(TEXT("SpawnLocation"));
+	SpawnLocation = CreateDefaultSubobject<USphereComponent>(TEXT("SpawnLocation"));
 	SpawnLocation->SetupAttachment(DeleteEnemyBoxComponent);
+	SpawnLocation->InitSphereRadius(10);
 	
 	MinSpawnDelay = 0;
 	MaxSpawnDelay = 5;
@@ -57,6 +59,7 @@ void ASpawnEnemyManager::SetupEnemy(AAIEnemyCharacter* EnemyCharacter)
 		if (AIController && FoodManager)
 		{
 			AIController->GetBlackBoardComponent()->SetValueAsObject("FoodManager", FoodManager);
+			AIController->GetBlackBoardComponent()->SetValueAsVector("SpawnLocation", GetActorLocation());
 		}
 	}
 }
@@ -104,8 +107,10 @@ void ASpawnEnemyManager::DeleteBoxOnOverlapBegin(UPrimitiveComponent* Overlapped
 			EnemiesSpawned.Remove(AICharacter);
 			AICharacter->Destroy();
 
+			UE_LOG(LogTemp, Warning, TEXT("%d"), EnemiesSpawned.Num());
+
 			//check if the array is empty : true -> no more IA in the maps -> we need to instanciate one immediately
-			if (EnemiesSpawned.Num() <= 0)
+			if (EnemiesSpawned.Num() == 0)
 			{
 				SpawnEnemy(0);
 			}

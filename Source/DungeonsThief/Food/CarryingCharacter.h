@@ -63,8 +63,8 @@ public:
 	void SetSpotReference(AFoodSpot* Reference);
 
 	FORCEINLINE bool GetIsCarryFood() { return IsCarryFood; }
-	FORCEINLINE AActor* GetWornFood() { return FoodCarriedActor; }
-	FORCEINLINE AActor* GetPlayerTempActor() { return NearFoodActor; }
+	FORCEINLINE AActor* GetFoodCarried() { return FoodCarriedActor; }
+	FORCEINLINE AActor* GetPlayerNearFoodActor() { return NearFoodActor; }
 	
 	UFUNCTION()
 	void DropItem();
