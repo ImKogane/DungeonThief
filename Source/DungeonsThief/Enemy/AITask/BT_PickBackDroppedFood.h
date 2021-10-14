@@ -4,16 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "DungeonsThief/Enemy/AITask/BT_BaseTaskDungeonsThief.h"
-#include "BT_NextPatrolSpot.generated.h"
+#include "BT_PickBackDroppedFood.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DUNGEONSTHIEF_API UBT_NextPatrolSpot : public UBT_BaseTaskDungeonsThief
+class DUNGEONSTHIEF_API UBT_PickBackDroppedFood : public UBT_BaseTaskDungeonsThief
 {
 	GENERATED_BODY()
-	
 protected:
 	virtual EBTNodeResult::Type CodeToExecute() override;
 };

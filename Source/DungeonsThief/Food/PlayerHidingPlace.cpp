@@ -3,6 +3,7 @@
 
 #include "PlayerHidingPlace.h"
 #include "DungeonsThief/Food/Food.h"
+#include "DungeonsThief/Managers/FoodManager.h"
 #include "DungeonsThief/Managers/ScoreManager.h"
 #include "DungeonsThief/Player/MainCharacter.h"
 #include "Kismet/GameplayStatics.h"
@@ -26,12 +27,6 @@ APlayerHidingPlace::APlayerHidingPlace()
 void APlayerHidingPlace::BeginPlay()
 {
 	Super::BeginPlay();
-
-	AActor* AManager = UGameplayStatics::GetActorOfClass(GetWorld(), AScoreManager::StaticClass());
-	if (AManager)
-	{
-		ScoreManager = Cast<AScoreManager>(AManager);
-	}
 }
 
 // Called every frame
@@ -55,6 +50,9 @@ void APlayerHidingPlace::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedCompon
 			}
 
 			UGameplayStatics::PlaySoundAtLocation(this, WinPointsSound, GetActorLocation());
+			if(FoodManager)
+				FoodManager->RemoveFoodFromWorldList(HeldFood);
+			
 			Player->DropItem();
 			Player->GetPlayerNearFoodActor()->Destroy();
 			Player->SetNearFoodActor(nullptr);

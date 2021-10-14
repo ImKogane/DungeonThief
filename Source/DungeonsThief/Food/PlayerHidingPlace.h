@@ -32,6 +32,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Sound")
 	USoundBase* WinPointsSound;
 
+	UPROPERTY(EditAnywhere)
+	class AFoodManager* FoodManager;
+
 	UFUNCTION()
 	void OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 

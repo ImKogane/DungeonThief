@@ -39,6 +39,9 @@ public:
 	FORCEINLINE TArray<AFoodSpot*> GetSpotsForPatrol(){ return SpotsForPatrol; }
 	FORCEINLINE void RemoveASpotForPatrol(AFoodSpot* SpotToRemove){ if(SpotsForPatrol.Contains(SpotToRemove)) SpotsForPatrol.Remove(SpotToRemove); }
 
+	FORCEINLINE void AddAlreadyVisitedSpot(AFoodSpot* SpotVisited){ AlreadyVisitedSpot.Add(SpotVisited); }
+	FORCEINLINE TArray<AFoodSpot*> GetAlreadyVisitedSpot(){ return AlreadyVisitedSpot; }
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -72,6 +75,10 @@ protected:
 	//used only if the AI is a patrol
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	TArray<AFoodSpot*> SpotsForPatrol;
+
+	//used only if the AI carry food
+	UPROPERTY(VisibleAnywhere, Category = "AI")
+	TArray<class AFoodSpot*> AlreadyVisitedSpot;
 	
 public:	
 	// Called every frame
