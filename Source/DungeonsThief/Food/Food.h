@@ -44,8 +44,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Sound")
 	USoundBase* PickUpSound;
 	
-	UPROPERTY(VisibleAnywhere, Category="Sound")
-	FName Collision;
 	
 			
 	// Called when the game starts or when spawned

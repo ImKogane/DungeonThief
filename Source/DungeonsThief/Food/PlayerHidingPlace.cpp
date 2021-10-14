@@ -54,7 +54,7 @@ void APlayerHidingPlace::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedCompon
 				ScoreManager->AddPoints(HeldFood->GetFoodPoints());
 			}
 
-			
+			UGameplayStatics::PlaySoundAtLocation(this, WinPointsSound, GetActorLocation());
 			Player->DropItem();
 			Player->GetPlayerNearFoodActor()->Destroy();
 			Player->SetNearFoodActor(nullptr);

@@ -66,8 +66,9 @@ void AMainCharacter::BeginPlay()
 
 	//Choose random index
 	int Random = FMath::FRandRange(0,PlayableCharacters.Num());
-	CharacterID = Random;
-	GetMesh()->SetSkeletalMesh(PlayableCharacters[Random]);
+	DefinePlayerCharacter(Random);
+
+	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * SpeedBonus;
 
 }
 
@@ -131,7 +132,7 @@ void AMainCharacter::CrouchPlayer()
 		*/
 		
 		Crouch();
-		GetCharacterMovement()->MaxWalkSpeed = (BaseSpeed/1.75);
+		GetCharacterMovement()->MaxWalkSpeed = (BaseSpeed/1.75) * CrouchSpeedBonus;
 		IsCrouch = true;
 		GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Crouch."));
@@ -146,7 +147,7 @@ void AMainCharacter::UnCrouchPlayer()
 	if(IsCrouch == true)
 	{
 		UnCrouch();
-		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
+		SetPlayerSpeed();
 		IsCrouch = false;
 		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("UnCrouch."));
 	}
@@ -205,6 +206,7 @@ void AMainCharacter::MoveRight(float Value)
 		}
 	}
 
+
 #pragma endregion
 
 
@@ -229,3 +231,31 @@ void AMainCharacter::LooseGame()
 	}
 }
 #pragma endregion
+
+/**
+ * @brief Define a character and his specification for the player
+ * @param CharacterIndex Index for character in character array
+ */
+void AMainCharacter::DefinePlayerCharacter(int CharacterIndex)
+{
+	CharacterID = CharacterIndex;
+	GetMesh()->SetSkeletalMesh(PlayableCharacters[CharacterIndex]);
+
+	switch (CharacterIndex)
+	{
+	case 0:
+		CarrySpeedBonus = 1.1;
+		break;
+		
+	case 1:
+		SpeedBonus = 1.1;
+		break;
+		
+	case 2:
+		CrouchSpeedBonus = 1.05;
+		break;
+		
+	default:
+		break;
+	}
+}

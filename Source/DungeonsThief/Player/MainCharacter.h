@@ -85,6 +85,10 @@ protected:
 	/* Called for scrolling in or out the camera view*/
 	void ScrollInOut(float Value);
 
+	/* Called in UI to pick up a character for player */
+	UFUNCTION()
+	void DefinePlayerCharacter(int CharacterIndex);
+
 public:
 	FORCEINLINE void SetCanMove(bool value) { bCanMove = value; }
 	
