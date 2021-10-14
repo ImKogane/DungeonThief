@@ -28,7 +28,7 @@ EBTNodeResult::Type UBT_CarryNewFood::ExecuteTask(UBehaviorTreeComponent& OwnerC
 				AActor* FoodToCarry = FoodManager->SpawnFood(AICharacter->GetActorLocation());
 				if(FoodToCarry)
 				{
-					AICharacter->SetPlayerActor(FoodToCarry);
+					AICharacter->SetNearFoodActor(FoodToCarry);
 					AICharacter->InteractWithItem();
 					FoodManager->GlobalWaitTest = false;
 					BlackboardComponent->SetValueAsObject("FoodCarrying", FoodToCarry);
