@@ -2,6 +2,8 @@
 
 
 #include "MainCharacter.h"
+
+#include "MainCharacterController.h"
 #include "DungeonsThief/AAnimationsHandler.h"
 #include "DungeonsThief/Food//Food.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -60,6 +62,8 @@ AMainCharacter::AMainCharacter()
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	MainCharacterController = Cast<AMainCharacterController>(GetController());
 	
 	//set where the camera is looking at
 	CameraBoom->SetRelativeLocation(FVector(0,0,60));
@@ -217,8 +221,13 @@ void AMainCharacter::WinGame()
 {
 	if (AnimationHandler && WinMontage)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("YOU WIN"));
 		AnimationHandler->PlayAnimation(this, WinMontage);
+		bCanMove = false;
+	}
+
+	if (MainCharacterController)
+	{
+		MainCharacterController->ShowWinScreen(true);
 	}
 }
 
@@ -226,8 +235,13 @@ void AMainCharacter::LooseGame()
 {
 	if (AnimationHandler && LooseMontage)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("YOU LOOSE"));
 		AnimationHandler->PlayAnimation(this, LooseMontage);
+		bCanMove = false;
+	}
+
+	if (MainCharacterController)
+	{
+		MainCharacterController->ShowWinScreen(true);
 	}
 }
 #pragma endregion
