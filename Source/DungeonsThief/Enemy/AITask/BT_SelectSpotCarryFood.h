@@ -16,6 +16,4 @@ class DUNGEONSTHIEF_API UBT_SelectSpotCarryFood : public UBT_BaseTaskDungeonsThi
 	GENERATED_BODY()
 protected:
 	virtual EBTNodeResult::Type CodeToExecute() override;
-
-	TArray<class AFoodSpot*> AlreadyVisitedSpot;
 };
