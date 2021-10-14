@@ -15,12 +15,14 @@ EBTNodeResult::Type UBT_GiveRole::CodeToExecute()
 	if (FoodManager && !FoodManager->GlobalWaitTest)
 	{
 		FoodManager->GlobalWaitTest = true;
-		const int NumberOfFoodInWorld = FoodManager->getAllFoodInWorld().Num();
-		if(NumberOfFoodInWorld >= FoodManager->getAllSpotInGame().Num())
+		const int NumberOfFoodInWorld = FoodManager->GetAllFoodInWorld().Num();
+		
+		if(NumberOfFoodInWorld >= FoodManager->GetAllSpotInGame().Num())
 		{
 			uint8 ByteEnum = (uint8)EEnemyState::EES_Patrolling;
 			BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
-		}else
+		}
+		else
 		{
 			uint8 ByteEnum = (uint8)EEnemyState::EES_CarryFood;
 			BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);

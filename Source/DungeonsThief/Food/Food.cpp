@@ -23,18 +23,19 @@ AFood::AFood()
 
 
 	bIsOnSpot = false;
+	Collision = FoodMesh->GetCollisionProfileName();
 }
 
 void AFood::BeTake()
 {
 	UGameplayStatics::PlaySoundAtLocation(this, PickUpSound, GetActorLocation());
-	FoodMesh->SetCollisionProfileName(TEXT("OverlapAll"));
+	FoodMesh->SetCollisionProfileName(UCollisionProfile::NoCollision_ProfileName);
 }
 
 void AFood::BeDrop()
 {
-	FoodMesh->SetCollisionProfileName(TEXT("OverlapOnlyPawn"));
-	//FoodMesh->SetSimulatePhysics(true);
+	FoodMesh->SetCollisionProfileName(UCollisionProfile::BlockAllDynamic_ProfileName);
+	
 }
 
 
@@ -94,7 +95,7 @@ void AFood::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor*
 	
 	if(Player != nullptr)
 	{
-		Player->SetPlayerActor(this);
+		Player->SetNearFoodActor(this);
 	}
 }
 
@@ -104,6 +105,6 @@ void AFood::OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* O
 	
 	if(Player != nullptr)
 	{
-		Player->SetPlayerActor(nullptr);
+		Player->SetNearFoodActor(nullptr);
 	}
 }

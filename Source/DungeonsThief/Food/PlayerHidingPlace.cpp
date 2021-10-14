@@ -47,7 +47,7 @@ void APlayerHidingPlace::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedCompon
 	{
 		if (Player->GetIsCarryFood())
 		{
-			AFood* HeldFood = Cast<AFood>(Player->GetWornFood());
+			AFood* HeldFood = Cast<AFood>(Player->GetFoodCarried());
 
 			if (HeldFood && ScoreManager)
 			{
@@ -56,8 +56,8 @@ void APlayerHidingPlace::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedCompon
 
 			
 			Player->DropItem();
-			Player->GetPlayerTempActor()->Destroy();
-			Player->SetPlayerActor(nullptr);
+			Player->GetPlayerNearFoodActor()->Destroy();
+			Player->SetNearFoodActor(nullptr);
 		}
 	}	
 }

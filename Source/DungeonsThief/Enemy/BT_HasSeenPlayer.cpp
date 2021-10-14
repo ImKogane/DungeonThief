@@ -57,6 +57,7 @@ void UBT_HasSeenPlayer::ScheduleNextTick(UBehaviorTreeComponent& OwnerComp, uint
 		{
 			uint8 byteEnum = (uint8)EEnemyState::EES_Chasing;
 			BlackboardComponent->SetValueAsEnum("EnemyState", byteEnum);
+				
 			AIController->SetEnemyState(EEnemyState::EES_Chasing);
 			
 			if (AICharacter)
@@ -76,19 +77,21 @@ void UBT_HasSeenPlayer::ScheduleNextTick(UBehaviorTreeComponent& OwnerComp, uint
 		//The enemy has seen the player but he's not in sight anymore : the enemy'll wander to the last player's position known
 		if (AICharacter && AICharacter->GetHasSeenPlayer() && !AICharacter->GetIsInSight())
 		{
-			uint8 byteEnum = (uint8)EEnemyState::EES_Wandering;
-			BlackboardComponent->SetValueAsEnum("EnemyState", byteEnum);
-			AIController->SetEnemyState(EEnemyState::EES_Wandering);
-			AICharacter->ResetSetWanderCooldown();
+			uint8 ByteEnum = (uint8)EEnemyState::EES_Wandering;
+			BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
+			
+			AIController->SetEnemyState(EEnemyState::EES_Wandering);			
+			AICharacter->SetWanderCooldown();
 		}
 
+		//We reset the enemy state with the one before it has seen the player
 		if (AICharacter && !AICharacter->IsInWanderCooldown() && !AICharacter->GetHasSeenPlayer())
 		{
-			uint8 byteEnum = (uint8)EEnemyState::EES_Patrolling;
-			BlackboardComponent->SetValueAsEnum("EnemyState", byteEnum);
+			uint8 ByteEnum = (uint8)EEnemyState::EES_Patrolling;
+			BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
+
 			AIController->SetEnemyState(EEnemyState::EES_Patrolling);
 		}
-		
 	}	
 }
 
@@ -101,7 +104,7 @@ bool UBT_HasSeenPlayer::CanSeePlayerRayCast(FVector ForwardVector, FVector Start
 
 	//DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor::Emerald, true, -1, 0, 10);
 	
-	if (GetWorld()->LineTraceSingleByChannel(*HitResult, StartTrace, EndTrace, ECollisionChannel::ECC_WorldDynamic, *TraceParams))
+	if (GetWorld()->LineTraceSingleByChannel(*HitResult, StartTrace, EndTrace, ECollisionChannel::ECC_WorldStatic, *TraceParams))
 	{
 		//FString ObjectName = HitResult->GetActor()->GetName();
 		//UE_LOG(LogTemp, Warning, TEXT("Touch : %s"), *ObjectName);

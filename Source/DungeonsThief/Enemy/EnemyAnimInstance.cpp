@@ -24,6 +24,7 @@ void UEnemyAnimInstance::UpdateAnimationProperties()
 	if (EnemyCharacter)
 	{
 		MovementSpeed = GetCharacterMovementSpeed();
+		IsCarryItem = EnemyCharacter->GetIsCarryFood();
 	}
 }
 
