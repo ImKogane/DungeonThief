@@ -38,7 +38,7 @@ public:
 	FORCEINLINE TSubclassOf<class AFood> getBPFoodActor() {return FoodActor;}
 	FORCEINLINE TArray<class AFood*> getAllFoodInWorld() {return AllFoodInWorld;}
 
-	void RemoveFoodFromWorld(AFood* FoodToRemove);
+	void RemoveFoodFromWorldList(AFood* FoodToRemove);
 	
 	//put it somewhere else juste a test here
 	bool GlobalWaitTest = false;

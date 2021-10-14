@@ -9,55 +9,34 @@
 #include "DungeonsThief/Managers/FoodManager.h"
 #include "Kismet/GameplayStatics.h"
 
-EBTNodeResult::Type UBT_SelectSpotForPatrol::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBT_SelectSpotForPatrol::CodeToExecute()
 {
-	AAIEnemyController* AIController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
-	
-	if(AIController)
+	AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
+			
+	TArray<AFoodSpot*> AllFoodSpot = FoodManager->getAllSpotInGame();
+
+	//temporary array for selecting spot for the AI
+	TArray<AFoodSpot*> SpotsForPatrol;
+	if(AllFoodSpot.Num() >= 2)
 	{
-		AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();
-		if(AICharacter)
+		for (int i = 0; i < 2; i++)
 		{
-			UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
-			
-			//get all spots from food manager
-			AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
-			
-			TArray<AFoodSpot*> AllFoodSpot = FoodManager->getAllSpotInGame();
-
-			//temporary array for selecting spot for the AI
-			TArray<AFoodSpot*> SpotsForPatrol;
-			if(AllFoodSpot.Num() >= 2)
-			{
-				for (int i = 0; i < 2; i++)
-				{
-					AFoodSpot* SelectedFoodSpot = Cast<AFoodSpot>(SelectRandomFoodSpot(AllFoodSpot));
+			AFoodSpot* SelectedFoodSpot = SelectRandomFoodSpot(AllFoodSpot);
 					
-					while(SpotsForPatrol.Contains(SelectedFoodSpot))
-					{
-						SelectedFoodSpot = Cast<AFoodSpot>(SelectRandomFoodSpot(AllFoodSpot));
-					}
-					SpotsForPatrol.Add(SelectedFoodSpot);
-				}
-
-				if(SpotsForPatrol.Num() == 2)
-				{
-					AICharacter->SetSpotsForPatrol(SpotsForPatrol);
-					BlackboardComponent->SetValueAsInt("HasARole", 1);
-					FoodManager->GlobalWaitTest = false;
-					return EBTNodeResult::Succeeded;
-				}
+			while(SpotsForPatrol.Contains(SelectedFoodSpot))
+			{
+				SelectedFoodSpot = SelectRandomFoodSpot(AllFoodSpot);
 			}
+			SpotsForPatrol.Add(SelectedFoodSpot);
+		}
+
+		if(SpotsForPatrol.Num() == 2)
+		{
+			AICharacter->SetSpotsForPatrol(SpotsForPatrol);
+			BlackboardComponent->SetValueAsInt("HasARole", 1);
+			FoodManager->GlobalWaitTest = false;
 			return EBTNodeResult::Succeeded;
 		}
 	}
-
-	
 	return EBTNodeResult::Failed;
-}
-
-AActor* UBT_SelectSpotForPatrol::SelectRandomFoodSpot(TArray<AFoodSpot*> ActorList)
-{
-	const int RandomIndex = FMath::FRandRange(0, ActorList.Num());
-	return ActorList[RandomIndex];
 }

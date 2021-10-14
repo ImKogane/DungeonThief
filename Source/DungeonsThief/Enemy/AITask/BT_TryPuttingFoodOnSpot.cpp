@@ -6,30 +6,25 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Enemy/AIEnemyController.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
+#include "DungeonsThief/Food/Food.h"
 #include "DungeonsThief/Managers/FoodManager.h"
 
-EBTNodeResult::Type UBT_TryPuttingFoodOnSpot::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBT_TryPuttingFoodOnSpot::CodeToExecute()
 {
-	AAIEnemyController* AIController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
-	
-	if(AIController)
-	{
-		AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();
-		if(AICharacter)
-		{
-			UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
-			
-			//get all spots from food manager
-			AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
+	//get all spots from food manager
+	AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
 
-			AICharacter->InteractWithItem();
+	AICharacter->InteractWithItem();
 			
-			if(!AICharacter->GetWornFood())
-			{
-				BlackboardComponent->ClearValue("FoodCarrying");
-				return EBTNodeResult::Succeeded;
-			}
+	if(!AICharacter->GetWornFood())
+	{
+		AFood* FoodDroped = Cast<AFood>(AICharacter->GetPlayerTempActor());
+		if(FoodDroped->GetIsOnSpot())
+		{
+			BlackboardComponent->ClearValue("FoodCarrying");
+			return EBTNodeResult::Succeeded;
 		}
+		AICharacter->InteractWithItem();
 	}
 	return EBTNodeResult::Failed;
 }
