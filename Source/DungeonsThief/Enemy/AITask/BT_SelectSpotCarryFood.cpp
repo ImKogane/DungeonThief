@@ -12,7 +12,7 @@ EBTNodeResult::Type UBT_SelectSpotCarryFood::CodeToExecute()
 {
 	AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
 
-	TArray<AFoodSpot*> AllSpotInWorld = FoodManager->getAllSpotInGame();
+	TArray<AFoodSpot*> AllSpotInWorld = FoodManager->GetAllSpotInGame();
 	if(AllSpotInWorld.Num() > AlreadyVisitedSpot.Num())
 	{
 		AFoodSpot* SpotSelected = SelectRandomFoodSpot(AllSpotInWorld);

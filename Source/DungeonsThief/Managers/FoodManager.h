@@ -34,9 +34,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	//return all spot in game
-	FORCEINLINE TArray<class AFoodSpot*> getAllSpotInGame() { return SpotsArray;}
-	FORCEINLINE TSubclassOf<class AFood> getBPFoodActor() {return FoodActor;}
-	FORCEINLINE TArray<class AFood*> getAllFoodInWorld() {return AllFoodInWorld;}
+	FORCEINLINE TArray<class AFoodSpot*> GetAllSpotInGame() { return SpotsArray;}
+	FORCEINLINE TSubclassOf<class AFood> GetBPFoodActor() {return FoodActor;}
+	FORCEINLINE TArray<class AFood*> GetAllFoodInWorld() {return AllFoodInWorld;}
 
 	void RemoveFoodFromWorldList(AFood* FoodToRemove);
 	

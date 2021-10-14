@@ -95,7 +95,7 @@ void AFood::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor*
 	
 	if(Player != nullptr)
 	{
-		Player->SetPlayerActor(this);
+		Player->SetNearFoodActor(this);
 	}
 }
 
@@ -105,6 +105,6 @@ void AFood::OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* O
 	
 	if(Player != nullptr)
 	{
-		Player->SetPlayerActor(nullptr);
+		Player->SetNearFoodActor(nullptr);
 	}
 }

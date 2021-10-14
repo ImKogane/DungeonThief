@@ -16,9 +16,9 @@ EBTNodeResult::Type UBT_TryPuttingFoodOnSpot::CodeToExecute()
 
 	AICharacter->InteractWithItem();
 			
-	if(!AICharacter->GetWornFood())
+	if(!AICharacter->GetFoodCarried())
 	{
-		AFood* FoodDroped = Cast<AFood>(AICharacter->GetPlayerTempActor());
+		AFood* FoodDroped = Cast<AFood>(AICharacter->GetPlayerNearFoodActor());
 		if(FoodDroped->GetIsOnSpot())
 		{
 			BlackboardComponent->ClearValue("FoodCarrying");

@@ -30,9 +30,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(VisibleAnywhere);
 	class UBoxComponent* DeleteEnemyBoxComponent;
 
 	//The object is placed in such a way that the enemies do not touch the collision box when they are instantiated
+	UPROPERTY(VisibleAnywhere);
 	class USphereComponent* SpawnLocation;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn Enemy")

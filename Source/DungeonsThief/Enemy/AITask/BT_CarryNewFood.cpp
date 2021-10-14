@@ -21,7 +21,7 @@ EBTNodeResult::Type UBT_CarryNewFood::CodeToExecute()
 		if(FoodToCarry)
 		{
 			//Then let him Carry the food
-			AICharacter->SetPlayerActor(FoodToCarry);
+			AICharacter->SetNearFoodActor(FoodToCarry);
 			AICharacter->InteractWithItem();
 			FoodManager->GlobalWaitTest = false;
 			BlackboardComponent->SetValueAsObject("FoodCarrying", FoodToCarry);
