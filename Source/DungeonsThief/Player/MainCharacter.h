@@ -52,6 +52,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Animations")
 	bool IsCrouch = false;
+
+	UPROPERTY(VisibleAnywhere, Category = "PlayeModel")
+	int CharacterID = 0;
+	
+	UPROPERTY(EditAnywhere, Category = "PlayeModel")
+	TArray<USkeletalMesh*> PlayableCharacters;
 	
 	bool bCanMove;
 	
@@ -94,7 +100,9 @@ public:
 
 	void TestWin();
 
-	FORCEINLINE bool GetIsCrouching() { return IsCrouch; } 
+	FORCEINLINE bool GetIsCrouching() { return IsCrouch; }
+	
+	FORCEINLINE int GetCharacterID() { return CharacterID; } 
 	
 
 

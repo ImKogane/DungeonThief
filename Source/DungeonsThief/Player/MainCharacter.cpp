@@ -63,6 +63,12 @@ void AMainCharacter::BeginPlay()
 	
 	//set where the camera is looking at
 	CameraBoom->SetRelativeLocation(FVector(0,0,60));
+
+	//Choose random index
+	int Random = FMath::FRandRange(0,PlayableCharacters.Num());
+	CharacterID = Random;
+	GetMesh()->SetSkeletalMesh(PlayableCharacters[Random]);
+
 }
 
 void AMainCharacter::Tick(float DeltaTime)
