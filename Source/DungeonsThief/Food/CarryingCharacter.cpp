@@ -28,7 +28,7 @@ void ACarryingCharacter::Tick(float DeltaTime)
 	
 	if(WornFood != nullptr)
 	{
-		WornFood->SetActorLocation(this->GetActorLocation());
+		WornFood->SetActorLocation(this->GetItemSocket());
 	}
 }
 
@@ -159,13 +159,13 @@ void ACarryingCharacter::DropItem()
 {
 	if(IsCarryFood == true)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Drop item."));
 		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 		IsCarryFood = false;
 
 		if(WornFood != nullptr)
 		{
 			TempActor = WornFood;
+			WornFood->SetActorLocation(GetFloorSocket());
 			WornFood = nullptr;
 			IsCarryFood = false;
 		}

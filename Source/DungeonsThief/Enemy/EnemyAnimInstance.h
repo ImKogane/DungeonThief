@@ -31,6 +31,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimationProperties")
 	float MovementSpeed;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimationProperties")
+	bool IsCarryItem;
+
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	class APawn* Pawn;
 	

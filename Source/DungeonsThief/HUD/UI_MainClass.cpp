@@ -4,27 +4,35 @@
 #include "DungeonsThief/HUD/UI_MainClass.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/ProgressBar.h"
-#include "DungeonsThief/Managers/ScoreManager.h"
 
 
-void UUI_MainClass::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+void UUI_MainClass::NativeConstruct()
 {
-	Super::NativeTick(MyGeometry, InDeltaTime);
+	Super::NativeConstruct();
 
 	//Try to fond the game object actor in the world
 	AActor* TryScoreManager = UGameplayStatics::GetActorOfClass(GetWorld(), AScoreManager::StaticClass());
 
 	if (TryScoreManager)
 	{
-		AScoreManager* ScoreManager = Cast<AScoreManager>(TryScoreManager);
+		ScoreManagerReference = Cast<AScoreManager>(TryScoreManager);
+	}
+}
 
-		if(ScoreManager)
-		{
-			float Percent = (ScoreManager->GetPoints());
-			int MaxPercent = (ScoreManager->GetMaxPoints());
-		
-			FoodBar->SetPercent(Percent/MaxPercent);	//Set progress bar value
-		}
+void UUI_MainClass::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+	
+	if(ScoreManagerReference)
+	{
+		float Percent = (ScoreManagerReference->GetPoints());
+		int MaxPercent = (ScoreManagerReference->GetMaxPoints());
+	
+		FoodBar->SetPercent(Percent/MaxPercent);	//Set progress bar value
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Crouch."));
 	}
 	
 }
