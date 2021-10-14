@@ -53,6 +53,8 @@ AMainCharacter::AMainCharacter()
 	AnimationHandler = CreateDefaultSubobject<AAnimationsHandler>(TEXT("AnimationHandler"));
 
 	bCanMove = true;
+
+	GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
 }
 
 void AMainCharacter::BeginPlay()
@@ -114,32 +116,34 @@ void AMainCharacter::MoveForward(float Value)
 
 void AMainCharacter::CrouchPlayer()
 {
-	if(GetCharacterMovement()->IsCrouching())
+	if(IsCrouch == false)
+	{
+		/*
+		UnCrouch();
+		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
+		IsCrouch = false;
+		*/
+		
+		Crouch();
+		GetCharacterMovement()->MaxWalkSpeed = (BaseSpeed/1.75);
+		IsCrouch = true;
+		GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Crouch."));
+	}
+
+}
+
+
+
+void AMainCharacter::UnCrouchPlayer()
+{
+	if(IsCrouch == true)
 	{
 		UnCrouch();
 		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 		IsCrouch = false;
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("UnCrouch."));
 	}
-	else
-	{
-		Crouch();
-		GetCharacterMovement()->MaxWalkSpeed = (BaseSpeed/2);
-		IsCrouch = true;
-		GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
-	}
-	
-	//GetCapsuleComponent()->SetCapsuleHalfHeight(34);
-	//IsCrouch = true;
-	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Crouch."));
-}
-
-void AMainCharacter::UnCrouchPlayer()
-{
-	UnCrouch();
-	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
-	//sGetCapsuleComponent()->SetCapsuleHalfHeight(90);
-	IsCrouch = false;
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("UnCrouch."));
 }
 
 
