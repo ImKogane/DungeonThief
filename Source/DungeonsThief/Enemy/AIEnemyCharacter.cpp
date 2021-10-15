@@ -6,6 +6,7 @@
 
 #include "AIEnemyController.h"
 #include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Food/Food.h"
 #include "Components/CapsuleComponent.h"
 #include "DungeonsThief/AAnimationsHandler.h"
@@ -107,7 +108,7 @@ void AAIEnemyCharacter::LooseGame()
 	if (AnimationHandler && LooseMontage)
 	{
 		StopMovement();
-		
+
 		AnimationHandler->PlayAnimation(this, LooseMontage);
 	}
 }
