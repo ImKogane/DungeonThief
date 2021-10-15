@@ -2,10 +2,15 @@
 
 
 #include "ScoreManager.h"
+
+
+#include "SpawnEnemyManager.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
 #include "DungeonsThief/Enemy/AIEnemyController.h"
 #include "DungeonsThief/Player/MainCharacter.h"
+#include "Engine/World.h"
 
 // Sets default values
 AScoreManager::AScoreManager()
@@ -19,14 +24,14 @@ AScoreManager::AScoreManager()
 void AScoreManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	Player = Cast<AMainCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 }
 
 // Called every frame
 void AScoreManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AScoreManager::AddPoints(int PointsCount)
@@ -37,7 +42,6 @@ void AScoreManager::AddPoints(int PointsCount)
 
 	if (Points >= 5)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("YOU WIN"));
 		PlayerWin();
 	}
 }
@@ -46,28 +50,19 @@ void AScoreManager::PlayerWin()
 {
 	if (Player)
 	{
-		Player->SetCanMove(false);
 		Player->WinGame();		
 	}
 
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AAIEnemyCharacter::StaticClass(), EnemiesInLevel);
+	if (SpawnManager)
+	{
+		EnemiesInLevel = SpawnManager->GetEnemiesSpawned();
+	}
 
-	for (AActor* Enemy : EnemiesInLevel)
+	for (AAIEnemyCharacter* Enemy : EnemiesInLevel)
 	{
 		if (Enemy)
 		{
-			AAIEnemyCharacter* EnemyCharacter = Cast<AAIEnemyCharacter>(Enemy);
-
-			if (EnemyCharacter)
-			{
-				EnemyCharacter->LooseGame();
-				AAIEnemyController* Controller = Cast<AAIEnemyController>(EnemyCharacter->GetController());
-
-				if (Controller)
-				{
-					Controller->StopMovement();
-				}				
-			}
+			Enemy->LooseGame();
 		}
 	}
 }
@@ -76,28 +71,19 @@ void AScoreManager::PlayerLoose()
 {
 	if (Player)
 	{
-		Player->SetCanMove(false);
 		Player->LooseGame();		
 	}
-	
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AAIEnemyCharacter::StaticClass(), EnemiesInLevel);
 
-	for (AActor* Enemy : EnemiesInLevel)
+	if (SpawnManager)
+	{
+		EnemiesInLevel = SpawnManager->GetEnemiesSpawned();
+	}
+	
+	for (AAIEnemyCharacter* Enemy : EnemiesInLevel)
 	{
 		if (Enemy)
 		{
-			AAIEnemyCharacter* EnemyCharacter = Cast<AAIEnemyCharacter>(Enemy);
-
-			if (EnemyCharacter)
-			{
-				EnemyCharacter->WinGame();
-				AAIEnemyController* Controller = Cast<AAIEnemyController>(EnemyCharacter->GetController());
-
-				if (Controller)
-				{
-					Controller->StopMovement();
-				}	
-			}
+			Enemy->WinGame();	
 		}
 	}
 }

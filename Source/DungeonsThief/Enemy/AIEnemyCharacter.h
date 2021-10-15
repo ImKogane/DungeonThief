@@ -64,6 +64,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Models")
 	TArray<class UMaterial*> MaterialArray;
 
+	UPROPERTY(EditAnywhere, Category = "CapsuleComponent")
+	class UCapsuleComponent* CapsulePlayerDetection;
+	
 	class AAnimationsHandler* AnimationHandler;
 
 	UPROPERTY(EditAnywhere, Category = "Animations")
@@ -96,4 +99,9 @@ public:
 protected:
 
 	void ProcessWanderCooldown(float DeltaTime);
+
+	void StopMovement();
+
+	UFUNCTION()
+    void OnPlayerDetectionOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 };

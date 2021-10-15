@@ -3,7 +3,6 @@
 
 #include "AIEnemyController.h"
 #include "AIEnemyCharacter.h"
-#include "NPCTargetPoint.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BehaviorTree.h"
@@ -30,6 +29,10 @@ AAIEnemyController::AAIEnemyController()
 }
 
 
+void AAIEnemyController::StopBehaviouTree()
+{
+	BlackboardComponent->SetValueAsInt("CanMove", 1);
+}
 
 void AAIEnemyController::OnPossess(APawn* InPawn)
 {
@@ -47,12 +50,11 @@ void AAIEnemyController::OnPossess(APawn* InPawn)
 				BlackboardComponent->InitializeBlackboard(*(AICharacter->BehaviourTree->BlackboardAsset));
 			}
 		}
-
-		//We get all the NPC point in the level
-		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ANPCTargetPoint::StaticClass(), NPCTargetPoints);
-
+		
 		//Start the behaviour tree which coreesponds to the specific character
 		BehaviorTreeComponent->StartTree(*AICharacter->BehaviourTree);
+		
+		BlackboardComponent->SetValueAsInt("CanMove", 0);
 	}
 }
 

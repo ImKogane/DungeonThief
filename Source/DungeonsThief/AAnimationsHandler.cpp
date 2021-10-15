@@ -17,6 +17,8 @@ void AAnimationsHandler::PlayAnimation(ACharacter* Character, UAnimMontage* Mont
 
 		if (AnimInstance && MontageToPlay)
 		{
+			UE_LOG(LogTemp, Warning, TEXT("ANIMATION"));
+
 			AnimInstance->Montage_Play(MontageToPlay, 1.0f);
 		}
 	}

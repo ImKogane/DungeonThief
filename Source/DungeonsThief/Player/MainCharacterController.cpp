@@ -22,5 +22,35 @@ void AMainCharacterController::BeginPlay()
         HUDOverlay->SetVisibility(ESlateVisibility::Visible);
 	}
 
-	
+	if (WWinScreen)
+	{
+		WinScreenWidget = CreateWidget<UUserWidget>(this, WWinScreen);
+		if (WinScreenWidget)
+		{
+			WinScreenWidget->AddToViewport();
+			WinScreenWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
+
+	if (WLooseScreen)
+	{
+		LooseScreenWidget = CreateWidget<UUserWidget>(this, WLooseScreen);
+		if (LooseScreenWidget)
+		{
+			LooseScreenWidget->AddToViewport();
+			LooseScreenWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
+}
+
+void AMainCharacterController::ShowWinScreen(bool Visibility)
+{
+	WinScreenWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+	bShowMouseCursor = true;
+}
+
+void AMainCharacterController::ShowLooseScreen(bool Visibility)
+{
+	LooseScreenWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+	bShowMouseCursor = true;
 }

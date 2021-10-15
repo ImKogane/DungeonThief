@@ -6,8 +6,12 @@
 
 #include "AIEnemyController.h"
 #include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Food/Food.h"
+#include "Components/CapsuleComponent.h"
 #include "DungeonsThief/AAnimationsHandler.h"
+#include "DungeonsThief/Managers/ScoreManager.h"
+#include "DungeonsThief/Player/MainCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -17,6 +21,15 @@ AAIEnemyCharacter::AAIEnemyCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	CapsulePlayerDetection = CreateDefaultSubobject<UCapsuleComponent>(TEXT("PlayerDetection"));
+	CapsulePlayerDetection->SetupAttachment(GetRootComponent());
+	CapsulePlayerDetection->InitCapsuleSize(20, 50);
+
+	CapsulePlayerDetection->SetCollisionEnabled(ECollisionEnabled::NoCollision); 
+	CapsulePlayerDetection->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+	CapsulePlayerDetection->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	CapsulePlayerDetection->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap); 
+	
 	BaseSpeed = 450.0f;
 
 	bHasSeenPlayer = false;
@@ -33,6 +46,9 @@ AAIEnemyCharacter::AAIEnemyCharacter()
 void AAIEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	CapsulePlayerDetection->OnComponentBeginOverlap.AddDynamic(this, &AAIEnemyCharacter::OnPlayerDetectionOverlapBegin);
+	
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 	SetRandomMesh();
 }
@@ -66,16 +82,22 @@ void AAIEnemyCharacter::ProcessWanderCooldown(float DeltaTime)
 	}
 }
 
+void AAIEnemyCharacter::StopMovement()
+{
+	AAIEnemyController* EnemyController = Cast<AAIEnemyController>(GetController());
+
+	if (EnemyController)
+	{
+		EnemyController->StopMovement();
+		EnemyController->StopBehaviouTree();
+	}
+}
+
 void AAIEnemyCharacter::WinGame()
 {
 	if (AnimationHandler && WinMontage)
 	{
-		AAIEnemyController* AIController = Cast<AAIEnemyController>(GetController());
-
-		if (AIController)
-		{
-			AIController->StopMovement();
-		}
+		StopMovement();
 		
 		AnimationHandler->PlayAnimation(this, WinMontage);
 	}
@@ -85,13 +107,8 @@ void AAIEnemyCharacter::LooseGame()
 {
 	if (AnimationHandler && LooseMontage)
 	{
-		AAIEnemyController* AIController = Cast<AAIEnemyController>(GetController());
+		StopMovement();
 
-		if (AIController)
-		{
-			AIController->StopMovement();
-		}
-		
 		AnimationHandler->PlayAnimation(this, LooseMontage);
 	}
 }
@@ -108,6 +125,24 @@ void AAIEnemyCharacter::SetRandomMesh()
 	Random = FMath::FRandRange(0,MaterialArray.Num());
 	GetMesh()->SetMaterial(0, MaterialArray[Random]);
 	
+}
+
+void AAIEnemyCharacter::OnPlayerDetectionOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor)
+	{
+		AMainCharacter* MainCharacter = Cast<AMainCharacter>(OtherActor);
+
+		if (MainCharacter)
+		{
+			AScoreManager* ScoreManager =  Cast<AScoreManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AScoreManager::StaticClass()));
+
+			if (ScoreManager)
+			{
+				ScoreManager->PlayerLoose();
+			}
+		}
+	}
 }
 
 

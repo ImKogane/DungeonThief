@@ -5,6 +5,7 @@
 
 #include "AIEnemyCharacter.h"
 #include "AIEnemyController.h"
+#include "AssetTypeCategories.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "DungeonsThief/Player/MainCharacter.h"
