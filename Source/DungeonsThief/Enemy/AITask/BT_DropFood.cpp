@@ -14,6 +14,13 @@ EBTNodeResult::Type UBT_DropFood::CodeToExecute()
 
 	
 	AFood* StoreFood = Cast<AFood>(BlackboardComponent->GetValueAsObject("FoodCarrying"));
+
+	if(StoreFood == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("FoodCarrying not found"))
+		return EBTNodeResult::Failed;
+	}
+	
 	BlackboardComponent->SetValueAsObject("FoodDropped", StoreFood);
 	BlackboardComponent->SetValueAsVector("FoodDropedLocation", StoreFood->GetActorLocation());
 	BlackboardComponent->ClearValue("FoodCarrying");

@@ -12,6 +12,11 @@ EBTNodeResult::Type UBT_NextPatrolSpot::CodeToExecute()
 
 	AFoodSpot* SpotToRemove = Cast<AFoodSpot>(BlackboardComponent->GetValueAsObject("SpotLocationToGo"));
 
+	if(SpotToRemove == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("SpotToRemove not found"))
+		return EBTNodeResult::Failed;
+	}
 	AICharacter->RemoveASpotForPatrol(SpotToRemove);
 	
 	return EBTNodeResult::Succeeded;

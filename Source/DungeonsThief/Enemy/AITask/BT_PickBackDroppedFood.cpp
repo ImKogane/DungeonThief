@@ -13,19 +13,21 @@ EBTNodeResult::Type UBT_PickBackDroppedFood::CodeToExecute()
 	AFood* FoodDroped = Cast<AFood>(BlackboardComponent->GetValueAsObject("FoodDropped"));
 	
 	//TODO Peut être améliorer je pense
-	if(FoodDroped)
+	if(FoodDroped == nullptr)
 	{
-		float DistBetweenBoth = FVector::Dist(FoodDroped->GetActorLocation(), AICharacter->GetActorLocation());
+		UE_LOG(LogTemp, Warning, TEXT("FoodDroped not found"))
+		return EBTNodeResult::Failed;
+	}
+	
+	float DistanceFromFoodDropped = FVector::Dist(FoodDroped->GetActorLocation(), AICharacter->GetActorLocation());
 
-		if(DistBetweenBoth <= 150)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("FOUND IT OMG"))
-			AICharacter->SetNearFoodActor(FoodDroped);
-			AICharacter->InteractWithItem();
-			BlackboardComponent->SetValueAsObject("FoodCarrying", FoodDroped);
-			BlackboardComponent->ClearValue("FoodDropped");
-			return EBTNodeResult::Succeeded;
-		}
+	if(DistanceFromFoodDropped <= 150)
+	{	
+		AICharacter->SetNearFoodActor(FoodDroped);
+		AICharacter->InteractWithItem();
+		BlackboardComponent->SetValueAsObject("FoodCarrying", FoodDroped);
+		BlackboardComponent->ClearValue("FoodDropped");
+		return EBTNodeResult::Succeeded;
 	}
 	
 	return EBTNodeResult::Failed;
