@@ -57,7 +57,6 @@ void ACarryingCharacter::InteractWithItem()
 			else
 			{
 				DropItem();
-				NearFood->BeDrop();
 			}			
 		}
 	}
@@ -162,10 +161,12 @@ void ACarryingCharacter::DropItem()
 		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 		IsCarryFood = false;
 
+
 		if(FoodCarriedActor != nullptr)
 		{
 			NearFoodActor = FoodCarriedActor;
 			FoodCarriedActor->SetActorLocation(GetFloorSocket());
+			Cast<AFood>(NearFoodActor)->BeDrop();
 			FoodCarriedActor = nullptr;
 			IsCarryFood = false;
 		}

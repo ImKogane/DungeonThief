@@ -13,9 +13,8 @@ void UBT_SelectSpotIfPatrol::ScheduleNextTick(UBehaviorTreeComponent& OwnerComp,
 
 	AAIEnemyController* AIController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
 
-	if (AIController)
+	if (AIController == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("AIController not found"))
 		return;
 	}
 	

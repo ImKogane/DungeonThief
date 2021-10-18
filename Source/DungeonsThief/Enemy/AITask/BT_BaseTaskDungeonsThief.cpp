@@ -12,7 +12,6 @@ EBTNodeResult::Type UBT_BaseTaskDungeonsThief::ExecuteTask(UBehaviorTreeComponen
 
 	if(AIController ==  nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("AIController not found"))
 		return EBTNodeResult::Failed;
 	}
 	

@@ -22,7 +22,7 @@ EBTNodeResult::Type UBT_DropFood::CodeToExecute()
 	}
 	
 	BlackboardComponent->SetValueAsObject("FoodDropped", StoreFood);
-	BlackboardComponent->SetValueAsVector("FoodDropedLocation", StoreFood->GetActorLocation());
+	BlackboardComponent->SetValueAsVector("FoodDroppedLocation", StoreFood->GetActorLocation());
 	BlackboardComponent->ClearValue("FoodCarrying");
 	return EBTNodeResult::Succeeded;
 }
