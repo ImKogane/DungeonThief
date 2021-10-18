@@ -3,6 +3,7 @@
 
 #include "DungeonsThief/Player/MainCharacterController.h"
 #include "Blueprint/UserWidget.h"
+#include "Kismet/GameplayStatics.h"
 
 
 AMainCharacterController::AMainCharacterController()
@@ -41,6 +42,16 @@ void AMainCharacterController::BeginPlay()
 			LooseScreenWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
+	
+	if (WPauseMenu)
+	{
+		PauseMenuWidget = CreateWidget<UUserWidget>(this, WPauseMenu);
+		if (PauseMenuWidget)
+		{
+			PauseMenuWidget->AddToViewport();
+			PauseMenuWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
 }
 
 void AMainCharacterController::ShowWinScreen(bool Visibility)
@@ -53,4 +64,11 @@ void AMainCharacterController::ShowLooseScreen(bool Visibility)
 {
 	LooseScreenWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 	bShowMouseCursor = true;
+}
+
+void AMainCharacterController::ShowPauseMenu(bool Visibility)
+{
+	PauseMenuWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+	bShowMouseCursor = true;
+	UGameplayStatics::SetGamePaused(GetWorld(), true);
 }
