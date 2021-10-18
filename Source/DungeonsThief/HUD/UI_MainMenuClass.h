@@ -13,4 +13,35 @@ UCLASS()
 class DUNGEONSTHIEF_API UUI_MainMenuClass : public UUserWidget
 {
 	GENERATED_BODY()
+	
+protected:
+	virtual void NativeConstruct() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
+	class UButton* BtnPlay;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
+	class UButton* BtnPlayScore;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
+	class UButton* BtnSettings;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
+	class UButton* BtnExit;
+
+	UFUNCTION()
+	void PlayNormalGame();
+
+	//UFUNCTION()
+	void PlayScoreGame();
+	
+	UFUNCTION()
+	void OpenSettings();
+
+	UFUNCTION()
+	void ExitGame();
+	
+
+	UPROPERTY(EditAnywhere, Category = "UI infos")
+	FName LevelToLoadName = FName("MainLevel");
 };

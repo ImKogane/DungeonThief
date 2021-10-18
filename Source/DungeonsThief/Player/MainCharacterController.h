@@ -41,6 +41,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
 	UUserWidget* LooseScreenWidget;
+	
 
 public :
 
