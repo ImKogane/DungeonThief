@@ -32,7 +32,7 @@ protected:
 	UFUNCTION()
 	void PlayNormalGame();
 
-	//UFUNCTION()
+	UFUNCTION()
 	void PlayScoreGame();
 	
 	UFUNCTION()

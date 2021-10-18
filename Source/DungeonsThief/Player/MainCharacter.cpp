@@ -104,6 +104,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AMainCharacter::CrouchPlayer);
 	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AMainCharacter::UnCrouchPlayer);
+	
+	PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &AMainCharacter::SetGamePause);
 }
 
 
@@ -274,3 +276,15 @@ void AMainCharacter::DefinePlayerCharacter(int CharacterIndex)
 		break;
 	}
 }
+
+void AMainCharacter::SetGamePause()
+{
+	APlayerController* ControllerRef =  UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	AMainCharacterController* Player = Cast<AMainCharacterController>(ControllerRef);
+
+	if(Player != nullptr)
+	{
+		Player->ShowPauseMenu(true);
+	}
+}
+

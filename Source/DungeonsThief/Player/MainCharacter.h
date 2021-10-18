@@ -92,6 +92,10 @@ protected:
 	UFUNCTION()
 	void DefinePlayerCharacter(int CharacterIndex);
 
+	/* Call pause function in player controller to show pause menu widget */
+	UFUNCTION()
+	void SetGamePause();
+
 public:
 	FORCEINLINE void SetCanMove(bool value) { bCanMove = value; }
 	
