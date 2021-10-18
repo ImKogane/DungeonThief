@@ -41,7 +41,7 @@ public:
 	void RemoveFoodFromWorldList(AFood* FoodToRemove);
 	
 	//put it somewhere else juste a test here
-	bool GlobalWaitTest = false;
+	bool GlobalWaitAI = false;
 	
 	
 	class AFood* SpawnFood(FVector SpawnLocation);

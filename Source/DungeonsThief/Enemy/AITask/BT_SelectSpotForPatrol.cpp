@@ -12,11 +12,18 @@
 EBTNodeResult::Type UBT_SelectSpotForPatrol::CodeToExecute()
 {
 	AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
-			
+
+	if(FoodManager == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("FoodManager not found"))
+		return EBTNodeResult::Failed;
+	}
+	
 	TArray<AFoodSpot*> AllFoodSpot = FoodManager->GetAllSpotInGame();
 
 	//temporary array for selecting spot for the AI
 	TArray<AFoodSpot*> SpotsForPatrol;
+	
 	if(AllFoodSpot.Num() >= 2)
 	{
 		for (int i = 0; i < 2; i++)
@@ -34,7 +41,7 @@ EBTNodeResult::Type UBT_SelectSpotForPatrol::CodeToExecute()
 		{
 			AICharacter->SetSpotsForPatrol(SpotsForPatrol);
 			BlackboardComponent->SetValueAsInt("HasARole", 1);
-			FoodManager->GlobalWaitTest = false;
+			FoodManager->GlobalWaitAI = false;
 			return EBTNodeResult::Succeeded;
 		}
 	}

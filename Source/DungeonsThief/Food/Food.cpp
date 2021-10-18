@@ -33,7 +33,9 @@ void AFood::BeTake()
 
 void AFood::BeDrop()
 {
-	FoodMesh->SetCollisionProfileName(UCollisionProfile::BlockAllDynamic_ProfileName);
+	//befor applying in the project for the food, ignore the pawn only to make the game more fluid
+	//FoodMesh->SetCollisionProfileName(UCollisionProfile::BlockAllDynamic_ProfileName);
+	FoodMesh->SetCollisionProfileName("OverlapOnlyPawn");
 	
 }
 

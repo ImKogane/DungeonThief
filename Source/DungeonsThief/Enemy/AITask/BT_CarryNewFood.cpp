@@ -14,20 +14,26 @@ EBTNodeResult::Type UBT_CarryNewFood::CodeToExecute()
 	//get FoodManager
 	AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
 
-	if (FoodManager)
+	if (FoodManager == nullptr)
 	{
-		//spawn food on the AICharacter
-		AActor* FoodToCarry = FoodManager->SpawnFood(AICharacter->GetActorLocation());
-		if(FoodToCarry)
-		{
-			//Then let him Carry the food
-			AICharacter->SetNearFoodActor(FoodToCarry);
-			AICharacter->InteractWithItem();
-			FoodManager->GlobalWaitTest = false;
-			BlackboardComponent->SetValueAsObject("FoodCarrying", FoodToCarry);
-			BlackboardComponent->SetValueAsInt("HasARole", 1);
-			return EBTNodeResult::Succeeded;
-		}
+		UE_LOG(LogTemp, Warning, TEXT("FoodManager not found"))
+		return EBTNodeResult::Failed;
 	}
-	return EBTNodeResult::Failed;
+	
+	//spawn food on the AICharacter
+	AActor* FoodToCarry = FoodManager->SpawnFood(AICharacter->GetActorLocation());
+	
+	if(FoodToCarry == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("FoodToCarry not spawned"))
+		return EBTNodeResult::Failed;
+	}
+	
+	//Then let him Carry the food
+	AICharacter->SetNearFoodActor(FoodToCarry);
+	AICharacter->InteractWithItem();
+	FoodManager->GlobalWaitAI = false;
+	BlackboardComponent->SetValueAsObject("FoodCarrying", FoodToCarry);
+	BlackboardComponent->SetValueAsInt("HasARole", 1);
+	return EBTNodeResult::Succeeded;
 }

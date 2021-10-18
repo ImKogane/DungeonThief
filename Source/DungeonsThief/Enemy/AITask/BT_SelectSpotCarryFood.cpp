@@ -13,10 +13,15 @@ EBTNodeResult::Type UBT_SelectSpotCarryFood::CodeToExecute()
 {
 	AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
 
+	if(FoodManager == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("FoodManager not found"))
+		return EBTNodeResult::Failed;
+	}
+	
 	TArray<AFoodSpot*> AllSpotInWorld = FoodManager->GetAllSpotInGame();
 	TArray<AFoodSpot*> AlreadyVisitedSpot = AICharacter->GetAlreadyVisitedSpot();
 	
-	UE_LOG(LogTemp, Warning, TEXT("Already visited spot : %d"), AlreadyVisitedSpot.Num())
 	if(AllSpotInWorld.Num() > AlreadyVisitedSpot.Num())
 	{
 		AFoodSpot* SpotSelected = SelectRandomFoodSpot(AllSpotInWorld);
