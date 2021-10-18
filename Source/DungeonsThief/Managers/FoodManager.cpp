@@ -4,6 +4,7 @@
 #include "FoodManager.h"
 #include "DungeonsThief/Food/Food.h"
 #include "DungeonsThief/Food/FoodSpot.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AFoodManager::AFoodManager()
@@ -18,6 +19,18 @@ void AFoodManager::BeginPlay()
 {
 	Super::BeginPlay();
 
+	TArray<AActor*> FoodSpotArray;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AFoodSpot::StaticClass(), FoodSpotArray);
+
+	for (auto Spot : FoodSpotArray)
+	{
+		AFoodSpot* FoodSpot = Cast<AFoodSpot>(Spot);
+		if (FoodSpot)
+		{
+			SpotsArray.Add(FoodSpot);
+		}
+	}
+	
 	int RandomIndex = FMath::FRandRange(0, SpotsArray.Num() - 1);
 
 	AFoodSpot* FoodSpot = SpotsArray[RandomIndex];

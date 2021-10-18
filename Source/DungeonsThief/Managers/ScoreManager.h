@@ -19,16 +19,12 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere, Category = "Points System")
-	int Points;	
-	
-	UPROPERTY(EditAnywhere, Category = "Points System")
-	int MaxPoints = 5;
+	UPROPERTY(VisibleAnywhere, Category = "SpawnManager")
+	class ASpawnEnemyManager* SpawnManager;
 	
 	class AMainCharacter* Player;
 
-	UPROPERTY(EditAnywhere, Category = "SpawnManager")
-	class ASpawnEnemyManager* SpawnManager;
+	class AMyGameState* MyGameState;
 	
 	TArray<class AAIEnemyCharacter*> EnemiesInLevel;
 	
@@ -38,9 +34,6 @@ public:
 
 	UFUNCTION()
     void AddPoints(int PointsCount);
-
-	FORCEINLINE int GetPoints() { return Points; }
-	FORCEINLINE int GetMaxPoints() { return MaxPoints; }
 
 	// Play the win animation for the player and the defeat animation for all enemies spawned in the map
 	void PlayerWin();

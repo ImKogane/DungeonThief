@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "DungeonsThief/Managers/ScoreManager.h"
 #include "UI_MainClass.generated.h"
 
 
@@ -25,7 +24,7 @@ protected:
 	class UProgressBar* FoodBar;
 
 	UPROPERTY(VisibleAnywhere)
-	AScoreManager* ScoreManagerReference;
+	class AMyGameState* MyGameState;
 	
 	
 };

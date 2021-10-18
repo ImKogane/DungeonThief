@@ -2,10 +2,10 @@
 
 
 #include "ScoreManager.h"
-
-
 #include "SpawnEnemyManager.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "DungeonsThief/MyGameMode.h"
+#include "DungeonsThief/MyGameState.h"
 #include "Kismet/GameplayStatics.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
 #include "DungeonsThief/Enemy/AIEnemyController.h"
@@ -26,6 +26,21 @@ void AScoreManager::BeginPlay()
 	Super::BeginPlay();
 
 	Player = Cast<AMainCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+
+	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
+	if (GameModeBase == nullptr)
+	{
+		return;
+	}
+
+	AMyGameMode* MyGameMode = Cast<AMyGameMode>(GameModeBase);
+	if (MyGameMode == nullptr)
+	{
+		return;
+	}
+
+	MyGameState = MyGameMode->GetGameState<AMyGameState>();	
+	SpawnManager = MyGameMode->GetSpawnManager();
 }
 
 // Called every frame
@@ -36,11 +51,9 @@ void AScoreManager::Tick(float DeltaTime)
 
 void AScoreManager::AddPoints(int PointsCount)
 {
-	Points += PointsCount;
-	FString PointsA = FString::FromInt(PointsCount);
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, PointsA);
+	MyGameState->AddPlayerPoints(PointsCount);
 
-	if (Points >= 5)
+	if (MyGameState->HasPlayerWin())
 	{
 		PlayerWin();
 	}

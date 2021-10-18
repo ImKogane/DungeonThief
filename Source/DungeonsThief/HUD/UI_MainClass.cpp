@@ -2,33 +2,39 @@
 
 
 #include "DungeonsThief/HUD/UI_MainClass.h"
-#include "Kismet/GameplayStatics.h"
 #include "Components/ProgressBar.h"
+#include "DungeonsThief/MyGameMode.h"
+#include "DungeonsThief/MyGameState.h"
 
+
+class AMyGameMode;
 
 void UUI_MainClass::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	//Try to fond the game object actor in the world
-	AActor* TryScoreManager = UGameplayStatics::GetActorOfClass(GetWorld(), AScoreManager::StaticClass());
-
-	if (TryScoreManager)
+	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
+	if (GameModeBase == nullptr)
 	{
-		ScoreManagerReference = Cast<AScoreManager>(TryScoreManager);
+		return;
 	}
+
+	AMyGameMode* MyGameMode = Cast<AMyGameMode>(GameModeBase);
+	if (MyGameMode == nullptr)
+	{
+		return;
+	}
+
+	MyGameState = MyGameMode->GetGameState<AMyGameState>();
 }
 
 void UUI_MainClass::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 	
-	if(ScoreManagerReference)
+	if(MyGameState)
 	{
-		float Percent = (ScoreManagerReference->GetPoints());
-		int MaxPercent = (ScoreManagerReference->GetMaxPoints());
-	
-		FoodBar->SetPercent(Percent/MaxPercent);	//Set progress bar value
+		FoodBar->SetPercent(MyGameState->GetProgressionPercent());	//Set progress bar value
 	}
 	else
 	{
