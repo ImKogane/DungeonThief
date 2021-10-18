@@ -11,19 +11,30 @@ void UUI_MenuEndGame::NativeConstruct()
 {
 	Super::NativeConstruct();
 	
-	LevelToLoadName = FName("MainLevel");
 	BtnPlayAgain->OnClicked.AddUniqueDynamic(this, &UUI_MenuEndGame::RestartGame);
+	BtnMenu->OnClicked.AddUniqueDynamic(this, &UUI_MenuEndGame::ReturnToMenu);
 	UE_LOG(LogTemp, Warning, TEXT("INIT"));
 }
 
 void UUI_MenuEndGame::RestartGame()
 {
 	UWorld* World = GetWorld();
-	UE_LOG(LogTemp, Warning, TEXT("RESTART"));
 
 	if (World)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("RESTART"));
-		UGameplayStatics::OpenLevel(World, LevelToLoadName);
+		UGameplayStatics::OpenLevel(World, MainLevelName);
 	}
 }
+
+void UUI_MenuEndGame::ReturnToMenu()
+{
+	UWorld* World = GetWorld();
+
+	if (World)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("MENU"));
+		UGameplayStatics::OpenLevel(World, MainMenuLevelName);
+	}
+}
+

@@ -5,28 +5,63 @@
 
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
+#include "DungeonsThief/Enemy/AIEnemyController.h"
 #include "DungeonsThief/Food/Food.h"
-#include "DungeonsThief/Managers/FoodManager.h"
 
 EBTNodeResult::Type UBT_PickBackDroppedFood::CodeToExecute()
 {	
-	AFood* FoodDroped = Cast<AFood>(BlackboardComponent->GetValueAsObject("FoodDropped"));
-	
-	//TODO Peut être améliorer je pense
-	if(FoodDroped)
-	{
-		float DistBetweenBoth = FVector::Dist(FoodDroped->GetActorLocation(), AICharacter->GetActorLocation());
+	AFood* FoodDropped = Cast<AFood>(BlackboardComponent->GetValueAsObject("FoodDropped"));
 
-		if(DistBetweenBoth <= 150)
+	if(FoodDropped == nullptr)
+	{
+		BlackboardComponent->ClearValue("SpotLocationToGo");
+		return EBTNodeResult::Failed;
+	}
+	float DistFromFood = FVector::Dist(FoodDropped->GetActorLocation(), AICharacter->GetActorLocation());
+
+	if(DistFromFood <= 175)
+	{
+		AICharacter->SetNearFoodActor(FoodDropped);
+		AICharacter->InteractWithItem();
+		BlackboardComponent->SetValueAsObject("FoodCarrying", FoodDropped);
+		BlackboardComponent->ClearValue("FoodDropped");
+		return EBTNodeResult::Succeeded;
+	}	
+
+	//init RayCast
+	FVector StartLineTrace = AIController->GetPawn()->GetActorLocation();
+	FVector DirectionTowardFood = (FoodDropped->GetActorLocation() - StartLineTrace).GetSafeNormal();
+	FVector EndLineTrace = StartLineTrace + (DirectionTowardFood * AIController->GetSightDistance());
+	
+	FHitResult* HitResult = new FHitResult();
+	
+	FCollisionQueryParams* TraceParams = new FCollisionQueryParams();
+	TraceParams->AddIgnoredActor(AIController->GetPawn());
+	
+	if (GetWorld()->LineTraceSingleByChannel(*HitResult, StartLineTrace, EndLineTrace, ECollisionChannel::ECC_WorldStatic, *TraceParams))
+	{
+		AFood* FoodHitted = Cast<AFood>(HitResult->GetActor());
+
+		UE_LOG(LogTemp, Warning, TEXT("cast hitted this : %s"), *HitResult->GetActor()->GetName())
+		
+		if (FoodHitted == nullptr)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("FOUND IT OMG"))
-			AICharacter->SetNearFoodActor(FoodDroped);
-			AICharacter->InteractWithItem();
-			BlackboardComponent->SetValueAsObject("FoodCarrying", FoodDroped);
+			UE_LOG(LogTemp, Warning, TEXT("Food not in sight"))
 			BlackboardComponent->ClearValue("FoodDropped");
-			return EBTNodeResult::Succeeded;
+			return EBTNodeResult::Failed;
 		}
+
+		if(FoodHitted != FoodDropped)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Wrong food"))
+			BlackboardComponent->ClearValue("FoodDropped");
+			return EBTNodeResult::Failed;
+		}
+		
+		BlackboardComponent->SetValueAsVector("FoodDroppedLocation", FoodHitted->GetActorLocation());
+		return EBTNodeResult::Succeeded;
 	}
 	
+	BlackboardComponent->ClearValue("FoodDropped");
 	return EBTNodeResult::Failed;
 }

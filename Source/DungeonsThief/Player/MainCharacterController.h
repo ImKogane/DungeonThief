@@ -41,10 +41,19 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
 	UUserWidget* LooseScreenWidget;
+	
+	UPROPERTY(EditAnywhere, Category = "Widget")
+    TSubclassOf<UUserWidget> WPauseMenu;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
+    UUserWidget* PauseMenuWidget;
+	
 
 public :
 
 	void ShowWinScreen(bool Visibility);
 	void ShowLooseScreen(bool Visibility);
+	void ShowPauseMenu(bool Visibility);
+	
 
 };

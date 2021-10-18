@@ -13,20 +13,19 @@ void UBT_SelectSpotIfPatrol::ScheduleNextTick(UBehaviorTreeComponent& OwnerComp,
 
 	AAIEnemyController* AIController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
 
-	if (AIController)
+	if (AIController == nullptr)
 	{
-		AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();
-		if(AICharacter)
-		{
-			
-			UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
-
-			TArray<AFoodSpot*> SpotsForPatrol = AICharacter->GetSpotsForPatrol();
-			if(SpotsForPatrol.Num() > 0)
-			{
-				BlackboardComponent->SetValueAsObject("SpotLocationToGo", SpotsForPatrol[0]);
-			}else
-				BlackboardComponent->ClearValue("SpotLocationToGo");
-		}
+		return;
 	}
+	
+	AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();		
+	UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
+
+	TArray<AFoodSpot*> SpotsForPatrol = AICharacter->GetSpotsForPatrol();
+	if(SpotsForPatrol.Num() > 0)
+	{
+		BlackboardComponent->SetValueAsObject("SpotLocationToGo", SpotsForPatrol[0]);
+	}else
+		BlackboardComponent->ClearValue("SpotLocationToGo");
+	
 }

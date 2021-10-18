@@ -20,10 +20,19 @@ protected:
 
 	UFUNCTION()
     void RestartGame();
+	
+	UFUNCTION()
+	void ReturnToMenu();
     
     UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "Restart Game")
     class UButton* BtnPlayAgain;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "Restart Game")
+	class UButton* BtnMenu;
     
     UPROPERTY(EditAnywhere, Category = "Restart Game")
-    FName LevelToLoadName;
+    FName MainLevelName = FName("MainLevel");
+	
+	UPROPERTY(EditAnywhere, Category = "Restart Game")
+	FName MainMenuLevelName = FName("MainMenuLevel");
 };

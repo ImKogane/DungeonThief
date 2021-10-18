@@ -9,18 +9,15 @@
 EBTNodeResult::Type UBT_BaseTaskDungeonsThief::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AIController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
-	
-	if (AIController == nullptr)
+
+	if(AIController ==  nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("AICharacter or Controller not found"))
 		return EBTNodeResult::Failed;
 	}
 	
 	AICharacter = AIController->GetAICharacter();
-    		
 	BlackboardComponent = AIController->GetBlackBoardComponent();
-    
-    return CodeToExecute();	
+	return CodeToExecute();
 }
 
 EBTNodeResult::Type UBT_BaseTaskDungeonsThief::CodeToExecute()
