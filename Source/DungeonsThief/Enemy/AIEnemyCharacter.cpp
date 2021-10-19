@@ -9,8 +9,8 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Food/Food.h"
 #include "Components/CapsuleComponent.h"
-#include "DungeonsThief/AAnimationsHandler.h"
-#include "DungeonsThief/MyGameMode.h"
+#include "DungeonsThief/Managers/AAnimationsHandler.h"
+#include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "DungeonsThief/Player/MainCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -55,10 +55,22 @@ void AAIEnemyCharacter::BeginPlay()
 	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
 	if (GameModeBase == nullptr)
 	{
+		UE_LOG(LogTemp, Error, TEXT("GameModeBase is null"));
 		return;
 	}
 
+	//Bind to the gamemode events
 	MyGameMode = Cast<AMyGameMode>(GameModeBase);
+	if (MyGameMode == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
+		return;
+	}
+	
+	MyGameMode->OnGameWin.BindUFunction(this, "EnemyLooseGame");
+	MyGameMode->OnGameLoose.BindUFunction(this, "EnemyWinGame");
+
+	OnDestroyed.AddDynamic(this, &AAIEnemyCharacter::OnDestoyingBehaviour);
 }
 
 // Called every frame
@@ -101,7 +113,18 @@ void AAIEnemyCharacter::StopMovement()
 	}
 }
 
-void AAIEnemyCharacter::WinGame()
+void AAIEnemyCharacter::OnDestoyingBehaviour(AActor* Act)
+{
+	if (MyGameMode == nullptr)
+	{
+		return;
+	}
+
+	MyGameMode->OnGameWin.Unbind();
+	MyGameMode->OnGameLoose.Unbind();
+}
+
+void AAIEnemyCharacter::EnemyWinGame()
 {
 	if (AnimationHandler && WinMontage)
 	{
@@ -111,7 +134,7 @@ void AAIEnemyCharacter::WinGame()
 	}
 }
 
-void AAIEnemyCharacter::LooseGame()
+void AAIEnemyCharacter::EnemyLooseGame()
 {
 	if (AnimationHandler && LooseMontage)
 	{
@@ -155,7 +178,7 @@ void AAIEnemyCharacter::OnPlayerDetectionOverlapBegin(UPrimitiveComponent* Overl
 		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
 		return;
 	}
-
+	
 	MyGameMode->LooseGame();
 }
 

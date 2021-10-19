@@ -2,7 +2,7 @@
 
 
 #include "BT_UpdatePlayerPosition.h"
-#include "AIEnemyController.h"
+#include "DungeonsThief/Enemy/AIEnemyController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Player/MainCharacter.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"

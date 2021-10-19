@@ -3,8 +3,8 @@
 
 #include "DungeonsThief/HUD/UI_MainClass.h"
 #include "Components/ProgressBar.h"
-#include "DungeonsThief/MyGameMode.h"
-#include "DungeonsThief/MyGameState.h"
+#include "DungeonsThief/GameSettings/MyGameMode.h"
+#include "DungeonsThief/GameSettings/MyGameState.h"
 
 
 class AMyGameMode;

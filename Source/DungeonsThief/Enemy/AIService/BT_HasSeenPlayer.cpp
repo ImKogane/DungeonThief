@@ -3,9 +3,8 @@
 
 #include "BT_HasSeenPlayer.h"
 
-#include "AIEnemyCharacter.h"
-#include "AIEnemyController.h"
-//#include "AssetTypeCategories.h"
+#include "DungeonsThief/Enemy/AIEnemyController.h"
+#include "DungeonsThief/Enemy/AIEnemyCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "DungeonsThief/Player/MainCharacter.h"

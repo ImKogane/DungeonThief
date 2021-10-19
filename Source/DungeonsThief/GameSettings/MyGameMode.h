@@ -9,16 +9,18 @@
 /**
  * 
  */
+
+DECLARE_DYNAMIC_DELEGATE(FOnGameWin);	
+DECLARE_DYNAMIC_DELEGATE(FOnGameLoose);
+DECLARE_DYNAMIC_DELEGATE(FOnGainPoints);
+
 UCLASS()
 class DUNGEONSTHIEF_API AMyGameMode : public AGameMode
 {
 	GENERATED_BODY()
 	
-public:	
-	DECLARE_DYNAMIC_DELEGATE(FOnGameWin);	
-	DECLARE_DYNAMIC_DELEGATE(FOnGameLoose);
-	DECLARE_DYNAMIC_DELEGATE(FOnGainPoints);
-
+public:
+	
 	FOnGameWin OnGameWin;
 	FOnGameLoose OnGameLoose;
 	FOnGainPoints OnGainPoints;

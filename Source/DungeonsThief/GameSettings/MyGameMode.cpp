@@ -9,9 +9,7 @@
 
 void AMyGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
 {
-	Super::InitGame(MapName, Options, ErrorMessage);
-
-	
+	Super::InitGame(MapName, Options, ErrorMessage);	
 }
 
 void AMyGameMode::InitGameState()
@@ -39,40 +37,15 @@ void AMyGameMode::WinGame()
 	{
 		OnGameWin.Execute();
 	}
-
-	/*
-	if (SpawnManager)
-	{
-		EnemiesInLevel = SpawnManager->GetEnemiesSpawned();
-	}
-
-	for (AAIEnemyCharacter* Enemy : EnemiesInLevel)
-	{
-		if (Enemy)
-		{
-		}
-	}*/
 }
 
 void AMyGameMode::LooseGame()
 {
 	if (OnGameLoose.IsBound())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("GAME LOOSE"));
 		OnGameLoose.Execute();
 	}
-
-	/*if (SpawnManager)
-	{
-		EnemiesInLevel = SpawnManager->GetEnemiesSpawned();
-	}
-	
-	for (AAIEnemyCharacter* Enemy : EnemiesInLevel)
-	{
-		if (Enemy)
-		{
-			Enemy->WinGame();	
-		}
-	}*/
 }
 
 void AMyGameMode::GainPoints(int Points)
@@ -82,5 +55,10 @@ void AMyGameMode::GainPoints(int Points)
 	if (OnGainPoints.IsBound())
 	{
 		OnGainPoints.Execute();
+	}
+
+	if (MyGameState->HasPlayerWin())
+	{
+		WinGame();
 	}
 }

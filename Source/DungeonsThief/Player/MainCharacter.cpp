@@ -4,12 +4,10 @@
 #include "MainCharacter.h"
 
 #include "MainCharacterController.h"
-#include "DungeonsThief/AAnimationsHandler.h"
-#include "DungeonsThief/Food//Food.h"
+#include "DungeonsThief/Managers/AAnimationsHandler.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Components/CapsuleComponent.h"
-#include "DungeonsThief/MyGameMode.h"
+#include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -85,6 +83,7 @@ void AMainCharacter::BeginPlay()
 	AMyGameMode* MyGameMode = Cast<AMyGameMode>(GameModeBase);
 	if (MyGameMode == nullptr)
 	{
+		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
 		return;
 	}
 
@@ -247,8 +246,7 @@ void AMainCharacter::WinGame()
 	if (MainCharacterController)
 	{
 		MainCharacterController->ShowWinScreen(true);
-	}
-	
+	}	
 }
 
 void AMainCharacter::LooseGame()

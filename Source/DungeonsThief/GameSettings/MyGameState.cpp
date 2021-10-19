@@ -27,5 +27,5 @@ ASpawnEnemyManager* AMyGameState::SpawnEnemyManager()
 	}
 
 	//Location used in the MAIN LEVEL
-	return World->SpawnActor<ASpawnEnemyManager>(SpawnEnemyManageBlueprint, FVector(-4817,-11436,930), FRotator(0,0,-90));
+	return World->SpawnActor<ASpawnEnemyManager>(SpawnEnemyManageBlueprint, FVector(-4817,-11436,930), FRotator(0,-90,0));
 }

@@ -3,7 +3,7 @@
 
 #include "PlayerHidingPlace.h"
 
-#include "DungeonsThief/MyGameMode.h"
+#include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "DungeonsThief/Food/Food.h"
 #include "DungeonsThief/Managers/FoodManager.h"
 #include "DungeonsThief/Player/MainCharacter.h"
