@@ -147,17 +147,10 @@ void AMainCharacter::CrouchPlayer()
 {
 	if(IsCrouch == false && IsCarryFood == false)
 	{
-		/*
-		UnCrouch();
-		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
-		IsCrouch = false;
-		*/
-		
 		Crouch();
 		GetCharacterMovement()->MaxWalkSpeed = (BaseSpeed/1.75) * CrouchSpeedBonus;
 		IsCrouch = true;
 		GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Crouch."));
 	}
 
 }
@@ -171,7 +164,6 @@ void AMainCharacter::UnCrouchPlayer()
 		UnCrouch();
 		SetPlayerSpeed();
 		IsCrouch = false;
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("UnCrouch."));
 	}
 }
 
