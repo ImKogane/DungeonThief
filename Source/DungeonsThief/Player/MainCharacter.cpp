@@ -87,8 +87,8 @@ void AMainCharacter::BeginPlay()
 		return;
 	}
 
-	MyGameMode->OnGameWin.BindUFunction(this, "WinGame");
-	MyGameMode->OnGameLoose.BindUFunction(this, "LooseGame");
+	MyGameMode->OnGameWin.AddDynamic(this, &AMainCharacter::WinGame);
+	MyGameMode->OnGameLoose.AddDynamic(this, &AMainCharacter::LooseGame);
 
 }
 

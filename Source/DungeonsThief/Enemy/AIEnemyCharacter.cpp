@@ -67,8 +67,8 @@ void AAIEnemyCharacter::BeginPlay()
 		return;
 	}
 	
-	MyGameMode->OnGameWin.BindUFunction(this, "EnemyLooseGame");
-	MyGameMode->OnGameLoose.BindUFunction(this, "EnemyWinGame");
+	MyGameMode->OnGameWin.AddDynamic(this, &AAIEnemyCharacter::EnemyLooseGame);
+	MyGameMode->OnGameLoose.AddDynamic(this, &AAIEnemyCharacter::EnemyWinGame);
 
 	OnDestroyed.AddDynamic(this, &AAIEnemyCharacter::OnDestoyingBehaviour);
 }
@@ -120,8 +120,8 @@ void AAIEnemyCharacter::OnDestoyingBehaviour(AActor* Act)
 		return;
 	}
 
-	MyGameMode->OnGameWin.Unbind();
-	MyGameMode->OnGameLoose.Unbind();
+	MyGameMode->OnGameWin.RemoveDynamic(this, &AAIEnemyCharacter::EnemyLooseGame);
+	MyGameMode->OnGameLoose.RemoveDynamic(this, &AAIEnemyCharacter::EnemyWinGame);
 }
 
 void AAIEnemyCharacter::EnemyWinGame()

@@ -26,9 +26,6 @@ class DUNGEONSTHIEF_API AMyGameState : public AGameState
 protected:
 
 	UPROPERTY(EditAnywhere, Category = "Helpers")
-	TSubclassOf<class AFoodManager> FoodManageBlueprint;
-	
-	UPROPERTY(EditAnywhere, Category = "Helpers")
 	TSubclassOf<class ASpawnEnemyManager> SpawnEnemyManageBlueprint;
 	
 	TArray<class AAIEnemyCharacter*> EnemiesInLevel;
@@ -44,9 +41,6 @@ protected:
 
 public:
 
-	//FORCEINLINE TSubclassOf<class AFoodManager> GetFoodManagerBlueprint() { return FoodManageBlueprint; } 
-	//FORCEINLINE TSubclassOf<class ASpawnEnemyManager> GetSpawnManagerBlueprint() { return SpawnEnemyManageBlueprint; }
-
 	FORCEINLINE EGameState GetGameState() { return CharacterGameState; }
 	FORCEINLINE void SetGameState(EGameState NewState) { CharacterGameState = NewState; }
 
@@ -59,8 +53,6 @@ public:
 	FORCEINLINE void AddEnemiesInLevel(class AAIEnemyCharacter* EnemyToAdd) { EnemiesInLevel.Add(EnemyToAdd); }
 
 	FORCEINLINE bool HasPlayerWin() {return PlayerPoints >= MaxPoints; }
-
-	class AFoodManager* SpawnFoodManager();
 
 	class ASpawnEnemyManager* SpawnEnemyManager();
 

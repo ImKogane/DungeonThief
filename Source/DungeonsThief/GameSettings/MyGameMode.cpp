@@ -6,12 +6,6 @@
 #include "DungeonsThief/Managers/FoodManager.h"
 #include "DungeonsThief/Managers/SpawnEnemyManager.h"
 
-
-void AMyGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
-{
-	Super::InitGame(MapName, Options, ErrorMessage);	
-}
-
 void AMyGameMode::InitGameState()
 {
 	Super::InitGameState();
@@ -25,9 +19,11 @@ void AMyGameMode::InitGameState()
 		return;
 	}
 
-	MyGameState = CurrentGameState;
-	
-	FoodManager = MyGameState->SpawnFoodManager();
+	MyGameState = CurrentGameState;	
+}
+
+void AMyGameMode::HandleMatchHasStarted()
+{	
 	SpawnEnemyManager = MyGameState->SpawnEnemyManager();
 }
 
@@ -35,7 +31,7 @@ void AMyGameMode::WinGame()
 {
 	if (OnGameWin.IsBound())
 	{
-		OnGameWin.Execute();
+		OnGameWin.Broadcast();
 	}
 }
 
@@ -44,7 +40,7 @@ void AMyGameMode::LooseGame()
 	if (OnGameLoose.IsBound())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("GAME LOOSE"));
-		OnGameLoose.Execute();
+		OnGameLoose.Broadcast();
 	}
 }
 
@@ -54,7 +50,7 @@ void AMyGameMode::GainPoints(int Points)
 	
 	if (OnGainPoints.IsBound())
 	{
-		OnGainPoints.Execute();
+		OnGainPoints.Broadcast();
 	}
 
 	if (MyGameState->HasPlayerWin())

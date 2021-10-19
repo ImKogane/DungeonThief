@@ -27,7 +27,7 @@ void UUI_MainClass::NativeConstruct()
 
 	MyGameState = MyGameMode->GetGameState<AMyGameState>();
 
-	MyGameMode->OnGainPoints.BindUFunction(this, "UpdateProgression");
+	MyGameMode->OnGainPoints.AddDynamic(this, &UUI_MainClass::UpdateProgression);
 }
 
 void UUI_MainClass::UpdateProgression()
