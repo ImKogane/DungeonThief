@@ -34,6 +34,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Helpers")
 	class ASpawnEnemyManager* SpawnEnemyManager;
 
+	class AMyGameState* MyGameState;
+
 public:
 
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
@@ -44,4 +46,5 @@ public:
 
 	void LooseGame();
 	
+	void GainPoints(int Points);	
 };

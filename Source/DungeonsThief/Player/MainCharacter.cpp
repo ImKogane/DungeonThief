@@ -9,11 +9,12 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "DungeonsThief/MyGameMode.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "DungeonsThief/Managers/ScoreManager.h"
 
 
+class AMyGameMode;
 // Sets default values
 AMainCharacter::AMainCharacter()
 {
@@ -73,6 +74,22 @@ void AMainCharacter::BeginPlay()
 	DefinePlayerCharacter(Random);
 
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * SpeedBonus;
+
+	//Bind method with the GameMode
+	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
+	if (GameModeBase == nullptr)
+	{
+		return;
+	}
+
+	AMyGameMode* MyGameMode = Cast<AMyGameMode>(GameModeBase);
+	if (MyGameMode == nullptr)
+	{
+		return;
+	}
+
+	MyGameMode->OnGameWin.BindUFunction(this, "WinGame");
+	MyGameMode->OnGameLoose.BindUFunction(this, "LooseGame");
 
 }
 

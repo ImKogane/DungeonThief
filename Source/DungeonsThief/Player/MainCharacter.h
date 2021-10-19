@@ -104,12 +104,12 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+
+	UFUNCTION()
 	void WinGame();
 
+	UFUNCTION()
 	void LooseGame();
-
-	void TestWin();
 
 	FORCEINLINE bool GetIsCrouching() { return IsCrouch; }
 	

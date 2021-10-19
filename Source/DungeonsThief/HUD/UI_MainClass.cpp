@@ -19,26 +19,21 @@ void UUI_MainClass::NativeConstruct()
 		return;
 	}
 
-	AMyGameMode* MyGameMode = Cast<AMyGameMode>(GameModeBase);
+	MyGameMode = Cast<AMyGameMode>(GameModeBase);
 	if (MyGameMode == nullptr)
 	{
 		return;
 	}
 
 	MyGameState = MyGameMode->GetGameState<AMyGameState>();
+
+	MyGameMode->OnGainPoints.BindUFunction(this, "UpdateProgression");
 }
 
-void UUI_MainClass::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+void UUI_MainClass::UpdateProgression()
 {
-	Super::NativeTick(MyGeometry, InDeltaTime);
-	
 	if(MyGameState)
 	{
 		FoodBar->SetPercent(MyGameState->GetProgressionPercent());	//Set progress bar value
 	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Crouch."));
-	}
-	
 }

@@ -26,9 +26,11 @@ void AMyGameMode::InitGameState()
 		UE_LOG(LogTemp, Error, TEXT("World or GameState are null"));
 		return;
 	}
+
+	MyGameState = CurrentGameState;
 	
-	FoodManager = CurrentGameState->SpawnFoodManager();
-	SpawnEnemyManager = CurrentGameState->SpawnEnemyManager();
+	FoodManager = MyGameState->SpawnFoodManager();
+	SpawnEnemyManager = MyGameState->SpawnEnemyManager();
 }
 
 void AMyGameMode::WinGame()
@@ -37,6 +39,19 @@ void AMyGameMode::WinGame()
 	{
 		OnGameWin.Execute();
 	}
+
+	/*
+	if (SpawnManager)
+	{
+		EnemiesInLevel = SpawnManager->GetEnemiesSpawned();
+	}
+
+	for (AAIEnemyCharacter* Enemy : EnemiesInLevel)
+	{
+		if (Enemy)
+		{
+		}
+	}*/
 }
 
 void AMyGameMode::LooseGame()
@@ -44,5 +59,28 @@ void AMyGameMode::LooseGame()
 	if (OnGameLoose.IsBound())
 	{
 		OnGameLoose.Execute();
+	}
+
+	/*if (SpawnManager)
+	{
+		EnemiesInLevel = SpawnManager->GetEnemiesSpawned();
+	}
+	
+	for (AAIEnemyCharacter* Enemy : EnemiesInLevel)
+	{
+		if (Enemy)
+		{
+			Enemy->WinGame();	
+		}
+	}*/
+}
+
+void AMyGameMode::GainPoints(int Points)
+{
+	MyGameState->AddPlayerPoints(Points);
+	
+	if (OnGainPoints.IsBound())
+	{
+		OnGainPoints.Execute();
 	}
 }

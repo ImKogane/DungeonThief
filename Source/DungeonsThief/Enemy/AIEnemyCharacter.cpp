@@ -10,7 +10,7 @@
 #include "DungeonsThief/Food/Food.h"
 #include "Components/CapsuleComponent.h"
 #include "DungeonsThief/AAnimationsHandler.h"
-#include "DungeonsThief/Managers/ScoreManager.h"
+#include "DungeonsThief/MyGameMode.h"
 #include "DungeonsThief/Player/MainCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -51,6 +51,14 @@ void AAIEnemyCharacter::BeginPlay()
 	
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 	SetRandomMesh();
+
+	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
+	if (GameModeBase == nullptr)
+	{
+		return;
+	}
+
+	MyGameMode = Cast<AMyGameMode>(GameModeBase);
 }
 
 // Called every frame
@@ -129,20 +137,26 @@ void AAIEnemyCharacter::SetRandomMesh()
 
 void AAIEnemyCharacter::OnPlayerDetectionOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor)
+	if (OtherActor == nullptr)
 	{
-		AMainCharacter* MainCharacter = Cast<AMainCharacter>(OtherActor);
-
-		if (MainCharacter)
-		{
-			AScoreManager* ScoreManager =  Cast<AScoreManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AScoreManager::StaticClass()));
-
-			if (ScoreManager)
-			{
-				ScoreManager->PlayerLoose();
-			}
-		}
+		UE_LOG(LogTemp, Error, TEXT("OtherActor is null"));
+		return;
 	}
+	
+	AMainCharacter* MainCharacter = Cast<AMainCharacter>(OtherActor);
+	if (MainCharacter == nullptr)
+	{
+		//Overlap actor isn't the Player
+		return;
+	}
+
+	if (MyGameMode == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
+		return;
+	}
+
+	MyGameMode->LooseGame();
 }
 
 

@@ -18,13 +18,14 @@ class DUNGEONSTHIEF_API UUI_MainClass : public UUserWidget
 protected:
 
 	void NativeConstruct() override;
-	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UProgressBar* FoodBar;
 
-	UPROPERTY(VisibleAnywhere)
+	class AMyGameMode* MyGameMode;
 	class AMyGameState* MyGameState;
-	
+
+	UFUNCTION()
+	void UpdateProgression();
 	
 };

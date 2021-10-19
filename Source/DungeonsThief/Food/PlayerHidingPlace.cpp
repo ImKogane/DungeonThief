@@ -6,7 +6,6 @@
 #include "DungeonsThief/MyGameMode.h"
 #include "DungeonsThief/Food/Food.h"
 #include "DungeonsThief/Managers/FoodManager.h"
-#include "DungeonsThief/Managers/ScoreManager.h"
 #include "DungeonsThief/Player/MainCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -37,7 +36,7 @@ void APlayerHidingPlace::BeginPlay()
 		return;
 	}
 
-	AMyGameMode* MyGameMode = Cast<AMyGameMode>(GameModeBase);
+	MyGameMode = Cast<AMyGameMode>(GameModeBase);
 	if (MyGameMode == nullptr)
 	{
 		return;
@@ -61,9 +60,9 @@ void APlayerHidingPlace::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedCompon
 		{
 			AFood* HeldFood = Cast<AFood>(Player->GetFoodCarried());
 
-			if (HeldFood && ScoreManager)
+			if (HeldFood)
 			{
-				ScoreManager->AddPoints(HeldFood->GetFoodPoints());
+				MyGameMode->GainPoints(HeldFood->GetFoodPoints());
 			}
 
 			UGameplayStatics::PlaySoundAtLocation(this, WinPointsSound, GetActorLocation());

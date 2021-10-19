@@ -82,6 +82,8 @@ protected:
 	//used only if the AI carry food
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	TArray<class AFoodSpot*> AlreadyVisitedSpot;
+
+	class AMyGameMode* MyGameMode;
 	
 public:	
 	// Called every frame
