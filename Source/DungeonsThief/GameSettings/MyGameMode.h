@@ -28,7 +28,7 @@ public:
 	FORCEINLINE class AFoodManager* GetFoodManager() { return FoodManager; }
 	FORCEINLINE class ASpawnEnemyManager* GetSpawnManager() { return SpawnEnemyManager; }
 
-	FORCEINLINE void InitFoodManager(class AFoodManager* FoodManager) { this->FoodManager = FoodManager;};
+	FORCEINLINE void InitFoodManager(class AFoodManager* FM) { FoodManager = FM;};
 
 protected:
 	
@@ -42,6 +42,8 @@ protected:
 
 public:
 
+	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
+	
 	virtual void InitGameState() override;
 
 	virtual void HandleMatchHasStarted() override;

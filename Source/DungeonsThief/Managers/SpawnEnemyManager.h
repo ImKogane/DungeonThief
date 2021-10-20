@@ -41,8 +41,13 @@ protected:
 	class AFoodManager* FoodManager;
 	
 	UPROPERTY(EditAnywhere, Category = "Spawn Enemy")
-	TSubclassOf<class AAIEnemyCharacter> EnemyToSpawn;
+	TSubclassOf<class AAIEnemyCharacter> FirstEnemyToSpawn;
 
+	UPROPERTY(EditAnywhere, Category = "Spawn Enemy")
+	TSubclassOf<class AAIEnemyCharacter> SecondEnemyToSpawn;
+
+	TSubclassOf<class AAIEnemyCharacter> CurrentEnemyToSpawn;
+	
 	TArray<class AAIEnemyCharacter*> EnemiesSpawned;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Spawn Enemy")

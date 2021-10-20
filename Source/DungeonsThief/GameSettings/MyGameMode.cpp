@@ -6,6 +6,11 @@
 #include "DungeonsThief/Managers/FoodManager.h"
 #include "DungeonsThief/Managers/SpawnEnemyManager.h"
 
+void AMyGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
+{
+	Super::InitGame(MapName, Options, ErrorMessage);
+}
+
 void AMyGameMode::InitGameState()
 {
 	Super::InitGameState();
@@ -23,7 +28,9 @@ void AMyGameMode::InitGameState()
 }
 
 void AMyGameMode::HandleMatchHasStarted()
-{	
+{
+	Super::HandleMatchHasStarted();
+	
 	SpawnEnemyManager = MyGameState->SpawnEnemyManager();
 }
 
@@ -39,7 +46,6 @@ void AMyGameMode::LooseGame()
 {
 	if (OnGameLoose.IsBound())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("GAME LOOSE"));
 		OnGameLoose.Broadcast();
 	}
 }

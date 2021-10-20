@@ -101,14 +101,9 @@ bool UBT_HasSeenPlayer::CanSeePlayerRayCast(FVector ForwardVector, FVector Start
 	FVector EndTrace = StartTrace + (ForwardVector * MaxDistance);
 	FCollisionQueryParams* TraceParams = new FCollisionQueryParams();
 	TraceParams->AddIgnoredActor(IgnoreActor);
-
-	//DrawDebugLine(GetWorld(), StartTrace, EndTrace, FColor::Emerald, true, -1, 0, 10);
 	
 	if (GetWorld()->LineTraceSingleByChannel(*HitResult, StartTrace, EndTrace, ECollisionChannel::ECC_WorldStatic, *TraceParams))
 	{
-		//FString ObjectName = HitResult->GetActor()->GetName();
-		//UE_LOG(LogTemp, Warning, TEXT("Touch : %s"), *ObjectName);
-		
 		AMainCharacter* MainCharacter = Cast<AMainCharacter>(HitResult->GetActor());
 		
 		//If the MainCharacter is valid, nothing is between the enemy and the player. The enemy can keep chasing the player

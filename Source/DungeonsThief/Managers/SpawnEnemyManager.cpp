@@ -44,15 +44,19 @@ void ASpawnEnemyManager::BeginPlay()
 	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
 	if (GameModeBase == nullptr)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Getting GameMode failed"));
 		return;
 	}
 
 	AMyGameMode* MyGameMode = Cast<AMyGameMode>(GameModeBase);
 	if (MyGameMode == nullptr)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("MyGameMode is null"));
 		return;
 	}
 
+	CurrentEnemyToSpawn = GetWorld()->GetName() == "MainLevel" ? FirstEnemyToSpawn : SecondEnemyToSpawn;
+	
 	FoodManager = MyGameMode->GetFoodManager();
 		
 	//First spawn : 2 enemies are instanciated + wait 60s to instanciate a third one
@@ -88,7 +92,7 @@ void ASpawnEnemyManager::CreateEnemy()
 		return;
 	}
 	
-	AAIEnemyCharacter* EnemyCharacter = World->SpawnActor<AAIEnemyCharacter>(EnemyToSpawn, SpawnLocation->GetComponentLocation(), GetActorRotation());
+	AAIEnemyCharacter* EnemyCharacter = World->SpawnActor<AAIEnemyCharacter>(CurrentEnemyToSpawn, SpawnLocation->GetComponentLocation(), GetActorRotation());
 	SetupEnemy(EnemyCharacter);
 	EnemiesSpawned.Add(EnemyCharacter);
 }
