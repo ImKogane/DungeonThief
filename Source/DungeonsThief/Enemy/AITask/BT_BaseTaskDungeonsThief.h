@@ -21,6 +21,8 @@ protected:
 	class AAIEnemyCharacter* AICharacter;
 	
 	UBlackboardComponent* BlackboardComponent;
+
+	class AMyGameMode* MyGameMode;
 	
 	virtual EBTNodeResult::Type CodeToExecute();
 

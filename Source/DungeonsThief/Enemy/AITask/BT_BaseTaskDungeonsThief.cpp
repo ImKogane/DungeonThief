@@ -5,6 +5,7 @@
 
 #include "DungeonsThief/Enemy/AIEnemyController.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
+#include "DungeonsThief/GameSettings/MyGameMode.h"
 
 EBTNodeResult::Type UBT_BaseTaskDungeonsThief::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
@@ -13,6 +14,19 @@ EBTNodeResult::Type UBT_BaseTaskDungeonsThief::ExecuteTask(UBehaviorTreeComponen
 	if(AIController ==  nullptr)
 	{
 		return EBTNodeResult::Failed;
+	}
+
+	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
+	if (GameModeBase == nullptr)
+	{
+		return EBTNodeResult::Failed;;
+	}
+
+	MyGameMode = Cast<AMyGameMode>(GameModeBase);
+	if (MyGameMode == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
+		return EBTNodeResult::Failed;;
 	}
 	
 	AICharacter = AIController->GetAICharacter();

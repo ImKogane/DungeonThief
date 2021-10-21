@@ -5,18 +5,26 @@
 
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
-#include "DungeonsThief/Enemy/AIEnemyController.h"
 #include "DungeonsThief/Food/Food.h"
+#include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "DungeonsThief/Managers/FoodManager.h"
+#include "DungeonsThief/Managers/SpawnEnemyManager.h"
 
 EBTNodeResult::Type UBT_CarryNewFood::CodeToExecute()
 {
 	//get FoodManager
-	AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
+	AFoodManager* FoodManager = MyGameMode->GetFoodManager();
+	ASpawnEnemyManager* SpawnEnemyManager = MyGameMode->GetSpawnManager();
 
 	if (FoodManager == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("FoodManager not found"))
+		return EBTNodeResult::Failed;
+	}
+	
+	if (SpawnEnemyManager == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("SpawnEnemyManager not found"))
 		return EBTNodeResult::Failed;
 	}
 	
@@ -32,7 +40,7 @@ EBTNodeResult::Type UBT_CarryNewFood::CodeToExecute()
 	//Then let him Carry the food
 	AICharacter->SetNearFoodActor(FoodToCarry);
 	AICharacter->InteractWithItem();
-	FoodManager->GlobalWaitAI = false;
+	SpawnEnemyManager->SetGlobalWaitAI(false);
 	BlackboardComponent->SetValueAsObject("FoodCarrying", FoodToCarry);
 	BlackboardComponent->SetValueAsInt("HasARole", 1);
 	return EBTNodeResult::Succeeded;

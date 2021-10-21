@@ -5,16 +5,16 @@
 
 #include "NavigationSystem.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "DungeonsThief/Enemy/AIEnemyController.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
-#include "DungeonsThief/Managers/FoodManager.h"
+#include "DungeonsThief/GameSettings/MyGameMode.h"
+#include "DungeonsThief/Managers/SpawnEnemyManager.h"
 #include "Kismet/GameplayStatics.h"
 
 EBTNodeResult::Type UBT_SelectLocationForPatrol::CodeToExecute()
 {
-	AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
+	ASpawnEnemyManager* SpawnEnemyManager = MyGameMode->GetSpawnManager();
 
-	if(FoodManager == nullptr)
+	if(SpawnEnemyManager == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("FoodManager not found"))
 		return EBTNodeResult::Failed;
@@ -41,7 +41,7 @@ EBTNodeResult::Type UBT_SelectLocationForPatrol::CodeToExecute()
 	{
 		AICharacter->SetLocationsForPatrol(LocationsForPatrol);
 		BlackboardComponent->SetValueAsInt("HasARole", 1);
-		FoodManager->GlobalWaitAI = false;
+		SpawnEnemyManager->SetGlobalWaitAI(false);
 		return EBTNodeResult::Succeeded;
 	}
 	

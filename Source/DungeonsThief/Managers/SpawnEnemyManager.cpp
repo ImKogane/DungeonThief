@@ -31,6 +31,7 @@ ASpawnEnemyManager::ASpawnEnemyManager()
 	FirstSpawnDelay = 60;
 
 	bIsFirstSpawn = true;
+	bGlobalWaitAI = false;
 }
 
 // Called when the game starts or when spawned
@@ -38,7 +39,6 @@ void ASpawnEnemyManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-	DeleteEnemyBoxComponent->OnComponentBeginOverlap.AddDynamic(this, &ASpawnEnemyManager::DeleteBoxOnOverlapBegin);
 	DeleteEnemyBoxComponent->OnComponentEndOverlap.AddDynamic(this, &ASpawnEnemyManager::DeleteBoxOnOverlapEnd);
 
 	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
@@ -56,8 +56,6 @@ void ASpawnEnemyManager::BeginPlay()
 	}
 
 	CurrentEnemyToSpawn = GetWorld()->GetName() == "MainLevel" ? FirstEnemyToSpawn : SecondEnemyToSpawn;
-	
-	FoodManager = MyGameMode->GetFoodManager();
 		
 	//First spawn : 2 enemies are instanciated + wait 60s to instanciate a third one
 	SpawnEnemy(60);	
@@ -75,9 +73,8 @@ void ASpawnEnemyManager::SetupEnemy(AAIEnemyCharacter* EnemyCharacter)
 	{
 		AAIEnemyController* AIController = Cast<AAIEnemyController>(EnemyCharacter->GetController());
 
-		if (AIController && FoodManager)
+		if (AIController)
 		{
-			AIController->GetBlackBoardComponent()->SetValueAsObject("FoodManager", FoodManager);
 			AIController->GetBlackBoardComponent()->SetValueAsVector("SpawnLocation", GetActorLocation());
 		}
 	}
@@ -127,34 +124,28 @@ void ASpawnEnemyManager::SpawnEnemy(int Delay)
 	}, Delay, false);
 }
 
-void ASpawnEnemyManager::DeleteBoxOnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ASpawnEnemyManager::DeleteAI(AAIEnemyCharacter* AIToDelet)
 {
-	if (OtherActor)
+	//if an enemy touch this box collision, that means it's getting back to the spawner
+	//we delete this one and remove it from the instanciated array
+	EnemiesSpawned.Remove(AIToDelet);
+	AIToDelet->Destroy();
+
+	//check if the array is empty : true -> no more IA in the maps -> we need to instanciate one immediately
+	if (EnemiesSpawned.Num() == 0)
 	{
-		AAIEnemyCharacter* AICharacter = Cast<AAIEnemyCharacter>(OtherActor);
-
-		if (AICharacter)
-		{
-			//if an enemy touch this box collision, that means it's getting back to the spawner
-			//we delete this one and remove it from the instanciated array
-			EnemiesSpawned.Remove(AICharacter);
-			AICharacter->Destroy();
-
-			//check if the array is empty : true -> no more IA in the maps -> we need to instanciate one immediately
-			if (EnemiesSpawned.Num() == 0)
-			{
-				SpawnEnemy(0);
-			}
-			//else : we wait a random delay between 0 and 5s
-			else
-			{
-				SpawnEnemy(FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay));
-			}
-		}	
+		SpawnEnemy(0);
+	}
+	//else : we wait a random delay between 0 and 5s
+	else
+	{
+		SpawnEnemy(FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay));
 	}
 }
 
 void ASpawnEnemyManager::DeleteBoxOnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 }
+
+
 

@@ -8,10 +8,7 @@
 
 EBTNodeResult::Type UBT_NextPatrolSpot::CodeToExecute()
 {
-
-	FVector LocationToRemove = BlackboardComponent->GetValueAsVector("LocationForPatrol");
-	
-	AICharacter->RemoveLocationForPatrol(LocationToRemove);
+	AICharacter->RemoveFirstLocationForPatrol();
 	
 	return EBTNodeResult::Succeeded;
 }
