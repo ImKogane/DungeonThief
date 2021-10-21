@@ -6,11 +6,14 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Enemy/AIEnemyController.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
+#include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "DungeonsThief/Managers/FoodManager.h"
+#include "DungeonsThief/Managers/SpawnEnemyManager.h"
 
 EBTNodeResult::Type UBT_GiveRole::CodeToExecute()
 {
-	AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
+	AFoodManager* FoodManager = MyGameMode->GetFoodManager();
+	ASpawnEnemyManager* SpawnEnemyManager = MyGameMode->GetSpawnManager();
 
 	if (FoodManager == nullptr)
 	{
@@ -18,13 +21,19 @@ EBTNodeResult::Type UBT_GiveRole::CodeToExecute()
 		return EBTNodeResult::Failed;
 	}
 
-	if (FoodManager->GlobalWaitAI)
+	if (SpawnEnemyManager == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("SpawnEnemyManager not found"))
+		return EBTNodeResult::Failed;
+	}
+
+	if (SpawnEnemyManager->GetGlobalWaitAI())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Waiting %s"), *AICharacter->GetName())
 		return EBTNodeResult::Failed;
 	}
 	
-	FoodManager->GlobalWaitAI = true;
+	SpawnEnemyManager->SetGlobalWaitAI(true);
 	const int NumberOfFoodInWorld = FoodManager->GetAllFoodInWorld().Num();
 	
 	if(NumberOfFoodInWorld >= FoodManager->GetAllSpotInGame().Num())

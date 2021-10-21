@@ -37,7 +37,7 @@ public:
 
 	FORCEINLINE void SetLocationsForPatrol(TArray<FVector> Locations){ LocationsForPatrol = Locations; }
 	FORCEINLINE TArray<FVector> GetLocationsForPatrol(){ return LocationsForPatrol; }
-	FORCEINLINE void RemoveLocationForPatrol(FVector LocationToRemove){ if(LocationsForPatrol.Contains(LocationToRemove)) LocationsForPatrol.Remove(LocationToRemove); }
+	FORCEINLINE void RemoveFirstLocationForPatrol(){ if(LocationsForPatrol.Num() > 0) LocationsForPatrol.RemoveAt(0, 1); }
 
 	FORCEINLINE void AddAlreadyVisitedSpot(AFoodSpot* SpotVisited){ AlreadyVisitedSpot.Add(SpotVisited); }
 	FORCEINLINE TArray<AFoodSpot*> GetAlreadyVisitedSpot(){ return AlreadyVisitedSpot; }

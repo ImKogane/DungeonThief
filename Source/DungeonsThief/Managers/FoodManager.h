@@ -39,10 +39,7 @@ public:
 	FORCEINLINE TArray<class AFood*> GetAllFoodInWorld() {return AllFoodInWorld;}
 
 	void RemoveFoodFromWorldList(AFood* FoodToRemove);
-	
-	//put it somewhere else juste a test here
-	bool GlobalWaitAI = false;
-	
+		
 	
 	class AFood* SpawnFood(FVector SpawnLocation);
 	

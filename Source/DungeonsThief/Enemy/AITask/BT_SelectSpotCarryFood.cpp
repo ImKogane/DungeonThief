@@ -5,13 +5,13 @@
 
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
-#include "DungeonsThief/Enemy/AIEnemyController.h"
 #include "DungeonsThief/Food/FoodSpot.h"
+#include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "DungeonsThief/Managers/FoodManager.h"
 
 EBTNodeResult::Type UBT_SelectSpotCarryFood::CodeToExecute()
 {
-	AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
+	AFoodManager* FoodManager = MyGameMode->GetFoodManager();
 
 	if(FoodManager == nullptr)
 	{

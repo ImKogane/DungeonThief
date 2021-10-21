@@ -36,9 +36,6 @@ protected:
 	//The object is placed in such a way that the enemies do not touch the collision box when they are instantiated
 	UPROPERTY(VisibleAnywhere);
 	class USphereComponent* SpawnLocation;
-
-	UPROPERTY(EditAnywhere, Category = "Spawn Enemy")
-	class AFoodManager* FoodManager;
 	
 	UPROPERTY(EditAnywhere, Category = "Spawn Enemy")
 	TSubclassOf<class AAIEnemyCharacter> FirstEnemyToSpawn;
@@ -61,11 +58,19 @@ protected:
 
 	bool bIsFirstSpawn;
 
+	bool bGlobalWaitAI;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+	UFUNCTION()
+	void DeleteAI(AAIEnemyCharacter* AIToDelet);
 
 	FORCEINLINE TArray<class AAIEnemyCharacter*> GetEnemiesSpawned() { return EnemiesSpawned; }
+	
+	FORCEINLINE bool GetGlobalWaitAI() { return bGlobalWaitAI; }
+	FORCEINLINE void SetGlobalWaitAI(bool value) { bGlobalWaitAI = value; }
 
 protected:
 
@@ -74,9 +79,7 @@ protected:
 	void CreateEnemy();
 	
 	void SpawnEnemy(int Delay);
-
-	UFUNCTION()
-    virtual void DeleteBoxOnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
+	
 	UFUNCTION()
     virtual void DeleteBoxOnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 };
