@@ -17,5 +17,9 @@ class DUNGEONSTHIEF_API AMainMenu_GameModeBase : public AGameModeBase
 protected:
 
 	void BeginPlay() override;
+
+public :
+	UFUNCTION()
+	void ShowPickLevelWidget();
 	
 };
