@@ -16,11 +16,18 @@ void AMainCharacterController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (HUDOverlayAsset)
+	if (WMain)
 	{
-		HUDOverlay = CreateWidget<UUserWidget>(this, HUDOverlayAsset);
-		HUDOverlay->AddToViewport();
-        HUDOverlay->SetVisibility(ESlateVisibility::Visible);
+		MainWidget = CreateWidget<UUserWidget>(this, WMain);
+		MainWidget->AddToViewport();
+        MainWidget->SetVisibility(ESlateVisibility::Visible);
+	}
+
+	if (WCharacterPick)
+	{
+		CharacterPickWidget = CreateWidget<UUserWidget>(this, WCharacterPick);
+		CharacterPickWidget->AddToViewport();
+		CharacterPickWidget->SetVisibility(ESlateVisibility::Visible);
 	}
 
 	if (WWinScreen)
@@ -52,6 +59,9 @@ void AMainCharacterController::BeginPlay()
 			PauseMenuWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
+	
+	bShowMouseCursor = true;
+	UGameplayStatics::SetGamePaused(GetWorld(), true);
 }
 
 void AMainCharacterController::ShowWinScreen(bool Visibility)
@@ -68,7 +78,41 @@ void AMainCharacterController::ShowLooseScreen(bool Visibility)
 
 void AMainCharacterController::ShowPauseMenu(bool Visibility)
 {
-	PauseMenuWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-	bShowMouseCursor = true;
-	UGameplayStatics::SetGamePaused(GetWorld(), true);
+
+	if(CanPause)
+	{
+		PauseMenuWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+		bShowMouseCursor = true;
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
+	}
+	
+}
+
+void AMainCharacterController::ShowMainHUD(bool Visibility)
+{
+	MainWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+
+	if(Visibility == true)
+	{
+		CanPause = true;
+		bShowMouseCursor = false;
+		UGameplayStatics::SetGamePaused(GetWorld(), false);
+	}
+	
+}
+
+void AMainCharacterController::ShowCharacterHUD(bool Visibility)
+{
+	CharacterPickWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+
+	if(Visibility == false)
+	{
+		CanPause = true;
+	}
+	
+}
+
+void AMainCharacterController::SetCanPause(bool state)
+{
+	CanPause = state;
 }

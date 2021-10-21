@@ -10,7 +10,6 @@
 void UUI_LevelPickClass::NativeConstruct()
 {
 	Super::NativeConstruct();
-
 	
 	BtnDungeonLevel->OnClicked.AddUniqueDynamic(this, &UUI_LevelPickClass::PlayDungeonLevel);
 	BtnForgeLevel->OnClicked.AddUniqueDynamic(this, &UUI_LevelPickClass::PlayForgeLevel);
@@ -19,8 +18,6 @@ void UUI_LevelPickClass::NativeConstruct()
 	BtnDungeonLevel->OnClicked.AddUniqueDynamic(this, &UUI_LevelPickClass::HoverButton);
 	BtnForgeLevel->OnClicked.AddUniqueDynamic(this, &UUI_LevelPickClass::HoverButton);
 	BtnBack->OnHovered.AddUniqueDynamic(this, &UUI_LevelPickClass::HoverButton);
-
-	UE_LOG(LogTemp, Warning, TEXT("INIT"));
 }
 
 void UUI_LevelPickClass::PlayDungeonLevel()
@@ -29,7 +26,6 @@ void UUI_LevelPickClass::PlayDungeonLevel()
 
 	if (World)
 	{
-		UGameplayStatics::SetGamePaused(World, false);
 		UGameplayStatics::OpenLevel(World, DungeonLevelName);
 	}
 }
@@ -40,7 +36,6 @@ void UUI_LevelPickClass::PlayForgeLevel()
 
 	if (World)
 	{
-		UGameplayStatics::SetGamePaused(World, false);
 		UGameplayStatics::OpenLevel(World, ForgeLevelName);
 	}
 }

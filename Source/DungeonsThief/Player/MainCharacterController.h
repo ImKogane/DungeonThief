@@ -24,11 +24,11 @@ protected:
 	
 	/** Reference to the UMG asset in the editor*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
-	TSubclassOf<class UUserWidget> HUDOverlayAsset;
+	TSubclassOf<class UUserWidget> WMain;
 
 	/** Variable to hold the wodget after creating it */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
-	UUserWidget* HUDOverlay;
+	UUserWidget* MainWidget;
 
 	UPROPERTY(EditAnywhere, Category = "Widget")
 	TSubclassOf<UUserWidget> WWinScreen;
@@ -47,6 +47,17 @@ protected:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
     UUserWidget* PauseMenuWidget;
+
+	/** Reference to the character pick UMG asset in the editor*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+	TSubclassOf<class UUserWidget> WCharacterPick;
+
+	/** Variable to hold the Character pick widget after creating it */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+	UUserWidget* CharacterPickWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Controller infos")
+	bool CanPause = false;
 	
 
 public :
@@ -54,6 +65,10 @@ public :
 	void ShowWinScreen(bool Visibility);
 	void ShowLooseScreen(bool Visibility);
 	void ShowPauseMenu(bool Visibility);
+	void ShowMainHUD(bool Visibility);
+	void ShowCharacterHUD(bool Visibility);
+
+	void SetCanPause(bool state);
 	
 
 };

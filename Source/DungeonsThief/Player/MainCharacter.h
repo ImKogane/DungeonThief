@@ -88,9 +88,7 @@ protected:
 	/* Called for scrolling in or out the camera view*/
 	void ScrollInOut(float Value);
 
-	/* Called in UI to pick up a character for player */
-	UFUNCTION()
-	void DefinePlayerCharacter(int CharacterIndex);
+
 
 	/* Call pause function in player controller to show pause menu widget */
 	UFUNCTION()
@@ -111,9 +109,14 @@ public:
 	UFUNCTION()
 	void LooseGame();
 
+	/* Called in UI to pick up a character for player */
+	UFUNCTION()
+	void DefinePlayerCharacter(int CharacterIndex);
+
 	FORCEINLINE bool GetIsCrouching() { return IsCrouch; }
 	
-	FORCEINLINE int GetCharacterID() { return CharacterID; } 
+	FORCEINLINE int GetCharacterID() { return CharacterID; }
+	
 	
 
 

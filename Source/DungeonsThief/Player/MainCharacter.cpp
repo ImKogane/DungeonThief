@@ -67,10 +67,6 @@ void AMainCharacter::BeginPlay()
 	//set where the camera is looking at
 	CameraBoom->SetRelativeLocation(FVector(0,0,60));
 
-	//Choose random index
-	int Random = FMath::FRandRange(0,PlayableCharacters.Num());
-	DefinePlayerCharacter(Random);
-
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * SpeedBonus;
 
 	//Bind method with the GameMode
@@ -254,6 +250,8 @@ void AMainCharacter::LooseGame()
 		MainCharacterController->ShowLooseScreen(true);
 	}
 }
+
+
 #pragma endregion
 
 /**
@@ -283,6 +281,7 @@ void AMainCharacter::DefinePlayerCharacter(int CharacterIndex)
 		break;
 	}
 }
+
 
 void AMainCharacter::SetGamePause()
 {
