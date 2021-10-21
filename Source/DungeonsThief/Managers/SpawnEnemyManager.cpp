@@ -88,6 +88,18 @@ void ASpawnEnemyManager::CreateEnemy()
 		UE_LOG(LogTemp, Warning, TEXT("WORLD NULL"));
 		return;
 	}
+
+	if(CurrentEnemyToSpawn == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CurrentEnemyToSpawn null"));
+		return;
+	}
+
+	if(SpawnLocation == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("SpawnLocation null"));
+		return;
+	}
 	
 	AAIEnemyCharacter* EnemyCharacter = World->SpawnActor<AAIEnemyCharacter>(CurrentEnemyToSpawn, SpawnLocation->GetComponentLocation(), GetActorRotation());
 	SetupEnemy(EnemyCharacter);
