@@ -18,12 +18,28 @@ protected:
 
 	virtual void BeginPlay() override;
 
-	/** Reference to the UMG asset in the editor*/
+	/** Reference to the menu UMG asset in the editor*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
 	TSubclassOf<class UUserWidget> MainMenuWidget;
 
-	/** Variable to hold the wodget after creating it */
+	/** Variable to hold the main menu widget after creating it */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
 	UUserWidget* MainMenu;
+
+	
+	/** Reference to the pick level menu UMG asset in the editor*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+	TSubclassOf<class UUserWidget> PickLevelWidget;
+
+	/** Variable to hold the level menu widget after creating it */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+	UUserWidget* PickLevelMenu;
+	
+public:
+	UFUNCTION()
+	void ShowPickLevelMenu();
+
+	//UFUNCTION()
+	//void HidePickLevelMenu();
 	
 };

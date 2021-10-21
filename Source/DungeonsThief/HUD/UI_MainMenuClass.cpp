@@ -3,9 +3,12 @@
 
 #include "DungeonsThief/HUD/UI_MainMenuClass.h"
 
+#include "MainMenuController.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
 
+
+class AMainMenuController;
 
 void UUI_MainMenuClass::NativeConstruct()
 {
@@ -27,9 +30,12 @@ void UUI_MainMenuClass::PlayNormalGame()
 
 	if (World)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("START GAME"));
-		UGameplayStatics::SetGamePaused(World, false);
-		UGameplayStatics::OpenLevel(World, LevelToLoadName);
+		AMainMenuController* MenuController = Cast<AMainMenuController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+		if(MenuController != nullptr)
+		{
+			MenuController->ShowPickLevelMenu();
+		}
 	}
 }
 

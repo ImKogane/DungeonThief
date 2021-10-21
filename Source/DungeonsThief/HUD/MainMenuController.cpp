@@ -16,5 +16,20 @@ void AMainMenuController::BeginPlay()
 		MainMenu->SetVisibility(ESlateVisibility::Visible);
 		bShowMouseCursor = true;
 	}
+
+	if (PickLevelWidget)
+	{
+		PickLevelMenu = CreateWidget<UUserWidget>(this, PickLevelWidget);
+		PickLevelMenu->AddToViewport();
+		PickLevelMenu->SetVisibility(ESlateVisibility::Hidden);
+		bShowMouseCursor = true;
+	}
 	
 }
+
+
+void AMainMenuController::ShowPickLevelMenu()
+{
+	PickLevelMenu->SetVisibility(ESlateVisibility::Visible);
+}
+
