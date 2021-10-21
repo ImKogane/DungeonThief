@@ -7,17 +7,18 @@
 #include "BehaviorTree/BTTaskNode.h"
 #include "DungeonsThief/Food/FoodSpot.h"
 #include "DungeonsThief/Managers/FoodManager.h"
-#include "BT_SelectSpotForPatrol.generated.h"
+#include "BT_SelectLocationForPatrol.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DUNGEONSTHIEF_API UBT_SelectSpotForPatrol : public UBT_BaseTaskDungeonsThief
+class DUNGEONSTHIEF_API UBT_SelectLocationForPatrol : public UBT_BaseTaskDungeonsThief
 {
 	GENERATED_BODY()
 	
 protected:
 	virtual EBTNodeResult::Type CodeToExecute() override;
 
+	class UNavigationSystemV1* NavSystem;
 };

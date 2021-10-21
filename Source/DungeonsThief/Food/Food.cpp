@@ -85,6 +85,7 @@ void AFood::BecomeSuperFood()
 		FoodPoints = 2;
 		SpeedReduction = 0.25;
 		FoodMesh->SetStaticMesh(SuperFoodMesh);
+		SetActorScale3D(FVector::OneVector * 0.85f);
 		IsSuperFood = true;
 	}
 	
