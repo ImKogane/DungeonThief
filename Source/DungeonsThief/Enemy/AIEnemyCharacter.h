@@ -82,6 +82,8 @@ protected:
 	//used only if the AI carry food
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	TArray<class AFoodSpot*> AlreadyVisitedSpot;
+
+	class AMyGameMode* MyGameMode;
 	
 public:	
 	// Called every frame
@@ -90,9 +92,11 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void WinGame();
+	UFUNCTION()
+	void EnemyWinGame();
 
-	void LooseGame();
+	UFUNCTION()
+	void EnemyLooseGame();
 
 	void SetRandomMesh();
 
@@ -101,6 +105,10 @@ protected:
 	void ProcessWanderCooldown(float DeltaTime);
 
 	void StopMovement();
+
+	//Method called when the actor is destroyed
+	UFUNCTION()
+	void OnDestoyingBehaviour(AActor* Act);
 
 	UFUNCTION()
     void OnPlayerDetectionOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);

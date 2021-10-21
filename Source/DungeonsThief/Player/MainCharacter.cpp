@@ -4,16 +4,15 @@
 #include "MainCharacter.h"
 
 #include "MainCharacterController.h"
-#include "DungeonsThief/AAnimationsHandler.h"
-#include "DungeonsThief/Food//Food.h"
+#include "DungeonsThief/Managers/AAnimationsHandler.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Components/CapsuleComponent.h"
+#include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "DungeonsThief/Managers/ScoreManager.h"
 
 
+class AMyGameMode;
 // Sets default values
 AMainCharacter::AMainCharacter()
 {
@@ -73,6 +72,23 @@ void AMainCharacter::BeginPlay()
 	DefinePlayerCharacter(Random);
 
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * SpeedBonus;
+
+	//Bind method with the GameMode
+	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
+	if (GameModeBase == nullptr)
+	{
+		return;
+	}
+
+	AMyGameMode* MyGameMode = Cast<AMyGameMode>(GameModeBase);
+	if (MyGameMode == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
+		return;
+	}
+
+	MyGameMode->OnGameWin.AddDynamic(this, &AMainCharacter::WinGame);
+	MyGameMode->OnGameLoose.AddDynamic(this, &AMainCharacter::LooseGame);
 
 }
 
@@ -222,8 +238,7 @@ void AMainCharacter::WinGame()
 	if (MainCharacterController)
 	{
 		MainCharacterController->ShowWinScreen(true);
-	}
-	
+	}	
 }
 
 void AMainCharacter::LooseGame()

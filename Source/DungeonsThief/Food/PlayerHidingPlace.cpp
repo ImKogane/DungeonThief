@@ -2,12 +2,14 @@
 
 
 #include "PlayerHidingPlace.h"
+
+#include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "DungeonsThief/Food/Food.h"
 #include "DungeonsThief/Managers/FoodManager.h"
-#include "DungeonsThief/Managers/ScoreManager.h"
 #include "DungeonsThief/Player/MainCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
+class AMyGameMode;
 // Sets default values
 APlayerHidingPlace::APlayerHidingPlace()
 {
@@ -27,6 +29,20 @@ APlayerHidingPlace::APlayerHidingPlace()
 void APlayerHidingPlace::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
+	if (GameModeBase == nullptr)
+	{
+		return;
+	}
+
+	MyGameMode = Cast<AMyGameMode>(GameModeBase);
+	if (MyGameMode == nullptr)
+	{
+		return;
+	}
+
+	FoodManager = MyGameMode->GetFoodManager();
 }
 
 // Called every frame
@@ -44,14 +60,16 @@ void APlayerHidingPlace::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedCompon
 		{
 			AFood* HeldFood = Cast<AFood>(Player->GetFoodCarried());
 
-			if (HeldFood && ScoreManager)
+			if (HeldFood)
 			{
-				ScoreManager->AddPoints(HeldFood->GetFoodPoints());
+				MyGameMode->GainPoints(HeldFood->GetFoodPoints());
 			}
 
 			UGameplayStatics::PlaySoundAtLocation(this, WinPointsSound, GetActorLocation());
 			if(FoodManager)
+			{
 				FoodManager->RemoveFoodFromWorldList(HeldFood);
+			}
 			
 			Player->DropItem();
 			Player->GetPlayerNearFoodActor()->Destroy();

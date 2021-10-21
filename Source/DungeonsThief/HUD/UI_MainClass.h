@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "DungeonsThief/Managers/ScoreManager.h"
 #include "UI_MainClass.generated.h"
 
 
@@ -19,13 +18,14 @@ class DUNGEONSTHIEF_API UUI_MainClass : public UUserWidget
 protected:
 
 	void NativeConstruct() override;
-	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UProgressBar* FoodBar;
 
-	UPROPERTY(VisibleAnywhere)
-	AScoreManager* ScoreManagerReference;
-	
+	class AMyGameMode* MyGameMode;
+	class AMyGameState* MyGameState;
+
+	UFUNCTION()
+	void UpdateProgression();
 	
 };

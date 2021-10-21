@@ -9,8 +9,8 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Food/Food.h"
 #include "Components/CapsuleComponent.h"
-#include "DungeonsThief/AAnimationsHandler.h"
-#include "DungeonsThief/Managers/ScoreManager.h"
+#include "DungeonsThief/Managers/AAnimationsHandler.h"
+#include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "DungeonsThief/Player/MainCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -51,6 +51,26 @@ void AAIEnemyCharacter::BeginPlay()
 	
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 	SetRandomMesh();
+
+	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
+	if (GameModeBase == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("GameModeBase is null"));
+		return;
+	}
+
+	//Bind to the gamemode events
+	MyGameMode = Cast<AMyGameMode>(GameModeBase);
+	if (MyGameMode == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
+		return;
+	}
+	
+	MyGameMode->OnGameWin.AddDynamic(this, &AAIEnemyCharacter::EnemyLooseGame);
+	MyGameMode->OnGameLoose.AddDynamic(this, &AAIEnemyCharacter::EnemyWinGame);
+
+	OnDestroyed.AddDynamic(this, &AAIEnemyCharacter::OnDestoyingBehaviour);
 }
 
 // Called every frame
@@ -93,7 +113,18 @@ void AAIEnemyCharacter::StopMovement()
 	}
 }
 
-void AAIEnemyCharacter::WinGame()
+void AAIEnemyCharacter::OnDestoyingBehaviour(AActor* Act)
+{
+	if (MyGameMode == nullptr)
+	{
+		return;
+	}
+
+	MyGameMode->OnGameWin.RemoveDynamic(this, &AAIEnemyCharacter::EnemyLooseGame);
+	MyGameMode->OnGameLoose.RemoveDynamic(this, &AAIEnemyCharacter::EnemyWinGame);
+}
+
+void AAIEnemyCharacter::EnemyWinGame()
 {
 	if (AnimationHandler && WinMontage)
 	{
@@ -103,7 +134,7 @@ void AAIEnemyCharacter::WinGame()
 	}
 }
 
-void AAIEnemyCharacter::LooseGame()
+void AAIEnemyCharacter::EnemyLooseGame()
 {
 	if (AnimationHandler && LooseMontage)
 	{
@@ -129,20 +160,26 @@ void AAIEnemyCharacter::SetRandomMesh()
 
 void AAIEnemyCharacter::OnPlayerDetectionOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor)
+	if (OtherActor == nullptr)
 	{
-		AMainCharacter* MainCharacter = Cast<AMainCharacter>(OtherActor);
-
-		if (MainCharacter)
-		{
-			AScoreManager* ScoreManager =  Cast<AScoreManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AScoreManager::StaticClass()));
-
-			if (ScoreManager)
-			{
-				ScoreManager->PlayerLoose();
-			}
-		}
+		UE_LOG(LogTemp, Error, TEXT("OtherActor is null"));
+		return;
 	}
+	
+	AMainCharacter* MainCharacter = Cast<AMainCharacter>(OtherActor);
+	if (MainCharacter == nullptr)
+	{
+		//Overlap actor isn't the Player
+		return;
+	}
+
+	if (MyGameMode == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
+		return;
+	}
+	
+	MyGameMode->LooseGame();
 }
 
 

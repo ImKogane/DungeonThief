@@ -26,14 +26,13 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	class UBoxComponent* CollisionBox;
 
-	UPROPERTY(EditAnywhere)
-	class AScoreManager* ScoreManager;
-
 	UPROPERTY(EditDefaultsOnly, Category="Sound")
 	USoundBase* WinPointsSound;
 
 	UPROPERTY(EditAnywhere)
 	class AFoodManager* FoodManager;
+
+	class AMyGameMode* MyGameMode;
 
 	UFUNCTION()
 	void OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);

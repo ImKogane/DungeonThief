@@ -2,14 +2,15 @@
 
 
 #include "DungeonsThief/Managers/SpawnEnemyManager.h"
-
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
+#include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "DungeonsThief/Managers/FoodManager.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
 #include "DungeonsThief/Enemy/AIEnemyController.h"
 
+class AMyGameMode;
 // Sets default values
 ASpawnEnemyManager::ASpawnEnemyManager()
 {
@@ -40,6 +41,24 @@ void ASpawnEnemyManager::BeginPlay()
 	DeleteEnemyBoxComponent->OnComponentBeginOverlap.AddDynamic(this, &ASpawnEnemyManager::DeleteBoxOnOverlapBegin);
 	DeleteEnemyBoxComponent->OnComponentEndOverlap.AddDynamic(this, &ASpawnEnemyManager::DeleteBoxOnOverlapEnd);
 
+	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
+	if (GameModeBase == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Getting GameMode failed"));
+		return;
+	}
+
+	AMyGameMode* MyGameMode = Cast<AMyGameMode>(GameModeBase);
+	if (MyGameMode == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("MyGameMode is null"));
+		return;
+	}
+
+	CurrentEnemyToSpawn = GetWorld()->GetName() == "MainLevel" ? FirstEnemyToSpawn : SecondEnemyToSpawn;
+	
+	FoodManager = MyGameMode->GetFoodManager();
+		
 	//First spawn : 2 enemies are instanciated + wait 60s to instanciate a third one
 	SpawnEnemy(60);	
 }
@@ -66,7 +85,14 @@ void ASpawnEnemyManager::SetupEnemy(AAIEnemyCharacter* EnemyCharacter)
 
 void ASpawnEnemyManager::CreateEnemy()
 {
-	AAIEnemyCharacter* EnemyCharacter = GetWorld()->SpawnActor<AAIEnemyCharacter>(EnemyToSpawn, SpawnLocation->GetComponentLocation(), GetActorRotation());
+	UWorld* World = GetWorld();
+	if (World == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("WORLD NULL"));
+		return;
+	}
+	
+	AAIEnemyCharacter* EnemyCharacter = World->SpawnActor<AAIEnemyCharacter>(CurrentEnemyToSpawn, SpawnLocation->GetComponentLocation(), GetActorRotation());
 	SetupEnemy(EnemyCharacter);
 	EnemiesSpawned.Add(EnemyCharacter);
 }
@@ -74,21 +100,28 @@ void ASpawnEnemyManager::CreateEnemy()
 void ASpawnEnemyManager::SpawnEnemy(int Delay)
 {
 	FTimerHandle handle;
-		
+
+	UWorld* World = GetWorld();
+	if (World == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("WORLD NULL"));
+		return;
+	}
+	
 	if (bIsFirstSpawn)
 	{
 		bIsFirstSpawn = false;
 
-		//spawned 2 ennemies
+		//spawned 2 enemies
 		for (int i = 0; i < 2; i++)
 		{
 			CreateEnemy();
 		}
 	}
 	
-	GetWorld()->GetTimerManager().SetTimer(handle, [this]()
+	World->GetTimerManager().SetTimer(handle, [this]()
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, TEXT("SPAWNED"));
+		//TODO vérifier si le spawn enemy manager est valide
 		CreateEnemy();
 		
 	}, Delay, false);
@@ -106,8 +139,6 @@ void ASpawnEnemyManager::DeleteBoxOnOverlapBegin(UPrimitiveComponent* Overlapped
 			//we delete this one and remove it from the instanciated array
 			EnemiesSpawned.Remove(AICharacter);
 			AICharacter->Destroy();
-
-			UE_LOG(LogTemp, Warning, TEXT("%d"), EnemiesSpawned.Num());
 
 			//check if the array is empty : true -> no more IA in the maps -> we need to instanciate one immediately
 			if (EnemiesSpawned.Num() == 0)
