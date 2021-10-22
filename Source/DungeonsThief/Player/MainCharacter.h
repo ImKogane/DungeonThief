@@ -63,6 +63,35 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "HUD")
 	class AMainCharacterController* MainCharacterController;
+
+	UPROPERTY(EditAnywhere, Category = "Camera Collide Material")
+	class UMaterial* CameraCollideMaterial;
+
+	class TArray<UMaterial*> CurrentHitObjectsMaterial;
+	
+	class TArray<UStaticMeshComponent*> CurrentHitMeshes;
+	
+	
+public:
+	//For function declaration
+	
+	FORCEINLINE void SetCanMove(bool value) { bCanMove = value; }
+	
+	FORCEINLINE bool GetIsCrouching() { return IsCrouch; }
+	
+	FORCEINLINE int GetCharacterID() { return CharacterID; } 
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION()
+    void WinGame();
+
+	UFUNCTION()
+    void LooseGame();
 	
 protected:
 	//For function declaration
@@ -96,28 +125,18 @@ protected:
 	UFUNCTION()
 	void SetGamePause();
 
-public:
-	FORCEINLINE void SetCanMove(bool value) { bCanMove = value; }
-	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	/* Change StaticMesh materials to allow player to see through it*/
+	void ChangeObjectTransparency();
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	/* Return true if the CurrentHitActor is the Player, false otherwise */
+	bool CheckIfIsPlayer(AActor* CurrentHitActor);
 
-	UFUNCTION()
-	void WinGame();
+	/* Get StaticMeshComponent from the CurrentHitActor */
+	void GetStaticMeshes(AActor* CurrentHitActor);
 
-	UFUNCTION()
-	void LooseGame();
+	/* Change materials from all StaticMeshComponent between the camera and the player */
+	void ChangeMaterials();
 
-	FORCEINLINE bool GetIsCrouching() { return IsCrouch; }
-	
-	FORCEINLINE int GetCharacterID() { return CharacterID; } 
-	
-
-
-	
 };
 
 

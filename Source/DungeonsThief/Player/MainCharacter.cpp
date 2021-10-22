@@ -6,10 +6,12 @@
 #include "MainCharacterController.h"
 #include "DungeonsThief/Managers/AAnimationsHandler.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "Camera/CameraComponent.h"
 #include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Engine/StaticMeshActor.h"
 
 
 class AMyGameMode;
@@ -30,6 +32,7 @@ AMainCharacter::AMainCharacter()
 	// Attach the camera to the end of the camera boom  
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
+	
 	
 	BaseTurnRate = 65.0f;
 	BaseLookupRate = 65.0f;
@@ -73,6 +76,9 @@ void AMainCharacter::BeginPlay()
 
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * SpeedBonus;
 
+	//CurrentHitMesh = nullptr;
+	//CurrentHitObjectMaterial = nullptr;
+	
 	//Bind method with the GameMode
 	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
 	if (GameModeBase == nullptr)
@@ -95,6 +101,8 @@ void AMainCharacter::BeginPlay()
 void AMainCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	ChangeObjectTransparency();
 }
 
 /*
@@ -255,6 +263,102 @@ void AMainCharacter::LooseGame()
 	}
 }
 #pragma endregion
+
+
+#pragma region "Change Object Transparency"
+
+void AMainCharacter::ChangeObjectTransparency()
+{
+	TArray<FHitResult> HitResults;
+	FVector ForwardVector = FollowCamera->GetForwardVector();
+	FVector StartTrace = FollowCamera->GetComponentLocation();
+	FVector EndTrace = StartTrace + (ForwardVector * CameraBoom->TargetArmLength);
+	FCollisionQueryParams* TraceParams = new FCollisionQueryParams();
+
+	if (GetWorld()->LineTraceMultiByChannel(HitResults, StartTrace, EndTrace, ECC_WorldStatic, *TraceParams))
+	{
+		//we check all the hit objects to see if one of them has staticmesh component and then store it 
+		for (auto& Hit : HitResults)
+		{
+			AActor* CurrentHitActor = Hit.GetActor();
+
+			if (CheckIfIsPlayer(CurrentHitActor))
+			{
+				return;
+			}
+
+			GetStaticMeshes(CurrentHitActor);			
+		}
+
+		ChangeMaterials();
+	}
+	
+}
+
+bool AMainCharacter::CheckIfIsPlayer(AActor* CurrentHitActor)
+{
+	AMainCharacter* Player = Cast<AMainCharacter>(CurrentHitActor);
+	
+	if (Player != nullptr)
+	{
+		//if we touch te player we don't need to do anything
+		//we only set back all the static mesh materials if there is any in the array
+		for (int i = 0; i < CurrentHitMeshes.Num(); i++)
+		{
+			UStaticMeshComponent* CurrentHitMesh = CurrentHitMeshes[i];
+			if (CurrentHitMesh == nullptr)
+			{
+				break;
+			}
+					
+			UMaterial* CurrentHitObjectMaterial = CurrentHitObjectsMaterial[i];
+			CurrentHitMesh->SetMaterial(0, CurrentHitObjectMaterial);
+		}
+		CurrentHitMeshes.Empty();
+		CurrentHitObjectsMaterial.Empty();
+
+		return true;
+	}
+	
+	return false;
+}
+
+void AMainCharacter::GetStaticMeshes(AActor* CurrentHitActor)
+{
+	AStaticMeshActor* StaticMeshActor = Cast<AStaticMeshActor>(CurrentHitActor);
+	if (StaticMeshActor == nullptr)
+	{
+		return;
+	}
+
+	UStaticMeshComponent* StaticMeshComponent = StaticMeshActor->GetStaticMeshComponent();
+	if (StaticMeshComponent == nullptr)
+	{
+		return;
+	}
+	
+	if (!CurrentHitMeshes.Contains(StaticMeshComponent))
+	{
+		CurrentHitMeshes.Add(StaticMeshComponent);
+		CurrentHitObjectsMaterial.Add(StaticMeshComponent->GetMaterial(0)->GetMaterial());
+	}
+}
+
+void AMainCharacter::ChangeMaterials()
+{
+	//change the material of all static mesh we found 
+	for (auto StaticMeshHit : CurrentHitMeshes)
+	{
+		if (StaticMeshHit == nullptr && CameraCollideMaterial == nullptr)
+		{
+			return;
+		}
+		
+		StaticMeshHit->SetMaterial(0, CameraCollideMaterial);	
+	}
+}
+
+#pragma endregion 
 
 /**
  * @brief Define a character and his specification for the player
