@@ -5,6 +5,7 @@
 
 #include "MainMenuController.h"
 #include "Components/Button.h"
+#include "DungeonsThief/GameSettings/MyGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -20,13 +21,26 @@ void UUI_MainMenuClass::NativeConstruct()
 	BtnSettings->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::OpenSettings);
 	BtnExit->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::ExitGame);
 
+	GameInstance = Cast<UMyGameInstance>(GetGameInstance());
+	
 	UE_LOG(LogTemp, Warning, TEXT("INIT"));
 }
 
 void UUI_MainMenuClass::PlayNormalGame()
 {
+	UE_LOG(LogTemp, Warning, TEXT("START NORMAL GAME"));
+	PlayGame(EGameplayMode::EGM_NormalMode);
+}
+
+void UUI_MainMenuClass::PlayScoreGame()
+{
+	UE_LOG(LogTemp, Warning, TEXT("START SCORE GAME"));
+	PlayGame(EGameplayMode::EGM_ScoreMode);
+}
+
+void UUI_MainMenuClass::PlayGame(TEnumAsByte<EGameplayMode> GameplayMode)
+{
 	UWorld* World = GetWorld();
-	UE_LOG(LogTemp, Warning, TEXT("START GAME"));
 
 	if (World)
 	{
@@ -34,14 +48,11 @@ void UUI_MainMenuClass::PlayNormalGame()
 
 		if(MenuController != nullptr)
 		{
+			if(GameInstance)
+				GameInstance->SetGameplayMode(GameplayMode);
 			MenuController->ShowPickLevelMenu();
 		}
 	}
-}
-
-void UUI_MainMenuClass::PlayScoreGame()
-{
-	UE_LOG(LogTemp, Warning, TEXT("START SCORE GAME"));
 }
 
 

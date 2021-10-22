@@ -15,6 +15,14 @@ enum class EGameState : uint8
     EES_MAX UMETA(DisplayName = "Default")
 };
 
+UENUM(BlueprintType)
+enum class EGameplayMode : uint8
+{
+	EGM_NormalMode UMETA(DisplayName = "NormalMode"),
+    EGM_ScoreMode UMETA(DisplayName = "ScoreMode")
+
+};
+
 /**
  * 
  */

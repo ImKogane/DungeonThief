@@ -21,9 +21,13 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UProgressBar* FoodBar;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+	class UTextBlock* ScorePoint;
 
 	class AMyGameMode* MyGameMode;
 	class AMyGameState* MyGameState;
+	class UMyGameInstance* GameInstance;
 
 	UFUNCTION()
 	void UpdateProgression();

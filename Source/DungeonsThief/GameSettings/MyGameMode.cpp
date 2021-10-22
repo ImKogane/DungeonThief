@@ -2,6 +2,8 @@
 
 
 #include "MyGameMode.h"
+
+#include "MyGameInstance.h"
 #include "MyGameState.h"
 #include "DungeonsThief/Managers/FoodManager.h"
 #include "DungeonsThief/Managers/SpawnEnemyManager.h"
@@ -9,6 +11,8 @@
 void AMyGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
 {
 	Super::InitGame(MapName, Options, ErrorMessage);
+
+	GameInstance = Cast<UMyGameInstance>(GetGameInstance());
 }
 
 void AMyGameMode::InitGameState()
@@ -59,7 +63,7 @@ void AMyGameMode::GainPoints(int Points)
 		OnGainPoints.Broadcast();
 	}
 
-	if (MyGameState->HasPlayerWin())
+	if (MyGameState->HasPlayerWin() && GameInstance->GetGameplayMode() == EGameplayMode::EGM_NormalMode)
 	{
 		WinGame();
 	}
