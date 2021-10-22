@@ -45,7 +45,7 @@ protected:
 	void ExitGame();
 
 	UPROPERTY(VisibleAnywhere, Category = "UI infos")
-	class UMyGameInstance* GameInstance;
+	class UMyGameInstance* MyGameInstance;
 
 	UPROPERTY(EditAnywhere, Category = "UI infos")
 	FName LevelToLoadName = FName("MainLevel");

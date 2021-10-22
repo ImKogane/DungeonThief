@@ -3,6 +3,9 @@
 
 #include "DungeonsThief/Player/MainCharacterController.h"
 #include "Blueprint/UserWidget.h"
+#include "DungeonsThief/GameSettings/MyGameInstance.h"
+#include "DungeonsThief/GameSettings/MyGameMode.h"
+#include "DungeonsThief/HUD/UI_MenuEndGame.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -15,6 +18,10 @@ AMainCharacterController::AMainCharacterController()
 void AMainCharacterController::BeginPlay()
 {
 	Super::BeginPlay();
+	AMyGameMode* GameModeBase = Cast<AMyGameMode>(GetWorld()->GetAuthGameMode());
+	
+	MyGameState = GameModeBase->GetGameState<AMyGameState>();
+	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
 
 	if (WMain)
 	{
@@ -72,7 +79,14 @@ void AMainCharacterController::ShowWinScreen(bool Visibility)
 
 void AMainCharacterController::ShowLooseScreen(bool Visibility)
 {
-	LooseScreenWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+	UUI_MenuEndGame* LooseScreenCast = Cast<UUI_MenuEndGame>(LooseScreenWidget);
+	if(Visibility && MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_ScoreMode)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Show Score"))
+		LooseScreenCast->SetTextScore(MyGameState->GetPlayerPoints());
+	}
+	
+	LooseScreenCast->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 	bShowMouseCursor = true;
 }
 

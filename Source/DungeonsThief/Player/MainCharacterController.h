@@ -58,7 +58,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Controller infos")
 	bool CanPause = false;
-	
+
+	class AMyGameState* MyGameState;
+	class UMyGameInstance* MyGameInstance;
 
 public :
 

@@ -2,8 +2,11 @@
 
 #pragma once
 
+#include <string>
+
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/TextBlock.h"
 #include "UI_MenuEndGame.generated.h"
 
 /**
@@ -29,10 +32,24 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "Restart Game")
 	class UButton* BtnMenu;
-    
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "Restart Game")
+	class UTextBlock* EndScore;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "Restart Game")
+	bool bLooseUI;
+	
+	class UMyGameInstance* MyGameInstance;
+	
     UPROPERTY(EditAnywhere, Category = "Restart Game")
     FName MainLevelName = FName("MainLevel");
 	
 	UPROPERTY(EditAnywhere, Category = "Restart Game")
 	FName MainMenuLevelName = FName("MainMenuLevel");
+
+public:
+	FORCEINLINE void SetTextScore(int Score)
+	{
+		EndScore->SetText(FText::Format(FText::FromString("Votre score : {0}"), Score));
+	};
 };

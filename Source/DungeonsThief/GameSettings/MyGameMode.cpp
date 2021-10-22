@@ -12,7 +12,7 @@ void AMyGameMode::InitGame(const FString& MapName, const FString& Options, FStri
 {
 	Super::InitGame(MapName, Options, ErrorMessage);
 
-	GameInstance = Cast<UMyGameInstance>(GetGameInstance());
+	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
 }
 
 void AMyGameMode::InitGameState()
@@ -63,7 +63,7 @@ void AMyGameMode::GainPoints(int Points)
 		OnGainPoints.Broadcast();
 	}
 
-	if (MyGameState->HasPlayerWin() && GameInstance->GetGameplayMode() == EGameplayMode::EGM_NormalMode)
+	if (MyGameState->HasPlayerWin() && MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_NormalMode)
 	{
 		WinGame();
 	}
