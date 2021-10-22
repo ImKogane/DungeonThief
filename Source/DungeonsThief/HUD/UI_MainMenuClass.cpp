@@ -38,7 +38,7 @@ void UUI_MainMenuClass::PlayScoreGame()
 	PlayGame(EGameplayMode::EGM_ScoreMode);
 }
 
-void UUI_MainMenuClass::PlayGame(TEnumAsByte<EGameplayMode> GameplayMode)
+void UUI_MainMenuClass::PlayGame(EGameplayMode GameplayMode)
 {
 	UWorld* World = GetWorld();
 
