@@ -34,13 +34,18 @@ protected:
 
 	UFUNCTION()
 	void PlayScoreGame();
+
+	UFUNCTION()
+	void PlayGame(TEnumAsByte<enum EGameplayMode> GameplayMode);
 	
 	UFUNCTION()
 	void OpenSettings();
 
 	UFUNCTION()
 	void ExitGame();
-	
+
+	UPROPERTY(VisibleAnywhere, Category = "UI infos")
+	class UMyGameInstance* GameInstance;
 
 	UPROPERTY(EditAnywhere, Category = "UI infos")
 	FName LevelToLoadName = FName("MainLevel");
