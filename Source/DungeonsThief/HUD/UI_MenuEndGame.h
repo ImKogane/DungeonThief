@@ -50,6 +50,6 @@ protected:
 public:
 	FORCEINLINE void SetTextScore(int Score)
 	{
-		EndScore->SetText(FText::Format(FText::FromString("Votre score : {0}"), Score));
+		EndScore->SetText(FText::Format(FText::FromString("Your score : {0}"), Score));
 	};
 };

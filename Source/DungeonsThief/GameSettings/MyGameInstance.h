@@ -16,10 +16,10 @@ class DUNGEONSTHIEF_API UMyGameInstance : public UGameInstance
 	GENERATED_BODY()
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	TEnumAsByte<EGameplayMode> GameplayMode = EGameplayMode::EGM_NormalMode;
+	EGameplayMode GameplayMode = EGameplayMode::EGM_NormalMode;
 
 public:
-	FORCEINLINE void SetGameplayMode(TEnumAsByte<EGameplayMode> GameplayModeValue) {GameplayMode = GameplayModeValue; }
-	FORCEINLINE TEnumAsByte<EGameplayMode> GetGameplayMode() { return GameplayMode; }
+	FORCEINLINE void SetGameplayMode(EGameplayMode GameplayModeValue) {GameplayMode = GameplayModeValue; }
+	FORCEINLINE EGameplayMode GetGameplayMode() { return GameplayMode; }
 	
 };

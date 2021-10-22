@@ -36,7 +36,7 @@ protected:
 	void PlayScoreGame();
 
 	UFUNCTION()
-	void PlayGame(TEnumAsByte<enum EGameplayMode> GameplayMode);
+	void PlayGame(enum EGameplayMode GameplayMode);
 	
 	UFUNCTION()
 	void OpenSettings();
