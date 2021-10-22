@@ -15,7 +15,7 @@ ASpawnEnemyManager* AMyGameState::SpawnEnemyManager()
 	}
 
 	//Location used in the MAIN LEVEL
-	FVector SpawnLocation = FVector(-4840 ,-11410 ,930);
+	FVector SpawnLocation = FVector(-4840 ,-11410 ,970);
 	FRotator SpawnRotation = FRotator(0,-90,0);
 
 	if (World->GetName() == FString("ForgeLevel"))

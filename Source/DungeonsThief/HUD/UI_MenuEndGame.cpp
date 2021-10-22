@@ -13,6 +13,8 @@ void UUI_MenuEndGame::NativeConstruct()
 	
 	BtnPlayAgain->OnClicked.AddUniqueDynamic(this, &UUI_MenuEndGame::RestartGame);
 	BtnMenu->OnClicked.AddUniqueDynamic(this, &UUI_MenuEndGame::ReturnToMenu);
+
+	MainLevelName = FName(GetWorld()->GetName());
 	UE_LOG(LogTemp, Warning, TEXT("INIT"));
 }
 

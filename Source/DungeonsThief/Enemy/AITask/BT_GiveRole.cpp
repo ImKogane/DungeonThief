@@ -35,8 +35,11 @@ EBTNodeResult::Type UBT_GiveRole::CodeToExecute()
 	
 	SpawnEnemyManager->SetGlobalWaitAI(true);
 	const int NumberOfFoodInWorld = FoodManager->GetAllFoodInWorld().Num();
+	const int NumberOfSpotInWorld = FoodManager->GetAllSpotInGame().Num();
+
+	MaxFoodInWorld = NumberOfSpotInWorld >=5 ? 5 : NumberOfSpotInWorld;
 	
-	if(NumberOfFoodInWorld >= FoodManager->GetAllSpotInGame().Num())
+	if(NumberOfFoodInWorld >= MaxFoodInWorld)
 	{
 		uint8 ByteEnum = (uint8)EEnemyState::EES_Patrolling;
 		BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);

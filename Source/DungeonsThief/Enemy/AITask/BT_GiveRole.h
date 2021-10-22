@@ -17,4 +17,6 @@ class DUNGEONSTHIEF_API UBT_GiveRole : public UBT_BaseTaskDungeonsThief
 	
 protected:
 	virtual EBTNodeResult::Type CodeToExecute() override;
+
+	int MaxFoodInWorld;
 };
