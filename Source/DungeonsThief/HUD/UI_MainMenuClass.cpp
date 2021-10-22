@@ -21,7 +21,7 @@ void UUI_MainMenuClass::NativeConstruct()
 	BtnSettings->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::OpenSettings);
 	BtnExit->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::ExitGame);
 
-	GameInstance = Cast<UMyGameInstance>(GetGameInstance());
+	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
 	
 	UE_LOG(LogTemp, Warning, TEXT("INIT"));
 }
@@ -48,8 +48,8 @@ void UUI_MainMenuClass::PlayGame(TEnumAsByte<EGameplayMode> GameplayMode)
 
 		if(MenuController != nullptr)
 		{
-			if(GameInstance)
-				GameInstance->SetGameplayMode(GameplayMode);
+			if(MyGameInstance)
+				MyGameInstance->SetGameplayMode(GameplayMode);
 			MenuController->ShowPickLevelMenu();
 		}
 	}

@@ -39,7 +39,7 @@ protected:
 	class ASpawnEnemyManager* SpawnEnemyManager;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Helpers")
-	class UMyGameInstance* GameInstance;
+	class UMyGameInstance* MyGameInstance;
 
 	class AMyGameState* MyGameState;
 

@@ -27,14 +27,14 @@ void UUI_MainClass::NativeConstruct()
 		return;
 	}
 	
-	GameInstance = Cast<UMyGameInstance>(GetGameInstance());
+	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
 	
 	MyGameState = MyGameMode->GetGameState<AMyGameState>();
 
-	if(GameInstance == nullptr)
+	if(MyGameInstance == nullptr)
 		return;
 	
-	if(GameInstance->GetGameplayMode() == EGameplayMode::EGM_ScoreMode)
+	if(MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_ScoreMode)
 	{
 		ScorePoint->SetVisibility(ESlateVisibility::Visible);
 		FoodBar->SetPercent(1.0f);
@@ -50,13 +50,13 @@ void UUI_MainClass::NativeConstruct()
 
 void UUI_MainClass::UpdateProgression()
 {
-	if(GameInstance == nullptr)
+	if(MyGameInstance == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("GameInstance null"));
+		UE_LOG(LogTemp, Warning, TEXT("MyGameInstance null"));
 		return;
 	}
 	
-	if(GameInstance->GetGameplayMode() == EGameplayMode::EGM_NormalMode)
+	if(MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_NormalMode)
 	{
 		if(MyGameState)
 		{

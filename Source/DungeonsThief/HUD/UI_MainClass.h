@@ -27,7 +27,7 @@ protected:
 
 	class AMyGameMode* MyGameMode;
 	class AMyGameState* MyGameState;
-	class UMyGameInstance* GameInstance;
+	class UMyGameInstance* MyGameInstance;
 
 	UFUNCTION()
 	void UpdateProgression();
