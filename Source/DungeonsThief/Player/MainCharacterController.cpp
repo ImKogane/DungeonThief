@@ -94,11 +94,8 @@ void AMainCharacterController::ShowMainHUD(bool Visibility)
 
 	if(Visibility == true)
 	{
-		CanPause = true;
-		bShowMouseCursor = false;
-		UGameplayStatics::SetGamePaused(GetWorld(), false);
+		SetCanPause(true);
 	}
-	
 }
 
 void AMainCharacterController::ShowCharacterHUD(bool Visibility)
