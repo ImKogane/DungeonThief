@@ -12,7 +12,8 @@ AFood::AFood()
 	PrimaryActorTick.bCanEverTick = true;
 
 	FoodMesh = CreateDefaultSubobject<UStaticMeshComponent>("FoodMesh");
-
+	RootComponent = FoodMesh;
+	
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>("BoxCollider");
 	CollisionBox->SetBoxExtent(FVector(100.f, 100.f, 100.f));
 	CollisionBox->SetCollisionProfileName("Trigger");

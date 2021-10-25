@@ -72,7 +72,10 @@ public:
 	FORCEINLINE bool GetGlobalWaitAI() { return bGlobalWaitAI; }
 	FORCEINLINE void SetGlobalWaitAI(bool value) { bGlobalWaitAI = value; }
 
+	void StopAllTimeHandle();
+
 protected:
+	TArray<FTimerHandle> AllSpawnTimer;
 
 	void SetupEnemy(class AAIEnemyCharacter* EnemyCharacter);
 

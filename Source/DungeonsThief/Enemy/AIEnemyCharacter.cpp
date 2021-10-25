@@ -108,8 +108,7 @@ void AAIEnemyCharacter::StopMovement()
 
 	if (EnemyController)
 	{
-		EnemyController->StopMovement();
-		EnemyController->StopBehaviouTree();
+		EnemyController->BrainComponent->StopLogic("GameOver");
 	}
 }
 

@@ -128,12 +128,12 @@ void ASpawnEnemyManager::SpawnEnemy(int Delay)
 		}
 	}
 	
-	World->GetTimerManager().SetTimer(handle, [this]()
+	GetWorldTimerManager().SetTimer(handle, [this]()
 	{
-		//TODO vérifier si le spawn enemy manager est valide
 		CreateEnemy();
-		
 	}, Delay, false);
+
+	AllSpawnTimer.Add(handle);
 }
 
 void ASpawnEnemyManager::DeleteAI(AAIEnemyCharacter* AIToDelet)
@@ -157,6 +157,15 @@ void ASpawnEnemyManager::DeleteAI(AAIEnemyCharacter* AIToDelet)
 
 void ASpawnEnemyManager::DeleteBoxOnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+}
+
+void ASpawnEnemyManager::StopAllTimeHandle()
+{
+	for (FTimerHandle Handle : AllSpawnTimer)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Invalidate handle"));
+		Handle.Invalidate();
+	}
 }
 
 

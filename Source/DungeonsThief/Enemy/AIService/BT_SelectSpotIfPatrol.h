@@ -3,17 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BehaviorTree/BTService.h"
+#include "BT_BaseServiceDungeonThief.h"
 #include "BT_SelectSpotIfPatrol.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DUNGEONSTHIEF_API UBT_SelectSpotIfPatrol : public UBTService
+class DUNGEONSTHIEF_API UBT_SelectSpotIfPatrol : public UBT_BaseServiceDungeonThief
 {
 	GENERATED_BODY()
 protected:
 
-	virtual void ScheduleNextTick(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+	virtual void CodeToExecute() override;
 };

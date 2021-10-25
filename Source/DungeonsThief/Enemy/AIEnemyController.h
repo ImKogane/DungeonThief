@@ -62,13 +62,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	float SightDistance;
-
-public:
-
-	void StopBehaviouTree();
 	
-protected:
-
 	/* This function is called when the enemy is spawned */
 	/* We'll initialize the blackboard and start the behaviour tree */
 	virtual void OnPossess(APawn* InPawn) override;
