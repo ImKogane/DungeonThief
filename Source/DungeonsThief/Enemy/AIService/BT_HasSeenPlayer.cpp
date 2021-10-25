@@ -57,6 +57,7 @@ void UBT_HasSeenPlayer::ScheduleNextTick(UBehaviorTreeComponent& OwnerComp, uint
 		{
 			uint8 byteEnum = (uint8)EEnemyState::EES_Chasing;
 			BlackboardComponent->SetValueAsEnum("EnemyState", byteEnum);
+			BlackboardComponent->SetValueAsVector("PlayerLocation", PlayerLocation);
 				
 			AIController->SetEnemyState(EEnemyState::EES_Chasing);
 			
