@@ -58,7 +58,17 @@ void UUI_MainMenuClass::PlayGame(EGameplayMode GameplayMode)
 
 void UUI_MainMenuClass::OpenSettings()
 {
-	UE_LOG(LogTemp, Warning, TEXT("OPEN SETTINGS"));
+	UWorld* World = GetWorld();
+
+	if (World)
+	{
+		AMainMenuController* MenuController = Cast<AMainMenuController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+		if(MenuController != nullptr)
+		{
+			MenuController->ShowSettingsMenu();
+		}
+	}
 }
 
 void UUI_MainMenuClass::ExitGame()

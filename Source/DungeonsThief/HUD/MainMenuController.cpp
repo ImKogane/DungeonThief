@@ -25,11 +25,24 @@ void AMainMenuController::BeginPlay()
 		bShowMouseCursor = true;
 	}
 	
+	if (SettingsWidget)
+	{
+		SettingsMenu = CreateWidget<UUserWidget>(this, SettingsWidget);
+		SettingsMenu->AddToViewport();
+		SettingsMenu->SetVisibility(ESlateVisibility::Hidden);
+		bShowMouseCursor = true;
+	}
+	
 }
 
 
 void AMainMenuController::ShowPickLevelMenu()
 {
 	PickLevelMenu->SetVisibility(ESlateVisibility::Visible);
+}
+
+void AMainMenuController::ShowSettingsMenu()
+{
+	SettingsMenu->SetVisibility(ESlateVisibility::Visible);
 }
 
