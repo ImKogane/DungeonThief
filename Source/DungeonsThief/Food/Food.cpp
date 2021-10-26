@@ -29,14 +29,18 @@ AFood::AFood()
 void AFood::BeTake()
 {
 	UGameplayStatics::PlaySoundAtLocation(this, PickUpSound, GetActorLocation());
+	FoodMesh->SetSimulatePhysics(false);
 	FoodMesh->SetCollisionProfileName(UCollisionProfile::NoCollision_ProfileName);
 }
 
 void AFood::BeDrop()
 {
 	//befor applying in the project for the food, ignore the pawn only to make the game more fluid
-	//FoodMesh->SetCollisionProfileName(UCollisionProfile::BlockAllDynamic_ProfileName);
-	FoodMesh->SetCollisionProfileName("OverlapOnlyPawn");
+	
+	FoodMesh->SetSimulatePhysics(true);
+	FoodMesh->SetCollisionProfileName(UCollisionProfile::BlockAllDynamic_ProfileName);
+	FoodMesh->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	//FoodMesh->SetCollisionProfileName("OverlapOnlyPawn");
 	
 }
 
@@ -48,6 +52,9 @@ void AFood::BeginPlay()
 	Super::BeginPlay();
 	SetRandomMesh();
 
+	FoodMesh->SetSimulatePhysics(true);
+	FoodMesh->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	FoodMesh->SetMassScale(NAME_None, 10);
 	BecomeSuperFood();
 	
 }

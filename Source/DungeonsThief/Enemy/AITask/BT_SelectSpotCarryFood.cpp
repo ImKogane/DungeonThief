@@ -18,9 +18,14 @@ EBTNodeResult::Type UBT_SelectSpotCarryFood::CodeToExecute()
 		UE_LOG(LogTemp, Warning, TEXT("FoodManager not found"))
 		return EBTNodeResult::Failed;
 	}
+
+	UObject* SpotLocationExist = BlackboardComponent->GetValueAsObject("SpotLocationToGo");
+	if(SpotLocationExist)
+		return EBTNodeResult::Succeeded;
 	
 	TArray<AFoodSpot*> AllSpotInWorld = FoodManager->GetAllSpotInGame();
 	TArray<AFoodSpot*> AlreadyVisitedSpot = AICharacter->GetAlreadyVisitedSpot();
+
 	
 	if(AllSpotInWorld.Num() > AlreadyVisitedSpot.Num())
 	{
