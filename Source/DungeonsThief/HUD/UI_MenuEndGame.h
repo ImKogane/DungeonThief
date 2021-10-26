@@ -53,10 +53,5 @@ protected:
 
 public:
 	void SetTextScore(int Score);
-
-private:
-
-	int LoadScore();
-
-	void SaveData(int score);
+	
 };
