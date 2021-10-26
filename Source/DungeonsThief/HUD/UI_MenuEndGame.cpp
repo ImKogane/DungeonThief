@@ -81,14 +81,14 @@ int UUI_MenuEndGame::LoadScore()
 {
 	int score = 0;
 	
-	UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
-
-	if(SaveGameInstance != nullptr)
+	if(!UGameplayStatics::DoesSaveGameExist("Save",0))
 	{
-		SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot("Save",0));
-		score = SaveGameInstance->BestPlayerScore;
+		SaveData(0);
 	}
-	
+
+	UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
+	SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot("Save",0));
+	score = SaveGameInstance->BestPlayerScore;
 	
 	return score;
 }
@@ -96,6 +96,7 @@ int UUI_MenuEndGame::LoadScore()
 void UUI_MenuEndGame::SaveData(int score)
 {
 	UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
+	
 	SaveGameInstance->BestPlayerScore = score;
 	
 
