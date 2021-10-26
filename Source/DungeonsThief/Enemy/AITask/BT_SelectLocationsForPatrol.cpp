@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DungeonsThief/Enemy/AITask/BT_SelectLocationForPatrol.h"
+#include "DungeonsThief/Enemy/AITask/BT_SelectLocationsForPatrol.h"
 
 #include "NavigationSystem.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -10,7 +10,7 @@
 #include "DungeonsThief/Managers/SpawnEnemyManager.h"
 #include "Kismet/GameplayStatics.h"
 
-EBTNodeResult::Type UBT_SelectLocationForPatrol::CodeToExecute()
+EBTNodeResult::Type UBT_SelectLocationsForPatrol::CodeToExecute()
 {
 	ASpawnEnemyManager* SpawnEnemyManager = MyGameMode->GetSpawnManager();
 

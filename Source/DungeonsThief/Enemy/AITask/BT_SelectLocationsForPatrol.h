@@ -7,13 +7,13 @@
 #include "BehaviorTree/BTTaskNode.h"
 #include "DungeonsThief/Food/FoodSpot.h"
 #include "DungeonsThief/Managers/FoodManager.h"
-#include "BT_SelectLocationForPatrol.generated.h"
+#include "BT_SelectLocationsForPatrol.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DUNGEONSTHIEF_API UBT_SelectLocationForPatrol : public UBT_BaseTaskDungeonsThief
+class DUNGEONSTHIEF_API UBT_SelectLocationsForPatrol : public UBT_BaseTaskDungeonsThief
 {
 	GENERATED_BODY()
 	

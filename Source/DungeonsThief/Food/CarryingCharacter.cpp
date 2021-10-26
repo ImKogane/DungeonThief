@@ -144,9 +144,11 @@ void ACarryingCharacter::CarryItem()
 			FoodCarriedActor = NearFoodActor;
 			AFood* ModifyFoodData = Cast<AFood>(FoodCarriedActor);
 			ModifyFoodData->SetIsOnSpot(false);
+			ModifyFoodData->SetCharacterCarryingMe(this);
 			NearFoodActor = nullptr;
 			SetPlayerSpeed();
-			FoodCarriedActor->SetActorLocation(this->GetActorLocation());			
+			FoodCarriedActor->SetActorLocation(this->GetActorLocation());	
+			FoodCarriedActor->SetActorRotation(GetActorRotation());		
 		}
 	}
 }
@@ -165,8 +167,13 @@ void ACarryingCharacter::DropItem()
 		if(FoodCarriedActor != nullptr)
 		{
 			NearFoodActor = FoodCarriedActor;
-			FoodCarriedActor->SetActorLocation(GetFloorSocket());
-			Cast<AFood>(NearFoodActor)->BeDrop();
+			FVector ForwardVec = GetActorForwardVector();
+			ForwardVec.Normalize();
+			UE_LOG(LogTemp, Warning, TEXT("Vecteur : %s"), *ForwardVec.ToString())
+			FoodCarriedActor->SetActorLocation(GetActorLocation() + ForwardVec * 60);
+			AFood* ModifyFood = Cast<AFood>(NearFoodActor);
+			ModifyFood->SetCharacterCarryingMe(nullptr);
+			ModifyFood->BeDrop();
 			FoodCarriedActor = nullptr;
 			IsCarryFood = false;
 		}

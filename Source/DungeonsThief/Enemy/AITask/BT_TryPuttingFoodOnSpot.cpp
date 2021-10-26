@@ -25,6 +25,7 @@ EBTNodeResult::Type UBT_TryPuttingFoodOnSpot::CodeToExecute()
 		return EBTNodeResult::Succeeded;
 	}
 	AFoodSpot* SpotVisited = Cast<AFoodSpot>(BlackboardComponent->GetValueAsObject("SpotLocationToGo"));
+	BlackboardComponent->ClearValue("SpotLocationToGo");
 	AICharacter->AddAlreadyVisitedSpot(SpotVisited);
 	AICharacter->InteractWithItem();
 	
