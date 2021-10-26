@@ -235,7 +235,7 @@ void AMainCharacter::WinGame()
 
 	if (MainCharacterController)
 	{
-		MainCharacterController->ShowWinScreen(true);
+		MainCharacterController->ShowScreen(true, EWidgetGameScreen::EWGS_WinScreen);
 	}	
 }
 
@@ -245,7 +245,7 @@ void AMainCharacter::LoseGame()
 	
 	if (MainCharacterController)
 	{
-		MainCharacterController->ShowLoseScreen(true);
+		MainCharacterController->ShowScreen(true, EWidgetGameScreen::EWGS_LoseScreen);
 	}
 }
 
@@ -288,7 +288,7 @@ void AMainCharacter::SetGamePause()
 
 	if(Player != nullptr)
 	{
-		Player->ShowPauseMenu(true);
+		Player->ShowScreen(true, EWidgetGameScreen::EWGS_PauseScreen);
 	}
 }
 
