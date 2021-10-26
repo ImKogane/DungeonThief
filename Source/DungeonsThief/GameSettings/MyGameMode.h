@@ -11,7 +11,7 @@
  */
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameWin);	
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameLoose);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameLose);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGainPoints);
 
 UCLASS()
@@ -22,7 +22,7 @@ class DUNGEONSTHIEF_API AMyGameMode : public AGameMode
 public:
 	
 	FOnGameWin OnGameWin;
-	FOnGameLoose OnGameLoose;
+	FOnGameLose OnGameLose;
 	FOnGainPoints OnGainPoints;
 
 	FORCEINLINE class AFoodManager* GetFoodManager() { return FoodManager; }
@@ -53,7 +53,7 @@ public:
 	
 	void WinGame();
 
-	void LooseGame();
+	void LoseGame();
 	
 	void GainPoints(int Points);	
 };

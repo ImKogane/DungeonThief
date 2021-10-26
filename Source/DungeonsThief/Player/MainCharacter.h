@@ -44,11 +44,11 @@ protected:
 
 	class AAnimationsHandler* AnimationHandler;
 
-	UPROPERTY(EditAnywhere, Category = "WinAndLoose")
+	UPROPERTY(EditAnywhere, Category = "WinAndLose")
 	class UAnimMontage* WinMontage;
 	
-	UPROPERTY(EditAnywhere, Category = "WinAndLoose")
-	class UAnimMontage* LooseMontage;
+	UPROPERTY(EditAnywhere, Category = "WinAndLose")
+	class UAnimMontage* LoseMontage;
 
 	UPROPERTY(EditAnywhere, Category = "Animations")
 	bool IsCrouch = false;
@@ -64,7 +64,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "HUD")
 	class AMainCharacterController* MainCharacterController;
 
-	UPROPERTY(EditAnywhere, Category = "WinAndLoose")
+	UPROPERTY(EditAnywhere, Category = "WinAndLose")
 	float RagdollForceImpulse;
 	
 protected:
@@ -113,7 +113,7 @@ public:
 	void WinGame();
 
 	UFUNCTION()
-	void LooseGame();
+	void LoseGame();
 
 	/* Called in UI to pick up a character for player */
 	UFUNCTION()

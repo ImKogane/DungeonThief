@@ -86,7 +86,7 @@ void AMainCharacter::BeginPlay()
 	}
 
 	MyGameMode->OnGameWin.AddDynamic(this, &AMainCharacter::WinGame);
-	MyGameMode->OnGameLoose.AddDynamic(this, &AMainCharacter::LooseGame);
+	MyGameMode->OnGameLose.AddDynamic(this, &AMainCharacter::LoseGame);
 
 }
 
@@ -222,8 +222,8 @@ void AMainCharacter::MoveRight(float Value)
 #pragma endregion
 
 
-//////////////////// WIN / LOOSE BEHAVIOUR ////////////////////
-#pragma region Win/Loose Behvaiour
+//////////////////// WIN / LOSE BEHAVIOUR ////////////////////
+#pragma region Win/Lose Behvaiour
 
 void AMainCharacter::WinGame()
 {
@@ -239,13 +239,13 @@ void AMainCharacter::WinGame()
 	}	
 }
 
-void AMainCharacter::LooseGame()
+void AMainCharacter::LoseGame()
 {
 	SetPlayRagdoll();
 	
 	if (MainCharacterController)
 	{
-		MainCharacterController->ShowLooseScreen(true);
+		MainCharacterController->ShowLoseScreen(true);
 	}
 }
 

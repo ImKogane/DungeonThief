@@ -58,7 +58,7 @@ void ASpawnEnemyManager::BeginPlay()
 	CurrentEnemyToSpawn = GetWorld()->GetName() == "MainLevel" ? FirstEnemyToSpawn : SecondEnemyToSpawn;
 		
 	//First spawn : 2 enemies are instanciated + wait 60s to instanciate a third one
-	SpawnEnemy(60);	
+	SpawnEnemy(20);	
 }
 
 // Called every frame
@@ -173,7 +173,7 @@ void ASpawnEnemyManager::StopAllTimeHandle()
 		if(Handle.IsValid())
 		{
 			UE_LOG(LogTemp, Log, TEXT("Invalidate handle"));
-			Handle.Invalidate();
+			GetWorldTimerManager().ClearTimer(Handle);
 		}
 	}
 }

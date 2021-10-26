@@ -47,13 +47,13 @@ void AMainCharacterController::BeginPlay()
 		}
 	}
 
-	if (WLooseScreen)
+	if (WLoseScreen)
 	{
-		LooseScreenWidget = CreateWidget<UUserWidget>(this, WLooseScreen);
-		if (LooseScreenWidget)
+		LoseScreenWidget = CreateWidget<UUserWidget>(this, WLoseScreen);
+		if (LoseScreenWidget)
 		{
-			LooseScreenWidget->AddToViewport();
-			LooseScreenWidget->SetVisibility(ESlateVisibility::Hidden);
+			LoseScreenWidget->AddToViewport();
+			LoseScreenWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 	
@@ -77,16 +77,16 @@ void AMainCharacterController::ShowWinScreen(bool Visibility)
 	bShowMouseCursor = true;
 }
 
-void AMainCharacterController::ShowLooseScreen(bool Visibility)
+void AMainCharacterController::ShowLoseScreen(bool Visibility)
 {
-	UUI_MenuEndGame* LooseScreenCast = Cast<UUI_MenuEndGame>(LooseScreenWidget);
+	UUI_MenuEndGame* LoseScreenCast = Cast<UUI_MenuEndGame>(LoseScreenWidget);
 	if(Visibility && MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_ScoreMode)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Show Score"))
-		LooseScreenCast->SetTextScore(MyGameState->GetPlayerPoints());
+		LoseScreenCast->SetTextScore(MyGameState->GetPlayerPoints());
 	}
 	
-	LooseScreenCast->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+	LoseScreenCast->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 	bShowMouseCursor = true;
 }
 

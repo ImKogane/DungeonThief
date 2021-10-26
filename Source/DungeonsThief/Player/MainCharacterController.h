@@ -27,7 +27,7 @@ protected:
 	TSubclassOf<class UUserWidget> WMain;
 
 	/** Variable to hold the wodget after creating it */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
 	UUserWidget* MainWidget;
 
 	UPROPERTY(EditAnywhere, Category = "Widget")
@@ -37,10 +37,10 @@ protected:
 	UUserWidget* WinScreenWidget;
 
 	UPROPERTY(EditAnywhere, Category = "Widget")
-	TSubclassOf<UUserWidget> WLooseScreen;
+	TSubclassOf<UUserWidget> WLoseScreen;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
-	UUserWidget* LooseScreenWidget;
+	UUserWidget* LoseScreenWidget;
 	
 	UPROPERTY(EditAnywhere, Category = "Widget")
     TSubclassOf<UUserWidget> WPauseMenu;
@@ -53,7 +53,7 @@ protected:
 	TSubclassOf<class UUserWidget> WCharacterPick;
 
 	/** Variable to hold the Character pick widget after creating it */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
 	UUserWidget* CharacterPickWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Controller infos")
@@ -65,7 +65,10 @@ protected:
 public :
 
 	void ShowWinScreen(bool Visibility);
-	void ShowLooseScreen(bool Visibility);
+	void ShowLoseScreen(bool Visibility);
+
+	void ShowEndScreen(bool Visibility, bool LoseScreen);
+	
 	void ShowPauseMenu(bool Visibility);
 	void ShowMainHUD(bool Visibility);
 	void ShowCharacterHUD(bool Visibility);
