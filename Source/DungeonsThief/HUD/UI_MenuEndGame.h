@@ -37,7 +37,11 @@ protected:
 	class UTextBlock* EndScore;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "Restart Game")
+	class UTextBlock* EndBestScore;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "Restart Game")
 	bool bLoseUI;
+
 	
 	class UMyGameInstance* MyGameInstance;
 	
@@ -48,8 +52,11 @@ protected:
 	FName MainMenuLevelName = FName("MainMenuLevel");
 
 public:
-	FORCEINLINE void SetTextScore(int Score)
-	{
-		EndScore->SetText(FText::Format(FText::FromString("Your score : {0}"), Score));
-	};
+	void SetTextScore(int Score);
+
+private:
+
+	int LoadScore();
+
+	void SaveData(int score);
 };
