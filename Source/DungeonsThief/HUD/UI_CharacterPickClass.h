@@ -26,7 +26,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
 	class UButton* BtnCharacter3;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
+    class UTextBlock* CharacterInfoText;
 
+	
+	
 	UFUNCTION()
 	void ChooseCharacter1();
 
@@ -37,9 +42,19 @@ protected:
 	void ChooseCharacter3();
 
 	UFUNCTION()
-	void HoverButton();
+	void HoverCharacterButton1();
+
+	UFUNCTION()
+	void HoverCharacterButton2();
+
+	UFUNCTION()
+	void HoverCharacterButton3();
 
 	UFUNCTION()
 	void HideHUD();
+
+	UFUNCTION()
+	void UpdateCharacterInfoText(FString InfoText);
+
 	
 };
