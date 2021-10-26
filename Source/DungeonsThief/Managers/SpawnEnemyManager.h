@@ -48,10 +48,10 @@ protected:
 	TArray<class AAIEnemyCharacter*> EnemiesSpawned;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Spawn Enemy")
-	int MinSpawnDelay;
+	float MinSpawnDelay;
 
 	UPROPERTY(VisibleAnywhere, Category = "Spawn Enemy")
-	int MaxSpawnDelay;
+	float MaxSpawnDelay;
 
 	UPROPERTY(VisibleAnywhere, Category = "Spawn Enemy")
 	int FirstSpawnDelay;
@@ -72,7 +72,10 @@ public:
 	FORCEINLINE bool GetGlobalWaitAI() { return bGlobalWaitAI; }
 	FORCEINLINE void SetGlobalWaitAI(bool value) { bGlobalWaitAI = value; }
 
+	void StopAllTimeHandle();
+
 protected:
+	TArray<FTimerHandle> AllSpawnTimer;
 
 	void SetupEnemy(class AAIEnemyCharacter* EnemyCharacter);
 

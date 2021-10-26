@@ -28,12 +28,6 @@ AAIEnemyController::AAIEnemyController()
 	SightDistance = 1000.f;
 }
 
-
-void AAIEnemyController::StopBehaviouTree()
-{
-	BlackboardComponent->SetValueAsInt("CanMove", 1);
-}
-
 void AAIEnemyController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
@@ -53,8 +47,6 @@ void AAIEnemyController::OnPossess(APawn* InPawn)
 		
 		//Start the behaviour tree which coreesponds to the specific character
 		BehaviorTreeComponent->StartTree(*AICharacter->BehaviourTree);
-		
-		BlackboardComponent->SetValueAsInt("CanMove", 0);
 	}
 }
 

@@ -7,19 +7,9 @@
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
 #include "DungeonsThief/Enemy/AIEnemyController.h"
 
-void UBT_SelectSpotIfPatrol::ScheduleNextTick(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+void UBT_SelectSpotIfPatrol::CodeToExecute()
 {
-	Super::ScheduleNextTick(OwnerComp, NodeMemory);
-
-	AAIEnemyController* AIController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
-
-	if (AIController == nullptr)
-	{
-		return;
-	}
-	UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
-	
-	AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();		
+	Super::CodeToExecute();
 	TArray<FVector> LocationsForPatrol = AICharacter->GetLocationsForPatrol();
 	
 	if(LocationsForPatrol.Num() == 0)

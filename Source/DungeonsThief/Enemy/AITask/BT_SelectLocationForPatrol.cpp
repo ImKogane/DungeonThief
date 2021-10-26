@@ -30,7 +30,6 @@ EBTNodeResult::Type UBT_SelectLocationForPatrol::CodeToExecute()
 	{
 		do
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Get Point"))
 			NavSystem->GetRandomPoint(RandPointOnNav);
 		}while (!NavSystem->ProjectPointToNavigation(RandPointOnNav.Location, RandPointOnNav));
 		

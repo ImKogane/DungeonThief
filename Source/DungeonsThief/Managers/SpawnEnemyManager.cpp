@@ -25,8 +25,8 @@ ASpawnEnemyManager::ASpawnEnemyManager()
 	SpawnLocation->SetupAttachment(DeleteEnemyBoxComponent);
 	SpawnLocation->InitSphereRadius(10);
 	
-	MinSpawnDelay = 0;
-	MaxSpawnDelay = 5;
+	MinSpawnDelay = 0.0f;
+	MaxSpawnDelay = 5.99f;
 	
 	FirstSpawnDelay = 60;
 
@@ -128,12 +128,12 @@ void ASpawnEnemyManager::SpawnEnemy(int Delay)
 		}
 	}
 	
-	World->GetTimerManager().SetTimer(handle, [this]()
+	GetWorldTimerManager().SetTimer(handle, [this]()
 	{
-		//TODO vérifier si le spawn enemy manager est valide
 		CreateEnemy();
-		
 	}, Delay, false);
+
+	AllSpawnTimer.Add(handle);
 }
 
 void ASpawnEnemyManager::DeleteAI(AAIEnemyCharacter* AIToDelet)
@@ -146,17 +146,36 @@ void ASpawnEnemyManager::DeleteAI(AAIEnemyCharacter* AIToDelet)
 	//check if the array is empty : true -> no more IA in the maps -> we need to instanciate one immediately
 	if (EnemiesSpawned.Num() == 0)
 	{
-		SpawnEnemy(0);
+		CreateEnemy();
 	}
 	//else : we wait a random delay between 0 and 5s
 	else
 	{
-		SpawnEnemy(FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay));
+		int NewDelay = FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay);
+		if(NewDelay == 0)
+		{
+			CreateEnemy();
+		}else
+		{
+			SpawnEnemy(NewDelay);
+		}
 	}
 }
 
 void ASpawnEnemyManager::DeleteBoxOnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+}
+
+void ASpawnEnemyManager::StopAllTimeHandle()
+{
+	for (FTimerHandle Handle : AllSpawnTimer)
+	{
+		if(Handle.IsValid())
+		{
+			UE_LOG(LogTemp, Log, TEXT("Invalidate handle"));
+			Handle.Invalidate();
+		}
+	}
 }
 
 

@@ -36,9 +36,9 @@ void AFoodManager::BeginPlay()
 
 	MyGameMode->InitFoodManager(this);
 	
-	int RandomIndex = FMath::FRandRange(0, SpotsArray.Num() - 1);
+	int FirstSpotWithFood = FMath::FRandRange(0, SpotsArray.Num() - 1);
 
-	AFoodSpot* FoodSpot = SpotsArray[RandomIndex];
+	AFoodSpot* FoodSpot = SpotsArray[FirstSpotWithFood];
 	if (FoodSpot)
 	{
 		AFood * SpawnedFood = SpawnFood(FoodSpot->GetSpawnPoint()->GetComponentLocation());

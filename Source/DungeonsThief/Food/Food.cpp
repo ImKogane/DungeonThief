@@ -12,7 +12,8 @@ AFood::AFood()
 	PrimaryActorTick.bCanEverTick = true;
 
 	FoodMesh = CreateDefaultSubobject<UStaticMeshComponent>("FoodMesh");
-
+	RootComponent = FoodMesh;
+	
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>("BoxCollider");
 	CollisionBox->SetBoxExtent(FVector(100.f, 100.f, 100.f));
 	CollisionBox->SetCollisionProfileName("Trigger");
@@ -65,12 +66,12 @@ void AFood::Tick(float DeltaTime)
 void AFood::SetRandomMesh()
 {
     //Choose random index
-	int random = FMath::FRandRange(0,FoodArray.Num());
+	int MeshIndex = FMath::FRandRange(0,FoodArray.Num());
 	
 	
 	if(FoodMesh != nullptr)
 	{
-		FoodMesh->SetStaticMesh(FoodArray[random]);
+		FoodMesh->SetStaticMesh(FoodArray[MeshIndex]);
 	}
 	
 }
@@ -78,9 +79,9 @@ void AFood::SetRandomMesh()
 void AFood::BecomeSuperFood()
 {
 
-	int randomIndex = FMath::FRandRange(0,SuperFoodRate+1);
+	int LuckySuperFNumber = FMath::FRandRange(0,SuperFoodRate+1);
 
-	if(randomIndex == 5)
+	if(LuckySuperFNumber == 5)
 	{
 		FoodPoints = 2;
 		SpeedReduction = 0.25;

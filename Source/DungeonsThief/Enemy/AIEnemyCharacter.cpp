@@ -108,8 +108,7 @@ void AAIEnemyCharacter::StopMovement()
 
 	if (EnemyController)
 	{
-		EnemyController->StopMovement();
-		EnemyController->StopBehaviouTree();
+		EnemyController->BrainComponent->StopLogic("GameOver");
 	}
 }
 
@@ -150,11 +149,11 @@ void AAIEnemyCharacter::EnemyLooseGame()
 void AAIEnemyCharacter::SetRandomMesh()
 {
 	//Choose random index
-	int Random = FMath::FRandRange(0,MeshArray.Num());
-	GetMesh()->SetSkeletalMesh(MeshArray[Random]);
+	int MeshIndex = FMath::FRandRange(0,MeshArray.Num());
+	GetMesh()->SetSkeletalMesh(MeshArray[MeshIndex]);
 	
-	Random = FMath::FRandRange(0,MaterialArray.Num());
-	GetMesh()->SetMaterial(0, MaterialArray[Random]);
+	MeshIndex = FMath::FRandRange(0,MaterialArray.Num());
+	GetMesh()->SetMaterial(0, MaterialArray[MeshIndex]);
 	
 }
 

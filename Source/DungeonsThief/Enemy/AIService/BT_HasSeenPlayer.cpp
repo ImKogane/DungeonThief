@@ -8,92 +8,74 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "DungeonsThief/Player/MainCharacter.h"
-#include "DrawDebugHelpers.h"
-#include "GameFramework/Character.h"
 
-void UBT_HasSeenPlayer::ScheduleNextTick(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+void UBT_HasSeenPlayer::CodeToExecute()
 {
-	Super::ScheduleNextTick(OwnerComp, NodeMemory);
+	Super::CodeToExecute();
+	//Line to the player -> PlayerPos - Enemy
+	//Normalize that
+	//GetForward from enemy
+	//Calculate the dot product between forward and the line
+	//Use ACos(degrees) from the dot result
+	//Check if this is less than a certain amount
+	
+	// If true : AI can see player
+	// else : AI can't see player
 
-	AAIEnemyController* AIController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
+	FVector EnemyLocation = AIController->GetPawn()->GetActorLocation();
+	FVector PlayerLocation = FVector::ZeroVector;
+	
+	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 
-	if (AIController)
+	if (PlayerPawn)
 	{
-		AAIEnemyCharacter* AICharacter = AIController->GetAICharacter();
-		
-		UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
+		PlayerLocation = PlayerPawn->GetActorLocation();
+	}
 
-		//Line to the player -> PlayerPos - Enemy
-		//Normalize that
-		//GetForward from enemy
-		//Calculate the dot product between forward and the line
-		//Use ACos(degrees) from the dot result
-		//Check if this is less than a certain amount
-		
-		// If true : AI can see player
-		// else : AI can't see player
+	FVector LineToPlayer = (PlayerLocation - EnemyLocation).GetSafeNormal();
+	FVector EnemyForward = AIController->GetPawn()->GetActorForwardVector();
+	
+	float DotProduct = FVector::DotProduct(LineToPlayer, EnemyForward);
+	float ACos = FMath::RadiansToDegrees(FMath::Acos(DotProduct));
 
-		FVector EnemyLocation = AIController->GetPawn()->GetActorLocation();
-		FVector PlayerLocation = FVector::ZeroVector;
-		
-		APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	FVector StartTrace = EnemyLocation + EnemyForward * 2;
+	AActor* IgnoreActor = AIController->GetPawn();
 
-		if (PlayerPawn)
-		{
-			PlayerLocation = PlayerPawn->GetActorLocation();
-		}
-
-		FVector LineToPlayer = (PlayerLocation - EnemyLocation).GetSafeNormal();
-		FVector EnemyForward = AIController->GetPawn()->GetActorForwardVector();
-		
-		float DotProduct = FVector::DotProduct(LineToPlayer, EnemyForward);
-		float ACos = FMath::RadiansToDegrees(FMath::Acos(DotProduct));
-
-		FVector StartTrace = EnemyLocation + EnemyForward * 2;
-		AActor* IgnoreActor = AIController->GetPawn();
-
-		//The enemy has seen the player and he's in sight : the enemy start chasing him
-		if (ACos < AIController->GetFieldOfView() && CanSeePlayerRayCast(LineToPlayer, StartTrace, AIController->GetSightDistance(), IgnoreActor))
-		{
-			uint8 byteEnum = (uint8)EEnemyState::EES_Chasing;
-			BlackboardComponent->SetValueAsEnum("EnemyState", byteEnum);
-			BlackboardComponent->SetValueAsVector("PlayerLocation", PlayerLocation);
-				
-			AIController->SetEnemyState(EEnemyState::EES_Chasing);
+	//The enemy has seen the player and he's in sight : the enemy start chasing him
+	if (ACos < AIController->GetFieldOfView() && CanSeePlayerRayCast(LineToPlayer, StartTrace, AIController->GetSightDistance(), IgnoreActor))
+	{
+		uint8 byteEnum = (uint8)EEnemyState::EES_Chasing;
+		BlackboardComponent->SetValueAsEnum("EnemyState", byteEnum);
+		BlackboardComponent->SetValueAsVector("PlayerLocation", PlayerLocation);
 			
-			if (AICharacter)
-			{
-				AICharacter->SetHasSeenPlayer(true);
-				AICharacter->SetIsInSight(true);
-			}
-		}
-		else
-		{
-			if (AICharacter)
-			{
-				AICharacter->SetIsInSight(false);				
-			}
-		}
+		AIController->SetEnemyState(EEnemyState::EES_Chasing);
+		
+		AICharacter->SetHasSeenPlayer(true);
+		AICharacter->SetIsInSight(true);
+	}
+	else
+	{
+		AICharacter->SetIsInSight(false);				
+	}
 
-		//The enemy has seen the player but he's not in sight anymore : the enemy'll wander to the last player's position known
-		if (AICharacter && AICharacter->GetHasSeenPlayer() && !AICharacter->GetIsInSight())
-		{
-			uint8 ByteEnum = (uint8)EEnemyState::EES_Wandering;
-			BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
-			
-			AIController->SetEnemyState(EEnemyState::EES_Wandering);			
-			AICharacter->SetWanderCooldown();
-		}
+	//The enemy has seen the player but he's not in sight anymore : the enemy'll wander to the last player's position known
+	if (AICharacter->GetHasSeenPlayer() && !AICharacter->GetIsInSight())
+	{
+		uint8 ByteEnum = (uint8)EEnemyState::EES_Wandering;
+		BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
+		
+		AIController->SetEnemyState(EEnemyState::EES_Wandering);			
+		AICharacter->SetWanderCooldown();
+	}
 
-		//We reset the enemy state with the one before it has seen the player
-		if (AICharacter && !AICharacter->IsInWanderCooldown() && !AICharacter->GetHasSeenPlayer())
-		{
-			uint8 ByteEnum = (uint8)EEnemyState::EES_Patrolling;
-			BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
+	//We reset the enemy state with the one before it has seen the player
+	if (!AICharacter->IsInWanderCooldown() && !AICharacter->GetHasSeenPlayer())
+	{
+		uint8 ByteEnum = (uint8)EEnemyState::EES_Patrolling;
+		BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
 
-			AIController->SetEnemyState(EEnemyState::EES_Patrolling);
-		}
-	}	
+		AIController->SetEnemyState(EEnemyState::EES_Patrolling);
+	}
 }
 
 bool UBT_HasSeenPlayer::CanSeePlayerRayCast(FVector ForwardVector, FVector StartTrace, float MaxDistance, AActor* IgnoreActor)

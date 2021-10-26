@@ -42,6 +42,7 @@ void AMyGameMode::WinGame()
 {
 	if (OnGameWin.IsBound())
 	{
+		SpawnEnemyManager->StopAllTimeHandle();
 		OnGameWin.Broadcast();
 	}
 }
@@ -50,6 +51,7 @@ void AMyGameMode::LooseGame()
 {
 	if (OnGameLoose.IsBound())
 	{
+		SpawnEnemyManager->StopAllTimeHandle();
 		OnGameLoose.Broadcast();
 	}
 }
