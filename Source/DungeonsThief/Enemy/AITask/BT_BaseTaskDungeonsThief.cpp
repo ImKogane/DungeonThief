@@ -26,11 +26,23 @@ EBTNodeResult::Type UBT_BaseTaskDungeonsThief::ExecuteTask(UBehaviorTreeComponen
 	if (MyGameMode == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
-		return EBTNodeResult::Failed;;
+		return EBTNodeResult::Failed;
 	}
 	
 	AICharacter = AIController->GetAICharacter();
+	if(AICharacter == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("AICharacter is null"));
+		return EBTNodeResult::Failed;
+	}
+	
 	BlackboardComponent = AIController->GetBlackBoardComponent();
+	if(BlackboardComponent == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("BlackboardComponent is null"));
+		return EBTNodeResult::Failed;
+	}
+	
 	return CodeToExecute();
 }
 
