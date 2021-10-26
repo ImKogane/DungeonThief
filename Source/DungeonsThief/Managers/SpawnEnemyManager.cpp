@@ -146,12 +146,20 @@ void ASpawnEnemyManager::DeleteAI(AAIEnemyCharacter* AIToDelet)
 	//check if the array is empty : true -> no more IA in the maps -> we need to instanciate one immediately
 	if (EnemiesSpawned.Num() == 0)
 	{
-		SpawnEnemy(0);
+		CreateEnemy();
 	}
 	//else : we wait a random delay between 0 and 5s
 	else
 	{
-		SpawnEnemy(FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay));
+		int NextDelay = FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay);
+		UE_LOG(LogTemp, Warning, TEXT("Create Enemy in %d sec"), NextDelay)
+		if(NextDelay == 0)
+		{
+			CreateEnemy();
+		}else
+		{
+			SpawnEnemy(NextDelay);
+		}
 	}
 }
 
@@ -163,8 +171,11 @@ void ASpawnEnemyManager::StopAllTimeHandle()
 {
 	for (FTimerHandle Handle : AllSpawnTimer)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Invalidate handle"));
-		Handle.Invalidate();
+		if(Handle.IsValid())
+		{
+			UE_LOG(LogTemp, Log, TEXT("Invalidate handle"));
+			Handle.Invalidate();
+		}
 	}
 }
 
