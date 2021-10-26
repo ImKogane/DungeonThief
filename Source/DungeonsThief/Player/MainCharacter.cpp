@@ -54,6 +54,8 @@ AMainCharacter::AMainCharacter()
 	AnimationHandler = CreateDefaultSubobject<AAnimationsHandler>(TEXT("AnimationHandler"));
 
 	bCanMove = true;
+	
+	RagdollForceImpulse = 10; 
 
 	GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
 }
@@ -239,12 +241,8 @@ void AMainCharacter::WinGame()
 
 void AMainCharacter::LooseGame()
 {
-	if (AnimationHandler && LooseMontage)
-	{
-		AnimationHandler->PlayAnimation(this, LooseMontage);
-		bCanMove = false;
-	}
-
+	SetPlayRagdoll();
+	
 	if (MainCharacterController)
 	{
 		MainCharacterController->ShowLooseScreen(true);
@@ -292,5 +290,33 @@ void AMainCharacter::SetGamePause()
 	{
 		Player->ShowPauseMenu(true);
 	}
+}
+
+FVector AMainCharacter::GetXYRandomDirection(float XMin, float XMax, float YMin, float YMax)
+{
+	float X = FMath::RandRange(XMin, XMax);
+	float Y = FMath::RandRange(YMin, YMax);
+
+	return FVector(X, Y, 5);
+}
+
+void AMainCharacter::SetPlayRagdoll()
+{
+	bCanMove = false;
+
+	DropItem();
+	
+	USkeletalMeshComponent* PlayerMesh = GetMesh();
+	if (PlayerMesh == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("No skeletal mesh was found on the player"));
+		return;
+	}
+	
+	PlayerMesh->SetAllBodiesBelowSimulatePhysics(FName("Pelvis"), true, true);
+	PlayerMesh->SetAllBodiesBelowPhysicsBlendWeight(FName("Pelvis"), 2.0, false, true);
+
+	PlayerMesh->SetSimulatePhysics(true);
+	PlayerMesh->AddImpulse(GetXYRandomDirection(-5,5,-5,5) * RagdollForceImpulse, FName("Pelvis"), true);
 }
 
