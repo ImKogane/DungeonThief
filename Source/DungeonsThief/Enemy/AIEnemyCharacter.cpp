@@ -67,8 +67,8 @@ void AAIEnemyCharacter::BeginPlay()
 		return;
 	}
 	
-	MyGameMode->OnGameWin.AddDynamic(this, &AAIEnemyCharacter::EnemyLooseGame);
-	MyGameMode->OnGameLoose.AddDynamic(this, &AAIEnemyCharacter::EnemyWinGame);
+	MyGameMode->OnGameWin.AddDynamic(this, &AAIEnemyCharacter::EnemyLoseGame);
+	MyGameMode->OnGameLose.AddDynamic(this, &AAIEnemyCharacter::EnemyWinGame);
 
 	OnDestroyed.AddDynamic(this, &AAIEnemyCharacter::OnDestoyingBehaviour);
 }
@@ -119,12 +119,13 @@ void AAIEnemyCharacter::OnDestoyingBehaviour(AActor* Act)
 		return;
 	}
 
-	MyGameMode->OnGameWin.RemoveDynamic(this, &AAIEnemyCharacter::EnemyLooseGame);
-	MyGameMode->OnGameLoose.RemoveDynamic(this, &AAIEnemyCharacter::EnemyWinGame);
+	MyGameMode->OnGameWin.RemoveDynamic(this, &AAIEnemyCharacter::EnemyLoseGame);
+	MyGameMode->OnGameLose.RemoveDynamic(this, &AAIEnemyCharacter::EnemyWinGame);
 }
 
 void AAIEnemyCharacter::EnemyWinGame()
 {
+	DropItem();
 	if (AnimationHandler && WinMontage)
 	{
 		StopMovement();
@@ -133,13 +134,14 @@ void AAIEnemyCharacter::EnemyWinGame()
 	}
 }
 
-void AAIEnemyCharacter::EnemyLooseGame()
+void AAIEnemyCharacter::EnemyLoseGame()
 {
-	if (AnimationHandler && LooseMontage)
+	DropItem();
+	if (AnimationHandler && LoseMontage)
 	{
 		StopMovement();
 
-		AnimationHandler->PlayAnimation(this, LooseMontage);
+		AnimationHandler->PlayAnimation(this, LoseMontage);
 	}
 }
 
@@ -178,7 +180,7 @@ void AAIEnemyCharacter::OnPlayerDetectionOverlapBegin(UPrimitiveComponent* Overl
 		return;
 	}
 	
-	MyGameMode->LooseGame();
+	MyGameMode->LoseGame();
 }
 
 

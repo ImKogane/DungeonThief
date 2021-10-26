@@ -37,7 +37,7 @@ protected:
 	class UTextBlock* EndScore;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "Restart Game")
-	bool bLooseUI;
+	bool bLoseUI;
 	
 	class UMyGameInstance* MyGameInstance;
 	

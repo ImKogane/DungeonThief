@@ -73,7 +73,7 @@ protected:
 	class UAnimMontage* WinMontage;
 	
 	UPROPERTY(EditAnywhere, Category = "Animations")
-	class UAnimMontage* LooseMontage;
+	class UAnimMontage* LoseMontage;
 	
 	//used only if the AI is a patrol
 	UPROPERTY(VisibleAnywhere, Category = "AI")
@@ -96,7 +96,7 @@ public:
 	void EnemyWinGame();
 
 	UFUNCTION()
-	void EnemyLooseGame();
+	void EnemyLoseGame();
 
 	void SetRandomMesh();
 

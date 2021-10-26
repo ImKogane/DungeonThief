@@ -173,7 +173,7 @@ void ASpawnEnemyManager::StopAllTimeHandle()
 		if(Handle.IsValid())
 		{
 			UE_LOG(LogTemp, Log, TEXT("Invalidate handle"));
-			Handle.Invalidate();
+			GetWorldTimerManager().ClearTimer(Handle);
 		}
 	}
 }

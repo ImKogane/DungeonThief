@@ -17,7 +17,7 @@ void UUI_MenuEndGame::NativeConstruct()
 	BtnMenu->OnClicked.AddUniqueDynamic(this, &UUI_MenuEndGame::ReturnToMenu);
 	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
 
-	if(bLooseUI && MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_ScoreMode)
+	if(bLoseUI && MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_ScoreMode)
 	{
 		EndScore->SetVisibility(ESlateVisibility::Visible);
 	}

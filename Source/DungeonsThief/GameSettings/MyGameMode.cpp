@@ -47,12 +47,12 @@ void AMyGameMode::WinGame()
 	}
 }
 
-void AMyGameMode::LooseGame()
+void AMyGameMode::LoseGame()
 {
-	if (OnGameLoose.IsBound())
+	if (OnGameLose.IsBound())
 	{
 		SpawnEnemyManager->StopAllTimeHandle();
-		OnGameLoose.Broadcast();
+		OnGameLose.Broadcast();
 	}
 }
 

@@ -47,13 +47,13 @@ void AMainCharacterController::BeginPlay()
 		}
 	}
 
-	if (WLooseScreen)
+	if (WLoseScreen)
 	{
-		LooseScreenWidget = CreateWidget<UUserWidget>(this, WLooseScreen);
-		if (LooseScreenWidget)
+		LoseScreenWidget = CreateWidget<UUserWidget>(this, WLoseScreen);
+		if (LoseScreenWidget)
 		{
-			LooseScreenWidget->AddToViewport();
-			LooseScreenWidget->SetVisibility(ESlateVisibility::Hidden);
+			LoseScreenWidget->AddToViewport();
+			LoseScreenWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 	
@@ -71,26 +71,47 @@ void AMainCharacterController::BeginPlay()
 	UGameplayStatics::SetGamePaused(GetWorld(), true);
 }
 
-void AMainCharacterController::ShowWinScreen(bool Visibility)
+void AMainCharacterController::ShowScreen(bool Visibility, EWidgetGameScreen WinScreen)
 {
-	WinScreenWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-	bShowMouseCursor = true;
-}
-
-void AMainCharacterController::ShowLooseScreen(bool Visibility)
-{
-	UUI_MenuEndGame* LooseScreenCast = Cast<UUI_MenuEndGame>(LooseScreenWidget);
-	if(Visibility && MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_ScoreMode)
+	switch (WinScreen)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Show Score"))
-		LooseScreenCast->SetTextScore(MyGameState->GetPlayerPoints());
-	}
+	case EWidgetGameScreen::EWGS_WinScreen:
+		WinScreenWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+		bShowMouseCursor = Visibility;
+		break;
+	case EWidgetGameScreen::EWGS_LoseScreen:
+		{
+			UUI_MenuEndGame* LoseScreenCast = Cast<UUI_MenuEndGame>(LoseScreenWidget);
+			if(MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_ScoreMode)
+				LoseScreenCast->SetTextScore(MyGameState->GetPlayerPoints());
 	
-	LooseScreenCast->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-	bShowMouseCursor = true;
+			LoseScreenCast->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+			bShowMouseCursor = Visibility;
+		}
+		break;
+	case EWidgetGameScreen::EWGS_PauseScreen:
+		if(CanPause)
+		{
+			PauseMenuWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+			bShowMouseCursor = Visibility;
+			UGameplayStatics::SetGamePaused(GetWorld(), true);
+		}
+		break;
+	case EWidgetGameScreen::EWGS_CharacterHUDScreen:
+		CharacterPickWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+
+		if(Visibility == false)
+			SetCanPause(true);
+		break;
+	case EWidgetGameScreen::EWGS_MainHUDScreen:
+		MainWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+
+		if(Visibility == true)
+			SetCanPause(true);
+	}
 }
 
-void AMainCharacterController::ShowPauseMenu(bool Visibility)
+/*void AMainCharacterController::ShowPauseMenu(bool Visibility)
 {
 
 	if(CanPause)
@@ -121,7 +142,7 @@ void AMainCharacterController::ShowCharacterHUD(bool Visibility)
 		CanPause = true;
 	}
 	
-}
+}*/
 
 void AMainCharacterController::SetCanPause(bool state)
 {
