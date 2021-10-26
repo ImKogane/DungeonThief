@@ -58,7 +58,7 @@ void ASpawnEnemyManager::BeginPlay()
 	CurrentEnemyToSpawn = GetWorld()->GetName() == "MainLevel" ? FirstEnemyToSpawn : SecondEnemyToSpawn;
 		
 	//First spawn : 2 enemies are instanciated + wait 60s to instanciate a third one
-	SpawnEnemy(20);	
+	SpawnEnemy(60);	
 }
 
 // Called every frame
