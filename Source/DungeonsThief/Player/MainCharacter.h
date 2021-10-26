@@ -44,10 +44,10 @@ protected:
 
 	class AAnimationsHandler* AnimationHandler;
 
-	UPROPERTY(EditAnywhere, Category = "Animations")
+	UPROPERTY(EditAnywhere, Category = "WinAndLoose")
 	class UAnimMontage* WinMontage;
 	
-	UPROPERTY(EditAnywhere, Category = "Animations")
+	UPROPERTY(EditAnywhere, Category = "WinAndLoose")
 	class UAnimMontage* LooseMontage;
 
 	UPROPERTY(EditAnywhere, Category = "Animations")
@@ -63,6 +63,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "HUD")
 	class AMainCharacterController* MainCharacterController;
+
+	UPROPERTY(EditAnywhere, Category = "WinAndLoose")
+	float RagdollForceImpulse;
 	
 protected:
 	//For function declaration
@@ -88,11 +91,14 @@ protected:
 	/* Called for scrolling in or out the camera view*/
 	void ScrollInOut(float Value);
 
-
-
 	/* Call pause function in player controller to show pause menu widget */
 	UFUNCTION()
 	void SetGamePause();
+
+	/* For ragdoll behaviour */
+	FVector GetXYRandomDirection(float XMin, float XMax, float YMin, float YMax);
+	
+	void SetPlayRagdoll();
 
 public:
 	FORCEINLINE void SetCanMove(bool value) { bCanMove = value; }
