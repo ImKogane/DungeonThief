@@ -241,12 +241,6 @@ void AMainCharacter::WinGame()
 
 void AMainCharacter::LooseGame()
 {
-	/*if (AnimationHandler && LooseMontage)
-	{
-		AnimationHandler->PlayAnimation(this, LooseMontage);
-		
-	}*/
-
 	SetPlayRagdoll();
 	
 	if (MainCharacterController)
