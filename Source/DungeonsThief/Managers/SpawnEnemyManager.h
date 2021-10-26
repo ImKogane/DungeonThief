@@ -48,10 +48,10 @@ protected:
 	TArray<class AAIEnemyCharacter*> EnemiesSpawned;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Spawn Enemy")
-	int MinSpawnDelay;
+	float MinSpawnDelay;
 
 	UPROPERTY(VisibleAnywhere, Category = "Spawn Enemy")
-	int MaxSpawnDelay;
+	float MaxSpawnDelay;
 
 	UPROPERTY(VisibleAnywhere, Category = "Spawn Enemy")
 	int FirstSpawnDelay;

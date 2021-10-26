@@ -11,10 +11,9 @@ void UUI_PauseClass::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	
+
 	BtnResume->OnClicked.AddUniqueDynamic(this, &UUI_PauseClass::ResumeGame);
 	BtnMenu->OnClicked.AddUniqueDynamic(this, &UUI_PauseClass::ReturnToMenu);
-	
 }
 
 void UUI_PauseClass::ResumeGame()

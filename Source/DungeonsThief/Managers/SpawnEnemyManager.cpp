@@ -25,8 +25,8 @@ ASpawnEnemyManager::ASpawnEnemyManager()
 	SpawnLocation->SetupAttachment(DeleteEnemyBoxComponent);
 	SpawnLocation->InitSphereRadius(10);
 	
-	MinSpawnDelay = 0;
-	MaxSpawnDelay = 5;
+	MinSpawnDelay = 0.0f;
+	MaxSpawnDelay = 5.99f;
 	
 	FirstSpawnDelay = 60;
 
@@ -151,14 +151,13 @@ void ASpawnEnemyManager::DeleteAI(AAIEnemyCharacter* AIToDelet)
 	//else : we wait a random delay between 0 and 5s
 	else
 	{
-		int NextDelay = FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay);
-		UE_LOG(LogTemp, Warning, TEXT("Create Enemy in %d sec"), NextDelay)
-		if(NextDelay == 0)
+		int NewDelay = FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay);
+		if(NewDelay == 0)
 		{
 			CreateEnemy();
 		}else
 		{
-			SpawnEnemy(NextDelay);
+			SpawnEnemy(NewDelay);
 		}
 	}
 }

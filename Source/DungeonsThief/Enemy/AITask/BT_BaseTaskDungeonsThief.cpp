@@ -41,6 +41,7 @@ EBTNodeResult::Type UBT_BaseTaskDungeonsThief::CodeToExecute()
 
 AFoodSpot* UBT_BaseTaskDungeonsThief::SelectRandomFoodSpot(TArray<AFoodSpot*> ActorList)
 {
-	const int RandomIndex = FMath::FRandRange(0, ActorList.Num());
-	return ActorList[RandomIndex];
+	//remove 0.01 to avoid a crash and keep the same chance for each index
+	const int ActorIndex = FMath::FRandRange(0, ActorList.Num() - 0.01f);
+	return ActorList[ActorIndex];
 }
