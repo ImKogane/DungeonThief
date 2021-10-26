@@ -44,7 +44,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Sound")
 	USoundBase* PickUpSound;
 	
-	
+	UPROPERTY(VisibleAnywhere, Category="Global")
+	class ACarryingCharacter* CharacterCarryingMe;
 			
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -76,6 +77,9 @@ public:
 
 	FORCEINLINE bool GetIsOnSpot(){return bIsOnSpot;}
 	FORCEINLINE void SetIsOnSpot(bool value){bIsOnSpot = value;}
+
+	FORCEINLINE void SetCharacterCarryingMe(class ACarryingCharacter* WhoCarry){CharacterCarryingMe = WhoCarry;}
+	FORCEINLINE class ACarryingCharacter* GetCharacterCarryingMe(){return CharacterCarryingMe;}
 	
 	virtual void Tick(float DeltaTime) override;
 

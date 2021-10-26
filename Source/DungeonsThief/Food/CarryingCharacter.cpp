@@ -144,6 +144,7 @@ void ACarryingCharacter::CarryItem()
 			FoodCarriedActor = NearFoodActor;
 			AFood* ModifyFoodData = Cast<AFood>(FoodCarriedActor);
 			ModifyFoodData->SetIsOnSpot(false);
+			ModifyFoodData->SetCharacterCarryingMe(this);
 			NearFoodActor = nullptr;
 			SetPlayerSpeed();
 			FoodCarriedActor->SetActorLocation(this->GetActorLocation());	
@@ -170,7 +171,9 @@ void ACarryingCharacter::DropItem()
 			ForwardVec.Normalize();
 			UE_LOG(LogTemp, Warning, TEXT("Vecteur : %s"), *ForwardVec.ToString())
 			FoodCarriedActor->SetActorLocation(GetActorLocation() + ForwardVec * 60);
-			Cast<AFood>(NearFoodActor)->BeDrop();
+			AFood* ModifyFood = Cast<AFood>(NearFoodActor);
+			ModifyFood->SetCharacterCarryingMe(nullptr);
+			ModifyFood->BeDrop();
 			FoodCarriedActor = nullptr;
 			IsCarryFood = false;
 		}

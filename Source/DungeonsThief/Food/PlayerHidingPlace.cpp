@@ -53,28 +53,24 @@ void APlayerHidingPlace::Tick(float DeltaTime)
 
 void APlayerHidingPlace::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
-	if (Player != nullptr)
+	AFood* FoodEnter = Cast<AFood>(OtherActor);
+	if (FoodEnter != nullptr)
 	{
-		if (Player->GetIsCarryFood())
+		MyGameMode->GainPoints(FoodEnter->GetFoodPoints());
+		UGameplayStatics::PlaySoundAtLocation(this, WinPointsSound, GetActorLocation());
+		
+		if(FoodManager)
 		{
-			AFood* HeldFood = Cast<AFood>(Player->GetFoodCarried());
-
-			if (HeldFood)
-			{
-				MyGameMode->GainPoints(HeldFood->GetFoodPoints());
-			}
-
-			UGameplayStatics::PlaySoundAtLocation(this, WinPointsSound, GetActorLocation());
-			if(FoodManager)
-			{
-				FoodManager->RemoveFoodFromWorldList(HeldFood);
-			}
-			
+			FoodManager->RemoveFoodFromWorldList(FoodEnter);
+		}
+		AMainCharacter* Player = Cast<AMainCharacter>(FoodEnter->GetCharacterCarryingMe());
+		
+		if (Player != nullptr)
+		{
 			Player->DropItem();
-			Player->GetPlayerNearFoodActor()->Destroy();
 			Player->SetNearFoodActor(nullptr);
 		}
+		FoodEnter->Destroy();
 	}	
 }
 
