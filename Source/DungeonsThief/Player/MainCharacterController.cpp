@@ -86,6 +86,7 @@ void AMainCharacterController::ShowScreen(bool Visibility, EWidgetGameScreen Win
 				LoseScreenCast->SetTextScore(MyGameState->GetPlayerPoints());
 	
 			LoseScreenCast->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+			bShowMouseCursor = Visibility;
 		}
 		break;
 	case EWidgetGameScreen::EWGS_PauseScreen:

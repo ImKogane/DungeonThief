@@ -125,6 +125,7 @@ void AAIEnemyCharacter::OnDestoyingBehaviour(AActor* Act)
 
 void AAIEnemyCharacter::EnemyWinGame()
 {
+	DropItem();
 	if (AnimationHandler && WinMontage)
 	{
 		StopMovement();
@@ -135,6 +136,7 @@ void AAIEnemyCharacter::EnemyWinGame()
 
 void AAIEnemyCharacter::EnemyLoseGame()
 {
+	DropItem();
 	if (AnimationHandler && LoseMontage)
 	{
 		StopMovement();
