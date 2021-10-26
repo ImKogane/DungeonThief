@@ -7,6 +7,7 @@
 #include "Components/InputKeySelector.h"
 #include "Components/TextBlock.h"
 #include "GameFramework/InputSettings.h"
+#include "Kismet/GameplayStatics.h"
 
 void UUI_SettingsClass::NativeConstruct()
 {
@@ -31,18 +32,14 @@ void UUI_SettingsClass::NativeConstruct()
 	MoveLeftInput->OnKeySelected.AddDynamic(this, &UUI_SettingsClass::OnLeftKeySelected);
 
 	BtnBack->OnClicked.AddDynamic(this, &UUI_SettingsClass::Back);
+	BtnResetSave->OnClicked.AddDynamic(this, &UUI_SettingsClass::ResetSave);
+	
 	
 }
 
 
-/**
- * @brief Event for the Back button
- */
-void UUI_SettingsClass::Back()
-{
-	this->SetVisibility(ESlateVisibility::Hidden);
-	
-}
+////////////// INPUT SETTINGS SYSTEM //////////////
+#pragma region Input settings
 
 FInputActionKeyMapping UUI_SettingsClass::GetActionMapping(FString KeyName) const
 {
@@ -218,4 +215,50 @@ void UUI_SettingsClass::ErrorKey(const FString NameMapping, const bool bPositive
 		else
 			MoveLeftInput->SetSelectedKey(GetAxisMapping(NameMapping, bPositiveScale).Key);
 	}
+}
+
+#pragma endregion
+
+
+/**
+ * @brief Event for the Back button
+ */
+void UUI_SettingsClass::Back()
+{
+	this->SetVisibility(ESlateVisibility::Hidden);
+	
+}
+
+/**
+ * @brief Event for reset the game save
+ */
+void UUI_SettingsClass::ResetSave()
+{
+	if(GameHasSave())
+	{
+		UGameplayStatics::DeleteGameInSlot("Save",0);
+	}
+	
+}
+
+
+/**
+ * @brief 
+ * @return Return if game has a save file
+ */
+bool UUI_SettingsClass::GameHasSave()
+{
+	bool HasSave;
+	if(UGameplayStatics::DoesSaveGameExist("Save",0))
+	{
+		HasSave = true;
+	}
+	else
+	{
+		HasSave = false;
+	}
+
+	return HasSave;
+	
+	
 }

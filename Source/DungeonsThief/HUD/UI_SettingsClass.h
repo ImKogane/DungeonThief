@@ -51,6 +51,9 @@ protected:
 	class UButton* BtnBack;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
+	class UButton* BtnResetSave;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
 	class UTextBlock* TxtInputInfo;
 
 	UPROPERTY(VisibleAnywhere)
@@ -86,6 +89,13 @@ protected:
 	UFUNCTION()
 	void ErrorKey(FString NameMapping, bool bPositiveScale) const;
 
+	UFUNCTION()
+	void ResetSave();
+
 	float PositiveScale = 1;
 	float NegativeScale = -1;
+	
+	UFUNCTION()
+	bool GameHasSave();
 };
+
