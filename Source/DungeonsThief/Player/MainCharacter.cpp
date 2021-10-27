@@ -9,6 +9,7 @@
 #include "Camera/CameraComponent.h"
 #include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "DungeonsThief/GameSettings/MyGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -120,6 +121,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AMainCharacter::UnCrouchPlayer);
 	
 	PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &AMainCharacter::SetGamePause);
+	
+	PlayerInputComponent->BindAction("Spectate", IE_Pressed, this, &AMainCharacter::SpectatePlayer);
 }
 
 
@@ -280,6 +283,11 @@ void AMainCharacter::DefinePlayerCharacter(int CharacterIndex)
 	}
 }
 
+
+void AMainCharacter::SpectatePlayer()
+{
+	MainCharacterController->ChangeState(NAME_Spectating);
+}
 
 void AMainCharacter::SetGamePause()
 {

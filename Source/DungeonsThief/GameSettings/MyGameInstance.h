@@ -26,10 +26,16 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int PlayerXPLevel = 1;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	APawn* MainPlayerPawn;
 
 public:
 	FORCEINLINE void SetGameplayMode(EGameplayMode GameplayModeValue) {GameplayMode = GameplayModeValue; }
 	FORCEINLINE EGameplayMode GetGameplayMode() { return GameplayMode; }
+	
+	FORCEINLINE void SetMainPlayerPawn(APawn* PawnValue) {MainPlayerPawn = PawnValue; }
+	FORCEINLINE APawn* GetMainPlayerPawn() { return MainPlayerPawn; }
 
 	//Best score system variable
 	FORCEINLINE int GetBestScore() { return BestScore; }
