@@ -60,6 +60,9 @@ public:
 	
 	UFUNCTION()
 	void ShowTutorialMenu();
+
+	UFUNCTION()
+	void ShowMainMenu();
 	
 	
 };

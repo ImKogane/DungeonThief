@@ -59,5 +59,10 @@ void AMainMenuController::ShowTutorialMenu()
 	TutorialMenu->SetVisibility(ESlateVisibility::Visible);
 }
 
+void AMainMenuController::ShowMainMenu()
+{
+	MainMenu->SetVisibility(ESlateVisibility::Visible);
+}
+
 
 

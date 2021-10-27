@@ -15,7 +15,14 @@ void UUI_TutorialClass::NativeConstruct()
 
 void UUI_TutorialClass::Back()
 {
-	this->SetVisibility(ESlateVisibility::Hidden);
+	AMainMenuController* MenuController = Cast<AMainMenuController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	if(MenuController != nullptr)
+	{
+		this->SetVisibility(ESlateVisibility::Hidden);
+		MenuController->ShowMainMenu();
+	}
+
 }
 
 

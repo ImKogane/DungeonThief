@@ -20,6 +20,7 @@ void UUI_MainMenuClass::NativeConstruct()
 	BtnPlayScore->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::PlayScoreGame);
 	BtnSettings->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::OpenSettings);
 	BtnTutorial->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::OpenTutorial);
+	BtnShop->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::OpenShop);
 	BtnExit->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::ExitGame);
 
 	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
@@ -73,8 +74,14 @@ void UUI_MainMenuClass::OpenTutorial()
 
 	if(MenuController != nullptr)
 	{
+		this->SetVisibility(ESlateVisibility::Hidden);
 		MenuController->ShowTutorialMenu();
 	}
+}
+
+void UUI_MainMenuClass::OpenShop()
+{
+	//TODO : Open the shop UI
 }
 
 void UUI_MainMenuClass::ExitGame()
