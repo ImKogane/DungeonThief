@@ -33,6 +33,10 @@ void UUI_ShopClass::NativeConstruct()
 	EvaRightSelection->OnClicked.AddDynamic(this, &UUI_ShopClass::ChooseNextEvaSkin);
 	EvaValidateSelection->OnClicked.AddDynamic(this, &UUI_ShopClass::SelectCurrentEvaSkin);
 
+	GetAvailableSkins(GrantSkins, GrantSkinsAvailable);
+	GetAvailableSkins(NomadSkins, NomadSkinsAvailable);
+	GetAvailableSkins(EvaSkins, EvaSkinsAvailable);
+	
 	GrantPreview->SetBrushFromTexture(GrantSkins[0].CurrentSkinPreview);
 	NomadPreview->SetBrushFromTexture(NomadSkins[0].CurrentSkinPreview);
 	EvaPreview->SetBrushFromTexture(EvaSkins[0].CurrentSkinPreview);
@@ -43,10 +47,21 @@ void UUI_ShopClass::Back()
 	this->SetVisibility(ESlateVisibility::Hidden);
 }
 
+void UUI_ShopClass::GetAvailableSkins(TArray<FCharacterSkin> Skins, TArray<FCharacterSkin>& AvailableSkins)
+{
+	for (auto Skin : Skins)
+	{
+		if (Skin.XPRequired <= MyGameInstance->GetPlayerXPLevel())
+		{
+			AvailableSkins.Add(Skin);
+		}
+	}
+}
+
 void UUI_ShopClass::ChooseNextSkin(int &CurrentIndex, TArray<FCharacterSkin> Skins, UImage* Preview)
 {
 	CurrentIndex = (CurrentIndex + 1) % Skins.Num();
-
+	
 	Preview->SetBrushFromTexture(Skins[CurrentIndex].CurrentSkinPreview);	
 }
 
@@ -76,50 +91,50 @@ USkeletalMesh* UUI_ShopClass::SelectSkin(int CurrentIndex, TArray<FCharacterSkin
 #pragma region GrantSkinSelection
 void UUI_ShopClass::ChooseNextGrantSkin()
 {
-	ChooseNextSkin(CurrentGrantIndex, GrantSkins, GrantPreview);
+	ChooseNextSkin(CurrentGrantIndex, GrantSkinsAvailable, GrantPreview);
 }
 
 void UUI_ShopClass::ChoosePreviousGrantSkin()
 {
-	ChoosePreviousSkin(CurrentGrantIndex, GrantSkins, GrantPreview);
+	ChoosePreviousSkin(CurrentGrantIndex, GrantSkinsAvailable, GrantPreview);
 }
 
 void UUI_ShopClass::SelectCurrentGrantSkin()
 {	
-	MyGameInstance->SetCurrentGrantSkin(SelectSkin(CurrentGrantIndex, GrantSkins));
+	MyGameInstance->SetCurrentGrantSkin(SelectSkin(CurrentGrantIndex, GrantSkinsAvailable));
 }
 #pragma endregion 
 
 #pragma region NomadSkinSelection
 void UUI_ShopClass::ChooseNextNomadSkin()
 {
-	ChooseNextSkin(CurrentNomadIndex, NomadSkins, NomadPreview);
+	ChooseNextSkin(CurrentNomadIndex, NomadSkinsAvailable, NomadPreview);
 }
 
 void UUI_ShopClass::ChoosePreviousNomadSkin()
 {
-	ChoosePreviousSkin(CurrentNomadIndex, NomadSkins, NomadPreview);
+	ChoosePreviousSkin(CurrentNomadIndex, NomadSkinsAvailable, NomadPreview);
 }
 
 void UUI_ShopClass::SelectCurrentNomadSkin()
 {
-	MyGameInstance->SetCurrentNomadSkin(SelectSkin(CurrentNomadIndex, NomadSkins));
+	MyGameInstance->SetCurrentNomadSkin(SelectSkin(CurrentNomadIndex, NomadSkinsAvailable));
 }
 #pragma endregion 
 
 #pragma region EvaSkinSelection
 void UUI_ShopClass::ChooseNextEvaSkin()
 {
-	ChooseNextSkin(CurrentEvaIndex, EvaSkins, EvaPreview);
+	ChooseNextSkin(CurrentEvaIndex, EvaSkinsAvailable, EvaPreview);
 }
 
 void UUI_ShopClass::ChoosePreviousEvaSkin()
 {
-	ChoosePreviousSkin(CurrentEvaIndex, EvaSkins, EvaPreview);
+	ChoosePreviousSkin(CurrentEvaIndex, EvaSkinsAvailable, EvaPreview);
 }
 
 void UUI_ShopClass::SelectCurrentEvaSkin()
 {
-	MyGameInstance->SetCurrentEvaSkin(SelectSkin(CurrentEvaIndex, EvaSkins));
+	MyGameInstance->SetCurrentEvaSkin(SelectSkin(CurrentEvaIndex, EvaSkinsAvailable));
 }
 #pragma endregion 

@@ -20,6 +20,9 @@ struct FCharacterSkin
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UTexture2D* CurrentSkinPreview;
+
+	UPROPERTY(EditAnywhere)
+	int XPRequired;
 };
 
 UCLASS()
@@ -33,22 +36,28 @@ protected:
 
 	class UMyGameInstance* MyGameInstance;
 
+#pragma region BackToMenuButton
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UButton* BackToMenu;
 	
 	UFUNCTION()
     void Back();
+
+#pragma endregion 
 	
 	UPROPERTY(EditAnywhere, Category = "Custom Mesh")
 	TArray<FCharacterSkin> GrantSkins;
+	TArray<FCharacterSkin> GrantSkinsAvailable;
 	int CurrentGrantIndex;
 
 	UPROPERTY(EditAnywhere, Category = "Custom Mesh")
 	TArray<FCharacterSkin> NomadSkins;
+	TArray<FCharacterSkin> NomadSkinsAvailable;
 	int CurrentNomadIndex;
 
 	UPROPERTY(EditAnywhere, Category = "Custom Mesh")
 	TArray<FCharacterSkin> EvaSkins;
+	TArray<FCharacterSkin> EvaSkinsAvailable;
 	int CurrentEvaIndex;
 	
 	/* Change Grant skins buttons */
@@ -91,6 +100,9 @@ protected:
 	class UButton* EvaValidateSelection;
 
 protected:
+
+	void GetAvailableSkins(TArray<FCharacterSkin> Skins, TArray<FCharacterSkin>& AvailableSkins);
+	
 	/* Method to change current skin selected*/
 	void ChooseNextSkin(int &CurrentIndex, TArray<FCharacterSkin> Skins, UImage* Preview);
 	void ChoosePreviousSkin(int &CurrentIndex, TArray<FCharacterSkin> Skins, UImage* Preview);
