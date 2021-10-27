@@ -16,7 +16,7 @@ struct FCharacterSkin
 	GENERATED_BODY();
 	
 	UPROPERTY(EditAnywhere)
-	class UStaticMeshComponent* CurrentMesh;
+	class USkeletalMesh* CurrentMesh;
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UTexture2D* CurrentSkinPreview;
@@ -35,17 +35,14 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category = "Custom Mesh")
 	TArray<FCharacterSkin> GrantSkins;
-	class FCharacterSkin* GrantCurrentSkinSelected;
 	int CurrentGrantIndex;
 
 	UPROPERTY(EditAnywhere, Category = "Custom Mesh")
-	TArray<FCharacterSkin> NomadSkin;
-	class FCharacterSkin* NomadCurrentSkinSelected;
+	TArray<FCharacterSkin> NomadSkins;
 	int CurrentNomadIndex;
 
 	UPROPERTY(EditAnywhere, Category = "Custom Mesh")
 	TArray<FCharacterSkin> EvaSkins;
-	class FCharacterSkin* EvaCurrentSkinSelected;
 	int CurrentEvaIndex;
 	
 	/* Change Grant skins buttons */
@@ -89,6 +86,10 @@ protected:
 
 protected:
 	/* Method to change current skin selected*/
+	void ChooseNextSkin(int &CurrentIndex, TArray<FCharacterSkin> Skins, UImage* Preview);
+	void ChoosePreviousSkin(int &CurrentIndex, TArray<FCharacterSkin> Skins, UImage* Preview);
+	class USkeletalMesh* SelectSkin(int CurrentIndex, TArray<FCharacterSkin> Skins);
+	
 	UFUNCTION()
 	void ChooseNextGrantSkin();
 

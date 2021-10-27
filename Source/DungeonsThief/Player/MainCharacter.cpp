@@ -7,6 +7,7 @@
 #include "DungeonsThief/Managers/AAnimationsHandler.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "DungeonsThief/GameSettings/MyGameInstance.h"
 #include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -84,10 +85,11 @@ void AMainCharacter::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
 		return;
 	}
-
+	
 	MyGameMode->OnGameWin.AddDynamic(this, &AMainCharacter::WinGame);
 	MyGameMode->OnGameLose.AddDynamic(this, &AMainCharacter::LoseGame);
 
+	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
 }
 
 void AMainCharacter::Tick(float DeltaTime)
@@ -259,25 +261,41 @@ void AMainCharacter::LoseGame()
 void AMainCharacter::DefinePlayerCharacter(int CharacterIndex)
 {
 	CharacterID = CharacterIndex;
-	GetMesh()->SetSkeletalMesh(PlayableCharacters[CharacterIndex]);
+	
+	USkeletalMesh* ChooseMesh = PlayableCharacters[CharacterIndex];
 
 	switch (CharacterIndex)
 	{
 	case 0:
 		CarrySpeedBonus = 1.1;
+		ChooseMesh = MyGameInstance->GetHasCustomGrantSkin() ? MyGameInstance->GetCurrentGrantSkin() : PlayableCharacters[CharacterIndex]; 
 		break;
 		
 	case 1:
 		SpeedBonus = 1.1;
+		ChooseMesh = MyGameInstance->GetHasCustomNomadSkin() ? MyGameInstance->GetCurrentNomadSkin() : PlayableCharacters[CharacterIndex]; 
 		break;
 		
 	case 2:
 		CrouchSpeedBonus = 1.05;
+		ChooseMesh = MyGameInstance->GetHasCustomEvaSkin() ? MyGameInstance->GetCurrentEvaSkin() : PlayableCharacters[CharacterIndex]; 
 		break;
 		
 	default:
 		break;
 	}
+
+	GetMesh()->SetSkeletalMesh(ChooseMesh);
+}
+
+void AMainCharacter::ChangeCharaterMesh(USkeltalMesh* NewMesh)
+{
+	if (MyGameInstance == nullptr)
+	{
+		return;
+	}
+	
+	GetMesh()->SetSkeletalMeshWithoutResettingAnimation(MyGameInstance->GetCurrentGrantSkin());
 }
 
 

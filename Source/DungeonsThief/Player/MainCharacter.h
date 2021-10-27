@@ -66,6 +66,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "WinAndLose")
 	float RagdollForceImpulse;
+
+	class UMyGameInstance* MyGameInstance;
 	
 protected:
 	//For function declaration
@@ -122,11 +124,8 @@ public:
 	FORCEINLINE bool GetIsCrouching() { return IsCrouch; }
 	
 	FORCEINLINE int GetCharacterID() { return CharacterID; }
-	
-	
 
-
-	
+	void ChangeCharaterMesh(class USkeltalMesh* NewMesh);	
 };
 
 

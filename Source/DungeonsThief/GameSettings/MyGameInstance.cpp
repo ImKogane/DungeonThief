@@ -6,6 +6,11 @@
 #include "MySaveGame.h"
 #include "Kismet/GameplayStatics.h"
 
+void UMyGameInstance::Init()
+{
+	bHasCustomGrantSkin = false;
+}
+
 void UMyGameInstance::SetBestScore(int NewBestScore)
 {
 	BestScore = NewBestScore;
@@ -52,8 +57,7 @@ void UMyGameInstance::LoadGame()
 	//Define the player XP variable with saved value
 	PlayerXP = SaveGameInstance->PlayerXP;
 	//Define the player XP Level variable with saved value
-	PlayerXPLevel = SaveGameInstance->PlayerXPLevel;
-	
+	PlayerXPLevel = SaveGameInstance->PlayerXPLevel;	
 }
 
 

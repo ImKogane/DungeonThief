@@ -4,6 +4,7 @@
 #include "DungeonsThief/HUD/UI_ShopClass.h"
 
 #include "Components/Button.h"
+#include "Components/Image.h"
 #include "DungeonsThief/GameSettings/MyGameInstance.h"
 
 void UUI_ShopClass::NativeConstruct()
@@ -30,50 +31,88 @@ void UUI_ShopClass::NativeConstruct()
 	EvaRightSelection->OnClicked.AddDynamic(this, &UUI_ShopClass::ChooseNextEvaSkin);
 	EvaValidateSelection->OnClicked.AddDynamic(this, &UUI_ShopClass::SelectCurrentEvaSkin);
 
+	GrantPreview->SetBrushFromTexture(GrantSkins[0].CurrentSkinPreview);
+	NomadPreview->SetBrushFromTexture(NomadSkins[0].CurrentSkinPreview);
+	EvaPreview->SetBrushFromTexture(EvaSkins[0].CurrentSkinPreview);
 }
 
+void UUI_ShopClass::ChooseNextSkin(int &CurrentIndex, TArray<FCharacterSkin> Skins, UImage* Preview)
+{
+	CurrentIndex = (CurrentIndex + 1) % Skins.Num();
+
+	Preview->SetBrushFromTexture(Skins[CurrentIndex].CurrentSkinPreview);	
+}
+
+void UUI_ShopClass::ChoosePreviousSkin(int &CurrentIndex, TArray<FCharacterSkin> Skins, UImage* Preview)
+{
+	CurrentIndex--;
+	if (CurrentIndex < 0)
+	{
+		CurrentIndex = Skins.Num() - 1;
+	}
+
+	Preview->SetBrushFromTexture(Skins[CurrentIndex].CurrentSkinPreview);	
+}
+
+USkeletalMesh* UUI_ShopClass::SelectSkin(int CurrentIndex, TArray<FCharacterSkin> Skins)
+{
+	FCharacterSkin SkinChosen = Skins[CurrentIndex];
+	if (SkinChosen.CurrentMesh == nullptr && SkinChosen.CurrentSkinPreview == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Skeletal Mesh Or Image is null"));
+		return nullptr;
+	}
+
+	return SkinChosen.CurrentMesh;
+}
+
+#pragma region GrantSkinSelection
 void UUI_ShopClass::ChooseNextGrantSkin()
 {
-	UE_LOG(LogTemp, Warning, TEXT("NEXT GRANT"));
-	//CurrentGrantIndex = CurrentEvaIndex % GrantSkins.Num()
+	ChooseNextSkin(CurrentGrantIndex, GrantSkins, GrantPreview);
 }
 
 void UUI_ShopClass::ChoosePreviousGrantSkin()
 {
-	UE_LOG(LogTemp, Warning, TEXT("PREVIOUS GRANT"));
+	ChoosePreviousSkin(CurrentGrantIndex, GrantSkins, GrantPreview);
 }
 
 void UUI_ShopClass::SelectCurrentGrantSkin()
-{
-	UE_LOG(LogTemp, Warning, TEXT("SELECT GRANT"));
+{	
+	MyGameInstance->SetCurrentGrantSkin(SelectSkin(CurrentGrantIndex, GrantSkins));
 }
+#pragma endregion 
 
+#pragma region NomadSkinSelection
 void UUI_ShopClass::ChooseNextNomadSkin()
 {
-	UE_LOG(LogTemp, Warning, TEXT("NEXT NOMAD"));
+	ChooseNextSkin(CurrentNomadIndex, NomadSkins, NomadPreview);
 }
 
 void UUI_ShopClass::ChoosePreviousNomadSkin()
 {
-	UE_LOG(LogTemp, Warning, TEXT("PREVIOUS NOMAD"));
+	ChoosePreviousSkin(CurrentNomadIndex, NomadSkins, NomadPreview);
 }
 
 void UUI_ShopClass::SelectCurrentNomadSkin()
 {
-	UE_LOG(LogTemp, Warning, TEXT("SELECT NOMAD"));
+	MyGameInstance->SetCurrentNomadSkin(SelectSkin(CurrentNomadIndex, NomadSkins));
 }
+#pragma endregion 
 
+#pragma region EvaSkinSelection
 void UUI_ShopClass::ChooseNextEvaSkin()
 {
-	UE_LOG(LogTemp, Warning, TEXT("NEXT EVA"));
+	ChooseNextSkin(CurrentEvaIndex, EvaSkins, EvaPreview);
 }
 
 void UUI_ShopClass::ChoosePreviousEvaSkin()
 {
-	UE_LOG(LogTemp, Warning, TEXT("PREVIOUS EVA"));
+	ChoosePreviousSkin(CurrentEvaIndex, EvaSkins, EvaPreview);
 }
 
 void UUI_ShopClass::SelectCurrentEvaSkin()
 {
-	UE_LOG(LogTemp, Warning, TEXT("SELECT EVA"));
+	MyGameInstance->SetCurrentEvaSkin(SelectSkin(CurrentEvaIndex, EvaSkins));
 }
+#pragma endregion 
