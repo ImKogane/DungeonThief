@@ -30,6 +30,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int PlayerXPLevel = 1;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	APawn* MainPlayerPawn;
 
 	UPROPERTY(VisibleAnywhere, Category = "Custom Skin | Grant")
 	class USkeletalMesh* CurrentGrantSkin;
@@ -46,6 +49,9 @@ protected:
 public:
 	FORCEINLINE void SetGameplayMode(EGameplayMode GameplayModeValue) {GameplayMode = GameplayModeValue; }
 	FORCEINLINE EGameplayMode GetGameplayMode() { return GameplayMode; }
+	
+	FORCEINLINE void SetMainPlayerPawn(APawn* PawnValue) {MainPlayerPawn = PawnValue; }
+	FORCEINLINE APawn* GetMainPlayerPawn() { return MainPlayerPawn; }
 
 	//Best score system variable
 	FORCEINLINE int GetBestScore() { return BestScore; }

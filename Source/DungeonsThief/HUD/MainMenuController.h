@@ -35,7 +35,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
 	UUserWidget* PickLevelMenu;
 
-	/** Reference to the pick level menu UMG asset in the editor*/
+	/** Reference to the settings menu UMG asset in the editor*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
 	TSubclassOf<class UUserWidget> SettingsWidget;
 
@@ -43,13 +43,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
 	UUserWidget* SettingsMenu;
 
-	/** Reference to the pick level menu UMG asset in the editor*/
+	/** Reference to the tutorial widget UMG asset in the editor*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
-	TSubclassOf<class UUserWidget> SkinSelectionWidget;
-	
-	/** Variable to hold the skin selection menu **/
+	TSubclassOf<class UUserWidget> TutorialWidget;
+
+	/** Variable to hold the level menu widget after creating it */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
-	UUserWidget* SkinSelectionMenu;
+	UUserWidget* TutorialMenu;
 	
 public:
 	UFUNCTION()
@@ -57,11 +57,12 @@ public:
 
 	UFUNCTION()
 	void ShowSettingsMenu();
+	
+	UFUNCTION()
+	void ShowTutorialMenu();
 
 	UFUNCTION()
-	void ShowSkinSelectionMenu();
-
-	//UFUNCTION()
-	//void HidePickLevelMenu();
+	void ShowMainMenu();
+	
 	
 };

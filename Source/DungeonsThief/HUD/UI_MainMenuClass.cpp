@@ -19,6 +19,8 @@ void UUI_MainMenuClass::NativeConstruct()
 	BtnPlay->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::PlayNormalGame);
 	BtnPlayScore->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::PlayScoreGame);
 	BtnSettings->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::OpenSettings);
+	BtnTutorial->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::OpenTutorial);
+	BtnShop->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::OpenShop);
 	BtnExit->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::ExitGame);
 
 	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
@@ -58,17 +60,28 @@ void UUI_MainMenuClass::PlayGame(EGameplayMode GameplayMode)
 
 void UUI_MainMenuClass::OpenSettings()
 {
-	UWorld* World = GetWorld();
+	AMainMenuController* MenuController = Cast<AMainMenuController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
-	if (World)
+	if(MenuController != nullptr)
 	{
-		AMainMenuController* MenuController = Cast<AMainMenuController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-
-		if(MenuController != nullptr)
-		{
-			MenuController->ShowSettingsMenu();
-		}
+		MenuController->ShowSettingsMenu();
 	}
+}
+
+void UUI_MainMenuClass::OpenTutorial()
+{
+	AMainMenuController* MenuController = Cast<AMainMenuController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	if(MenuController != nullptr)
+	{
+		this->SetVisibility(ESlateVisibility::Hidden);
+		MenuController->ShowTutorialMenu();
+	}
+}
+
+void UUI_MainMenuClass::OpenShop()
+{
+	//TODO : Open the shop UI
 }
 
 void UUI_MainMenuClass::ExitGame()

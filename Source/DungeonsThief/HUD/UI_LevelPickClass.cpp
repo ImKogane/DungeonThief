@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "DungeonsThief/HUD/UI_LevelPickClass.h"
 
 #include "Components/Button.h"
@@ -14,10 +11,6 @@ void UUI_LevelPickClass::NativeConstruct()
 	BtnDungeonLevel->OnClicked.AddUniqueDynamic(this, &UUI_LevelPickClass::PlayDungeonLevel);
 	BtnForgeLevel->OnClicked.AddUniqueDynamic(this, &UUI_LevelPickClass::PlayForgeLevel);
 	BtnBack->OnClicked.AddUniqueDynamic(this, &UUI_LevelPickClass::Back);
-	
-	BtnDungeonLevel->OnClicked.AddUniqueDynamic(this, &UUI_LevelPickClass::HoverButton);
-	BtnForgeLevel->OnClicked.AddUniqueDynamic(this, &UUI_LevelPickClass::HoverButton);
-	BtnBack->OnHovered.AddUniqueDynamic(this, &UUI_LevelPickClass::HoverButton);
 }
 
 void UUI_LevelPickClass::PlayDungeonLevel()
@@ -45,10 +38,6 @@ void UUI_LevelPickClass::Back()
 	this->SetVisibility(ESlateVisibility::Hidden);
 }
 
-void UUI_LevelPickClass::HoverButton()
-{
-	
-}
 
 
 

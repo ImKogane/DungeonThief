@@ -29,6 +29,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
 	class UButton* BtnExit;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
+	class UButton* BtnTutorial;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
+	class UButton* BtnShop;
+
 	UFUNCTION()
 	void PlayNormalGame();
 
@@ -40,6 +46,12 @@ protected:
 	
 	UFUNCTION()
 	void OpenSettings();
+
+	UFUNCTION()
+	void OpenShop();
+	
+	UFUNCTION()
+	void OpenTutorial();
 
 	UFUNCTION()
 	void ExitGame();

@@ -41,8 +41,6 @@ protected:
 	UFUNCTION()
 	void Back();
 
-	UFUNCTION()
-	void HoverButton();
 	
 	
 	

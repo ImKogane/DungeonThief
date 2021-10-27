@@ -29,7 +29,7 @@ EBTNodeResult::Type UBT_GiveRole::CodeToExecute()
 
 	if (SpawnEnemyManager->GetGlobalWaitAI())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Waiting %s"), *AICharacter->GetName())
+		UE_LOG(LogTemp, Log, TEXT("Waiting %s"), *AICharacter->GetName())
 		return EBTNodeResult::Failed;
 	}
 	

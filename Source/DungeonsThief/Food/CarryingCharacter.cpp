@@ -32,13 +32,6 @@ void ACarryingCharacter::Tick(float DeltaTime)
 	}
 }
 
-// Called to bind functionality to input
-void ACarryingCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
-
 /**
 * @brief Pick random mesh from an array to set the UStaticMeshComponent mesh
 */
@@ -169,7 +162,6 @@ void ACarryingCharacter::DropItem()
 			NearFoodActor = FoodCarriedActor;
 			FVector ForwardVec = GetActorForwardVector();
 			ForwardVec.Normalize();
-			UE_LOG(LogTemp, Warning, TEXT("Vecteur : %s"), *ForwardVec.ToString())
 			FoodCarriedActor->SetActorLocation(GetActorLocation() + ForwardVec * 60);
 			AFood* ModifyFood = Cast<AFood>(NearFoodActor);
 			ModifyFood->SetCharacterCarryingMe(nullptr);

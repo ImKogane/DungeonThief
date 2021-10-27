@@ -23,6 +23,11 @@ void AMainCharacterController::BeginPlay()
 	MyGameState = GameModeBase->GetGameState<AMyGameState>();
 	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
 
+	if(GetPawn())
+	{
+		MyGameInstance->SetMainPlayerPawn(GetPawn());
+	}
+
 	if (WMain)
 	{
 		MainWidget = CreateWidget<UUserWidget>(this, WMain);
