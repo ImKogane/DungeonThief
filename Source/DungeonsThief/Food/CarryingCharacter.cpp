@@ -169,7 +169,6 @@ void ACarryingCharacter::DropItem()
 			NearFoodActor = FoodCarriedActor;
 			FVector ForwardVec = GetActorForwardVector();
 			ForwardVec.Normalize();
-			UE_LOG(LogTemp, Warning, TEXT("Vecteur : %s"), *ForwardVec.ToString())
 			FoodCarriedActor->SetActorLocation(GetActorLocation() + ForwardVec * 60);
 			AFood* ModifyFood = Cast<AFood>(NearFoodActor);
 			ModifyFood->SetCharacterCarryingMe(nullptr);
