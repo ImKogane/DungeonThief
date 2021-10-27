@@ -29,6 +29,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
 	class UButton* BtnExit;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
+	class UButton* BtnTutorial;
+
 	UFUNCTION()
 	void PlayNormalGame();
 
@@ -40,6 +43,9 @@ protected:
 	
 	UFUNCTION()
 	void OpenSettings();
+	
+	UFUNCTION()
+	void OpenTutorial();
 
 	UFUNCTION()
 	void ExitGame();

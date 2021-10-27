@@ -33,6 +33,14 @@ void AMainMenuController::BeginPlay()
 		bShowMouseCursor = true;
 	}
 	
+	if (TutorialWidget)
+	{
+		TutorialMenu = CreateWidget<UUserWidget>(this, TutorialWidget);
+		TutorialMenu->AddToViewport();
+		TutorialMenu->SetVisibility(ESlateVisibility::Hidden);
+		bShowMouseCursor = true;
+	}
+	
 }
 
 
@@ -45,4 +53,11 @@ void AMainMenuController::ShowSettingsMenu()
 {
 	SettingsMenu->SetVisibility(ESlateVisibility::Visible);
 }
+
+void AMainMenuController::ShowTutorialMenu()
+{
+	TutorialMenu->SetVisibility(ESlateVisibility::Visible);
+}
+
+
 

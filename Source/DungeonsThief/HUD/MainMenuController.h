@@ -35,13 +35,21 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
 	UUserWidget* PickLevelMenu;
 
-	/** Reference to the pick level menu UMG asset in the editor*/
+	/** Reference to the settings menu UMG asset in the editor*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
 	TSubclassOf<class UUserWidget> SettingsWidget;
 
 	/** Variable to hold the level menu widget after creating it */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
 	UUserWidget* SettingsMenu;
+
+	/** Reference to the tutorial widget UMG asset in the editor*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+	TSubclassOf<class UUserWidget> TutorialWidget;
+
+	/** Variable to hold the level menu widget after creating it */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+	UUserWidget* TutorialMenu;
 	
 public:
 	UFUNCTION()
@@ -49,8 +57,9 @@ public:
 
 	UFUNCTION()
 	void ShowSettingsMenu();
-
-	//UFUNCTION()
-	//void HidePickLevelMenu();
+	
+	UFUNCTION()
+	void ShowTutorialMenu();
+	
 	
 };
