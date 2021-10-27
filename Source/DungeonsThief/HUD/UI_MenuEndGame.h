@@ -26,18 +26,27 @@ protected:
 	
 	UFUNCTION()
 	void ReturnToMenu();
+
+	UFUNCTION()
+	void UpdateXPProgression();
     
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "Restart Game")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UI Element")
     class UButton* BtnPlayAgain;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "Restart Game")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UI Element")
 	class UButton* BtnMenu;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "Restart Game")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UI Element")
 	class UTextBlock* EndScore;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "Restart Game")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UI Element")
 	class UTextBlock* EndBestScore;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UI Element")
+	class UProgressBar* XPBar;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UI Element")
+	class UTextBlock* PlayerLevel;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "Restart Game")
 	bool bLoseUI;

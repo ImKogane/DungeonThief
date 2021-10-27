@@ -25,7 +25,7 @@ protected:
 	int PlayerXP = 0;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	int PlayerXPLevel = 0;
+	int PlayerXPLevel = 1;
 
 public:
 	FORCEINLINE void SetGameplayMode(EGameplayMode GameplayModeValue) {GameplayMode = GameplayModeValue; }
@@ -46,4 +46,5 @@ public:
 	void SaveGame();
 	void LoadGame();
 	
+	void ResetSave();
 };

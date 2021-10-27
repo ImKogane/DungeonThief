@@ -62,6 +62,8 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TArray<FString> MappingName;
 
+	class UMyGameInstance* MyGameInstance;
+
 
 protected:
 
@@ -94,8 +96,6 @@ protected:
 
 	float PositiveScale = 1;
 	float NegativeScale = -1;
-	
-	UFUNCTION()
-	bool GameHasSave();
+
 };
 

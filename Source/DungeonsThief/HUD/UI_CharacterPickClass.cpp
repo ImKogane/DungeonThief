@@ -27,7 +27,6 @@ void UUI_CharacterPickClass::NativeConstruct()
 
 void UUI_CharacterPickClass::ChooseCharacter1()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("1"));
 	AMainCharacter* PlayerRef = Cast<AMainCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(),0));
 
 	if(PlayerRef != nullptr)
@@ -39,7 +38,6 @@ void UUI_CharacterPickClass::ChooseCharacter1()
 
 void UUI_CharacterPickClass::ChooseCharacter2()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("2"));
 	AMainCharacter* PlayerRef = Cast<AMainCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(),0));
 
 	if(PlayerRef != nullptr)
@@ -52,7 +50,6 @@ void UUI_CharacterPickClass::ChooseCharacter2()
 
 void UUI_CharacterPickClass::ChooseCharacter3()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("3"));
 	AMainCharacter* PlayerRef = Cast<AMainCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(),0));
 
 	if(PlayerRef != nullptr)

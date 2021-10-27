@@ -4,9 +4,11 @@
 #include "UI_MenuEndGame.h"
 
 #include "Components/Button.h"
+#include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 #include "DungeonsThief/GameSettings/MySaveGame.h"
 #include "DungeonsThief/GameSettings/MyGameInstance.h"
+#include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "DungeonsThief/GameSettings/MySaveGame.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -32,6 +34,23 @@ void UUI_MenuEndGame::NativeConstruct()
 	}
 	
 	MainLevelName = FName(GetWorld()->GetName());
+
+	//Bind method with the GameMode
+	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
+	if (GameModeBase == nullptr)
+	{
+		return;
+	}
+
+	AMyGameMode* MyGameMode = Cast<AMyGameMode>(GameModeBase);
+	if (MyGameMode == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
+		return;
+	}
+
+	MyGameMode->OnGameWin.AddDynamic(this, &UUI_MenuEndGame::UpdateXPProgression);
+	MyGameMode->OnGameLose.AddDynamic(this, &UUI_MenuEndGame::UpdateXPProgression);
 }
 
 void UUI_MenuEndGame::RestartGame()
@@ -54,6 +73,7 @@ void UUI_MenuEndGame::ReturnToMenu()
 	}
 }
 
+
 void UUI_MenuEndGame::SetTextScore(int Score)
 {
 	int SavedScore = MyGameInstance->GetBestScore();
@@ -71,6 +91,26 @@ void UUI_MenuEndGame::SetTextScore(int Score)
 	{
 		EndBestScore->SetText(FText::Format(FText::FromString("Best score : {0}"), SavedScore));
 	}
+
+	MyGameInstance->AddPlayerXP(Score * 2);
+	
+}
+
+
+/**
+ * @brief Update the XP progress bar value
+ */
+void UUI_MenuEndGame::UpdateXPProgression()
+{
+	if(MyGameInstance == nullptr)
+	{
+		return;
+	}
+	
+	float Percent = (float)MyGameInstance->GetPlayerXP() / (float)100;
+	XPBar->SetPercent(Percent);	//Set progress bar value
+	
+	PlayerLevel->SetText(FText::Format(FText::FromString("{0}"), MyGameInstance->GetPlayerXPLevel()));
 	
 }
 

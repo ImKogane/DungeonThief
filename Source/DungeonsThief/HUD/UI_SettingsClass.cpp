@@ -6,6 +6,7 @@
 #include "Components/Button.h"
 #include "Components/InputKeySelector.h"
 #include "Components/TextBlock.h"
+#include "DungeonsThief/GameSettings/MyGameInstance.h"
 #include "GameFramework/InputSettings.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -33,6 +34,8 @@ void UUI_SettingsClass::NativeConstruct()
 
 	BtnBack->OnClicked.AddDynamic(this, &UUI_SettingsClass::Back);
 	BtnResetSave->OnClicked.AddDynamic(this, &UUI_SettingsClass::ResetSave);
+
+	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
 	
 	
 }
@@ -234,31 +237,7 @@ void UUI_SettingsClass::Back()
  */
 void UUI_SettingsClass::ResetSave()
 {
-	if(GameHasSave())
-	{
-		UGameplayStatics::DeleteGameInSlot("Save",0);
-	}
+	MyGameInstance->ResetSave();
 	
 }
 
-
-/**
- * @brief 
- * @return Return if game has a save file
- */
-bool UUI_SettingsClass::GameHasSave()
-{
-	bool HasSave;
-	if(UGameplayStatics::DoesSaveGameExist("Save",0))
-	{
-		HasSave = true;
-	}
-	else
-	{
-		HasSave = false;
-	}
-
-	return HasSave;
-	
-	
-}

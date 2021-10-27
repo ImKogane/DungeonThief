@@ -15,6 +15,7 @@ void UMyGameInstance::SetBestScore(int NewBestScore)
 
 void UMyGameInstance::AddPlayerXP(int AmountOfXP)
 {
+	
 	PlayerXP += AmountOfXP;
 	if(PlayerXP>=100)
 	{
@@ -30,7 +31,7 @@ void UMyGameInstance::SaveGame()
 	UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
 
 	SaveGameInstance->BestPlayerScore = BestScore;
-	SaveGameInstance->PlayerXP = PlayerXPLevel;
+	SaveGameInstance->PlayerXP = PlayerXP;
 	SaveGameInstance->PlayerXPLevel = PlayerXPLevel;
 	UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("Save"), 0);
 }
@@ -52,5 +53,23 @@ void UMyGameInstance::LoadGame()
 	PlayerXP = SaveGameInstance->PlayerXP;
 	//Define the player XP Level variable with saved value
 	PlayerXPLevel = SaveGameInstance->PlayerXPLevel;
+	
+}
+
+
+/**
+* @brief Event for reset the game save
+*/
+void UMyGameInstance::ResetSave()
+{
+	if(UGameplayStatics::DoesSaveGameExist("Save",0))
+	{
+		UGameplayStatics::DeleteGameInSlot("Save",0);
+
+		//Reset all game values
+		BestScore = 0;
+		PlayerXP = 0;
+		PlayerXPLevel = 1;
+	}
 	
 }
