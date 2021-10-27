@@ -6,7 +6,9 @@
 #include "Components/Button.h"
 #include "Components/InputKeySelector.h"
 #include "Components/TextBlock.h"
+#include "DungeonsThief/GameSettings/MyGameInstance.h"
 #include "GameFramework/InputSettings.h"
+#include "Kismet/GameplayStatics.h"
 
 void UUI_SettingsClass::NativeConstruct()
 {
@@ -31,18 +33,16 @@ void UUI_SettingsClass::NativeConstruct()
 	MoveLeftInput->OnKeySelected.AddDynamic(this, &UUI_SettingsClass::OnLeftKeySelected);
 
 	BtnBack->OnClicked.AddDynamic(this, &UUI_SettingsClass::Back);
+	BtnResetSave->OnClicked.AddDynamic(this, &UUI_SettingsClass::ResetSave);
+
+	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
+	
 	
 }
 
 
-/**
- * @brief Event for the Back button
- */
-void UUI_SettingsClass::Back()
-{
-	this->SetVisibility(ESlateVisibility::Hidden);
-	
-}
+////////////// INPUT SETTINGS SYSTEM //////////////
+#pragma region Input settings
 
 FInputActionKeyMapping UUI_SettingsClass::GetActionMapping(FString KeyName) const
 {
@@ -219,3 +219,25 @@ void UUI_SettingsClass::ErrorKey(const FString NameMapping, const bool bPositive
 			MoveLeftInput->SetSelectedKey(GetAxisMapping(NameMapping, bPositiveScale).Key);
 	}
 }
+
+#pragma endregion
+
+
+/**
+ * @brief Event for the Back button
+ */
+void UUI_SettingsClass::Back()
+{
+	this->SetVisibility(ESlateVisibility::Hidden);
+	
+}
+
+/**
+ * @brief Event for reset the game save
+ */
+void UUI_SettingsClass::ResetSave()
+{
+	MyGameInstance->ResetSave();
+	
+}
+

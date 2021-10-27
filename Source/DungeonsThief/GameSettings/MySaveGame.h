@@ -20,6 +20,12 @@ public:
 	UPROPERTY(EditAnywhere)
 	int BestPlayerScore;
 
+	UPROPERTY(EditAnywhere)
+	int PlayerXP;
+
+	UPROPERTY(EditAnywhere)
+	int PlayerXPLevel;
+
 	
 	
 };

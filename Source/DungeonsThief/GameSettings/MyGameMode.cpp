@@ -13,6 +13,7 @@ void AMyGameMode::InitGame(const FString& MapName, const FString& Options, FStri
 	Super::InitGame(MapName, Options, ErrorMessage);
 
 	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
+	MyGameInstance->LoadGame();
 }
 
 void AMyGameMode::InitGameState()
@@ -40,6 +41,7 @@ void AMyGameMode::HandleMatchHasStarted()
 
 void AMyGameMode::WinGame()
 {
+	MyGameInstance->AddPlayerXP(10);
 	if (OnGameWin.IsBound())
 	{
 		SpawnEnemyManager->StopAllTimeHandle();

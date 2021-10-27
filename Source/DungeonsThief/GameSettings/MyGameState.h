@@ -7,15 +7,6 @@
 #include "MyGameState.generated.h"
 
 UENUM(BlueprintType)
-enum class EGameState : uint8
-{
-	EGS_Menu UMETA(DisplayName = "Menu"),
-    EGS_Game UMETA(DisplayName = "Game"),
-
-    EES_MAX UMETA(DisplayName = "Default")
-};
-
-UENUM(BlueprintType)
 enum class EGameplayMode : uint8
 {
 	EGM_NormalMode UMETA(DisplayName = "NormalMode"),
@@ -37,9 +28,6 @@ protected:
 	TSubclassOf<class ASpawnEnemyManager> SpawnEnemyManageBlueprint;
 	
 	TArray<class AAIEnemyCharacter*> EnemiesInLevel;
-
-	UPROPERTY(VisibleAnywhere, Category = "Game State")
-	EGameState CharacterGameState;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Game State")
 	int PlayerPoints;	
@@ -48,10 +36,6 @@ protected:
 	int MaxPoints = 5;
 
 public:
-
-	FORCEINLINE EGameState GetGameState() { return CharacterGameState; }
-	FORCEINLINE void SetGameState(EGameState NewState) { CharacterGameState = NewState; }
-
 	FORCEINLINE int GetPlayerPoints() { return PlayerPoints; }
 	FORCEINLINE void AddPlayerPoints(int PointsToAdd) { PlayerPoints += PointsToAdd; }
 

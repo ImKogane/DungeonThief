@@ -170,11 +170,8 @@ void ASpawnEnemyManager::StopAllTimeHandle()
 {
 	for (FTimerHandle Handle : AllSpawnTimer)
 	{
-		if(Handle.IsValid())
-		{
-			UE_LOG(LogTemp, Log, TEXT("Invalidate handle"));
-			GetWorldTimerManager().ClearTimer(Handle);
-		}
+		UE_LOG(LogTemp, Log, TEXT("Invalidate handle"));
+		GetWorldTimerManager().ClearTimer(Handle);
 	}
 }
 

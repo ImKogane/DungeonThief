@@ -7,6 +7,5 @@
 
 UMySaveGame::UMySaveGame()
 {
-	//BestPlayerScore = 0;
-	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, "ScoreTest");
+	
 }

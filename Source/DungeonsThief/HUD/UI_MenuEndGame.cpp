@@ -4,9 +4,11 @@
 #include "UI_MenuEndGame.h"
 
 #include "Components/Button.h"
+#include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 #include "DungeonsThief/GameSettings/MySaveGame.h"
 #include "DungeonsThief/GameSettings/MyGameInstance.h"
+#include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "DungeonsThief/GameSettings/MySaveGame.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -32,7 +34,23 @@ void UUI_MenuEndGame::NativeConstruct()
 	}
 	
 	MainLevelName = FName(GetWorld()->GetName());
-	UE_LOG(LogTemp, Warning, TEXT("INIT"));
+
+	//Bind method with the GameMode
+	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
+	if (GameModeBase == nullptr)
+	{
+		return;
+	}
+
+	AMyGameMode* MyGameMode = Cast<AMyGameMode>(GameModeBase);
+	if (MyGameMode == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
+		return;
+	}
+
+	MyGameMode->OnGameWin.AddDynamic(this, &UUI_MenuEndGame::UpdateXPProgression);
+	MyGameMode->OnGameLose.AddDynamic(this, &UUI_MenuEndGame::UpdateXPProgression);
 }
 
 void UUI_MenuEndGame::RestartGame()
@@ -41,7 +59,6 @@ void UUI_MenuEndGame::RestartGame()
 
 	if (World)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("RESTART"));
 		UGameplayStatics::OpenLevel(World, MainLevelName);
 	}
 }
@@ -52,58 +69,50 @@ void UUI_MenuEndGame::ReturnToMenu()
 
 	if (World)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("MENU"));
 		UGameplayStatics::OpenLevel(World, MainMenuLevelName);
 	}
 }
 
+
 void UUI_MenuEndGame::SetTextScore(int Score)
 {
-	int SavedScore = 0;
-	SavedScore = LoadScore();
+	int SavedScore = MyGameInstance->GetBestScore();
 	
 	EndScore->SetText(FText::Format(FText::FromString("Your score : {0}"), Score));
 
 	if(Score > SavedScore)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Best score") );
 		EndBestScore->SetText(FText::Format(FText::FromString("Best score : {0}"), Score));
-		SaveData(Score);
+
+		//Call score system of the game instance
+		MyGameInstance->SetBestScore(Score);
 	}
 	else
 	{
 		EndBestScore->SetText(FText::Format(FText::FromString("Best score : {0}"), SavedScore));
 	}
+
+	MyGameInstance->AddPlayerXP(Score * 2);
 	
 }
 
-int UUI_MenuEndGame::LoadScore()
+
+/**
+ * @brief Update the XP progress bar value
+ */
+void UUI_MenuEndGame::UpdateXPProgression()
 {
-	int score = 0;
-	
-	if(!UGameplayStatics::DoesSaveGameExist("Save",0))
+	if(MyGameInstance == nullptr)
 	{
-		SaveData(0);
+		return;
 	}
-
-	UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
-	SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot("Save",0));
-	score = SaveGameInstance->BestPlayerScore;
 	
-	return score;
-}
-
-void UUI_MenuEndGame::SaveData(int score)
-{
-	UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
+	float Percent = (float)MyGameInstance->GetPlayerXP() / (float)100;
+	XPBar->SetPercent(Percent);	//Set progress bar value
 	
-	SaveGameInstance->BestPlayerScore = score;
-	
-
-	UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("Save"), 0);
-
-	
+	PlayerLevel->SetText(FText::Format(FText::FromString("{0}"), MyGameInstance->GetPlayerXPLevel()));
 	
 }
+
 
 
