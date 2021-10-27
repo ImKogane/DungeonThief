@@ -27,6 +27,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int PlayerXPLevel = 1;
 
+	UPROPERTY(VisibleAnywhere, Category = "Custom Skin")
+	class USkeletalMeshComponent* CurrentPlayerMeshComponent;
+
 public:
 	FORCEINLINE void SetGameplayMode(EGameplayMode GameplayModeValue) {GameplayMode = GameplayModeValue; }
 	FORCEINLINE EGameplayMode GetGameplayMode() { return GameplayMode; }
@@ -42,6 +45,10 @@ public:
 	//Plauer XP Level system variable
 	FORCEINLINE int GetPlayerXPLevel() { return PlayerXPLevel; }
 
+	//Custom meshes
+	FORCEINLINE class USkeletalMeshComponent* GetCurrentPlayerMeshComponent() { return CurrentPlayerMeshComponent; }
+	FORCEINLINE void SetCurrentPlayerMeshComponent(class USkeletalMeshComponent* NewMesh) { CurrentPlayerMeshComponent = NewMesh; }
+	
 	//Save system
 	void SaveGame();
 	void LoadGame();

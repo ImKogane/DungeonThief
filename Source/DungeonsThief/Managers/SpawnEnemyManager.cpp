@@ -55,6 +55,9 @@ void ASpawnEnemyManager::BeginPlay()
 		return;
 	}
 
+	MyGameMode->OnGameWin.AddDynamic(this, &ASpawnEnemyManager::StopAllTimeHandle);
+	MyGameMode->OnGameLose.AddDynamic(this, &ASpawnEnemyManager::StopAllTimeHandle);
+
 	CurrentEnemyToSpawn = GetWorld()->GetName() == "MainLevel" ? FirstEnemyToSpawn : SecondEnemyToSpawn;
 		
 	//First spawn : 2 enemies are instanciated + wait 60s to instanciate a third one

@@ -61,7 +61,7 @@ protected:
 	
 	UPROPERTY(EditAnywhere)
 	TArray<FString> MappingName;
-
+	
 	class UMyGameInstance* MyGameInstance;
 
 

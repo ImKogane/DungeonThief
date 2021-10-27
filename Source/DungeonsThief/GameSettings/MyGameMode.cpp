@@ -44,7 +44,6 @@ void AMyGameMode::WinGame()
 	MyGameInstance->AddPlayerXP(10);
 	if (OnGameWin.IsBound())
 	{
-		SpawnEnemyManager->StopAllTimeHandle();
 		OnGameWin.Broadcast();
 	}
 }
@@ -53,7 +52,6 @@ void AMyGameMode::LoseGame()
 {
 	if (OnGameLose.IsBound())
 	{
-		SpawnEnemyManager->StopAllTimeHandle();
 		OnGameLose.Broadcast();
 	}
 }
