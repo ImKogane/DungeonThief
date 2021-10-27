@@ -32,6 +32,12 @@ protected:
 	virtual void NativeConstruct() override;
 
 	class UMyGameInstance* MyGameInstance;
+
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UButton* BackToMenu;
+	
+	UFUNCTION()
+    void Back();
 	
 	UPROPERTY(EditAnywhere, Category = "Custom Mesh")
 	TArray<FCharacterSkin> GrantSkins;

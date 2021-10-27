@@ -40,6 +40,14 @@ void AMainMenuController::BeginPlay()
 		TutorialMenu->SetVisibility(ESlateVisibility::Hidden);
 		bShowMouseCursor = true;
 	}
+
+	if (SkinSelectionWidget)
+	{
+		SkinSelectionMenu = CreateWidget<UUserWidget>(this, SkinSelectionWidget);
+		SkinSelectionMenu->AddToViewport();
+		SkinSelectionMenu->SetVisibility(ESlateVisibility::Hidden);
+		bShowMouseCursor = true;
+	}
 	
 }
 
@@ -62,6 +70,11 @@ void AMainMenuController::ShowTutorialMenu()
 void AMainMenuController::ShowMainMenu()
 {
 	MainMenu->SetVisibility(ESlateVisibility::Visible);
+}
+
+void AMainMenuController::ShowSkinSelectionMenu()
+{
+	SkinSelectionMenu->SetVisibility(ESlateVisibility::Visible);
 }
 
 

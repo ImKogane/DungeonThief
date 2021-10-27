@@ -19,6 +19,8 @@ void UUI_ShopClass::NativeConstruct()
 		return;
 	}
 
+	BackToMenu->OnClicked.AddDynamic(this, &UUI_ShopClass::Back);
+
 	GrantLeftSelection->OnClicked.AddDynamic(this, &UUI_ShopClass::ChoosePreviousGrantSkin);
 	GrantRightSelection->OnClicked.AddDynamic(this, &UUI_ShopClass::ChooseNextGrantSkin);
 	GrantValidateSelection->OnClicked.AddDynamic(this, &UUI_ShopClass::SelectCurrentGrantSkin);
@@ -34,6 +36,11 @@ void UUI_ShopClass::NativeConstruct()
 	GrantPreview->SetBrushFromTexture(GrantSkins[0].CurrentSkinPreview);
 	NomadPreview->SetBrushFromTexture(NomadSkins[0].CurrentSkinPreview);
 	EvaPreview->SetBrushFromTexture(EvaSkins[0].CurrentSkinPreview);
+}
+
+void UUI_ShopClass::Back()
+{
+	this->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UUI_ShopClass::ChooseNextSkin(int &CurrentIndex, TArray<FCharacterSkin> Skins, UImage* Preview)

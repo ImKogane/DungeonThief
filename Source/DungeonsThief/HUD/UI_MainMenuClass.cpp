@@ -81,7 +81,12 @@ void UUI_MainMenuClass::OpenTutorial()
 
 void UUI_MainMenuClass::OpenShop()
 {
-	//TODO : Open the shop UI
+	AMainMenuController* MenuController = Cast<AMainMenuController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	if(MenuController != nullptr)
+	{
+		MenuController->ShowSkinSelectionMenu();
+	}
 }
 
 void UUI_MainMenuClass::ExitGame()
