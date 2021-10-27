@@ -69,6 +69,8 @@ protected:
 	
 protected:
 	//For function declaration
+	/* Called for Spectating mode */
+	void SpectatePlayer();
 
 	/* Called for crouch player */
 	void CrouchPlayer();

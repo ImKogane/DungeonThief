@@ -32,13 +32,6 @@ void ACarryingCharacter::Tick(float DeltaTime)
 	}
 }
 
-// Called to bind functionality to input
-void ACarryingCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
-
 /**
 * @brief Pick random mesh from an array to set the UStaticMeshComponent mesh
 */
