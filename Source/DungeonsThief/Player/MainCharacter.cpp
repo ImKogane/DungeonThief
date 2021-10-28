@@ -312,10 +312,13 @@ void AMainCharacter::SetGamePause()
 	APlayerController* ControllerRef =  UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	AMainCharacterController* Player = Cast<AMainCharacterController>(ControllerRef);
 
-	if(Player != nullptr)
+	if(Player == nullptr)
 	{
-		Player->ShowScreen(true, EWidgetGameScreen::EWGS_PauseScreen);
+		UE_LOG(LogTemp, Error, TEXT("Player is null"));
+		return;
 	}
+	
+	Player->ShowScreen(true, EWidgetGameScreen::EWGS_PauseScreen);
 }
 
 FVector AMainCharacter::GetXYRandomDirection(float XMin, float XMax, float YMin, float YMax)

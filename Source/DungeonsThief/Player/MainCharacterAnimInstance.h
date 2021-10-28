@@ -17,8 +17,7 @@ class DUNGEONSTHIEF_API UMainCharacterAnimInstance : public UAnimInstance
 public :
 
     virtual void NativeInitializeAnimation() override;
-    
-    
+	
 	void UpdateAnimationProperties();
 	
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;

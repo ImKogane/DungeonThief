@@ -71,6 +71,7 @@ protected:
 	
 protected:
 	//For function declaration
+	
 	/* Called for Spectating mode */
 	void SpectatePlayer();
 

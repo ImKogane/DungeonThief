@@ -76,6 +76,5 @@ public :
 	void ShowScreen(bool Visibility, EWidgetGameScreen Screen);
 
 	void SetCanPause(bool state);
-	
 
 };

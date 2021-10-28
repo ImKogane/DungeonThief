@@ -35,12 +35,12 @@ void AMySpectatorPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 void AMySpectatorPawn::UnSpectatePlayer()
 {
 	SpectatorPawnController = GetController();
-	if(SpectatorPawnController)
-	{
-		SpectatorPawnController->ChangeState(NAME_Playing);
-		SpectatorPawnController->Possess(MyGameInstance->GetMainPlayerPawn());
-	}else
+	if(SpectatorPawnController == nullptr)
 	{
 		UE_LOG(LogTemp, Error,TEXT("No controller found in Spectate"))
+		return;
 	}
+	
+	SpectatorPawnController->ChangeState(NAME_Playing);
+	SpectatorPawnController->Possess(MyGameInstance->GetMainPlayerPawn());
 }
