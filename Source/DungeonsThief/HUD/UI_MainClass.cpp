@@ -27,10 +27,9 @@ void UUI_MainClass::NativeConstruct()
 		return;
 	}
 
-	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
-
 	MyGameState = MyGameMode->GetGameState<AMyGameState>();
 
+	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
 	if (MyGameInstance == nullptr)
 	{
 		return;
@@ -60,16 +59,20 @@ void UUI_MainClass::UpdateProgression()
 
 	if (MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_NormalMode)
 	{
-		if (MyGameState)
+		if (MyGameState == nullptr)
 		{
-			FoodBar->SetPercent(MyGameState->GetProgressionPercent()); //Set progress bar value
+			return;
 		}
+		
+		FoodBar->SetPercent(MyGameState->GetProgressionPercent()); //Set progress bar value
 	}
 	else
 	{
-		if (MyGameState)
+		if (MyGameState == nullptr)
 		{
-			ScorePoint->SetText(FText::AsNumber(MyGameState->GetPlayerPoints()));
+			return;
 		}
+		
+		ScorePoint->SetText(FText::AsNumber(MyGameState->GetPlayerPoints()));
 	}
 }

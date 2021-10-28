@@ -11,5 +11,10 @@
 void AMainMenu_GameModeBase::BeginPlay()
 {
     MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
+	if (MyGameInstance == nullptr)
+	{
+		return;
+	}
+	
 	MyGameInstance->LoadGame();
 }

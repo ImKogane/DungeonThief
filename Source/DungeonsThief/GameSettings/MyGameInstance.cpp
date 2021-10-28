@@ -31,8 +31,7 @@ void UMyGameInstance::AddPlayerXP(int AmountOfXP)
 
 void UMyGameInstance::SaveGame()
 {
-	UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(
-		UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
+	UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
 	if (SaveGameInstance == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("SaveGameInstance is null"));
@@ -53,9 +52,9 @@ void UMyGameInstance::LoadGame()
 		SaveGame();
 	}
 
-	UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(
-		UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
-	SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot("Save", 0));
+	UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass());
+	UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot("Save", 0));
+
 	if (SaveGameInstance == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("SaveGameInstance is null"));

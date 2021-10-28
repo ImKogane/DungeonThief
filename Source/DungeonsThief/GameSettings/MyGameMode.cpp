@@ -51,12 +51,12 @@ void AMyGameMode::HandleMatchHasStarted()
 
 void AMyGameMode::WinGame()
 {	
-	if (MyGameState == nullptr)
+	if (MyGameInstance == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("MyGameState is null"));
+		UE_LOG(LogTemp, Error, TEXT("MyGameInstance is null"));
 		return;
 	}
-
+	
 	MyGameInstance->AddPlayerXP(25 * XPBoostBuff);
 
 	if (OnGameWin.IsBound())
@@ -88,7 +88,7 @@ void AMyGameMode::GainPoints(int Points)
 		OnGainPoints.Broadcast();
 	}
 
-	if (MyGameState->HasPlayerWin() && MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_NormalMode)
+	if (MyGameInstance != nullptr && MyGameState->HasPlayerWin() && MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_NormalMode)
 	{
 		WinGame();
 	}
