@@ -34,6 +34,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	APawn* MainPlayerPawn;
 
+#pragma region Custom Skins
 	UPROPERTY(VisibleAnywhere, Category = "Custom Skin | Grant")
 	class USkeletalMesh* CurrentGrantSkin;
 	bool bHasCustomGrantSkin;
@@ -45,7 +46,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Custom Skin | Eva")
 	class USkeletalMesh* CurrentEvaSkin;
 	bool bHasCustomEvaSkin;
-
+#pragma endregion 
+	
 public:
 	FORCEINLINE void SetGameplayMode(EGameplayMode GameplayModeValue) {GameplayMode = GameplayModeValue; }
 	FORCEINLINE EGameplayMode GetGameplayMode() { return GameplayMode; }

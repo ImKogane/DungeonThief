@@ -21,8 +21,13 @@ void AMyGameMode::InitGameState()
 	Super::InitGameState();
 
 	AMyGameState* CurrentGameState = GetGameState<AMyGameState>();
-	UWorld* World = GetWorld();
+	if (CurrentGameState == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("CurrentGameState is null"));
+		return;
+	}
 	
+	UWorld* World = GetWorld();	
 	if (World == nullptr && CurrentGameState == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("World or GameState are null"));
@@ -41,7 +46,7 @@ void AMyGameMode::HandleMatchHasStarted()
 
 void AMyGameMode::WinGame()
 {
-	MyGameInstance->AddPlayerXP(10);
+	MyGameInstance->AddPlayerXP(10 * XPBoostBuff);
 	if (OnGameWin.IsBound())
 	{
 		OnGameWin.Broadcast();

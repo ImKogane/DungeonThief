@@ -14,15 +14,13 @@ void UMyGameInstance::Init()
 void UMyGameInstance::SetBestScore(int NewBestScore)
 {
 	BestScore = NewBestScore;
-	SaveGame();
-	
+	SaveGame();	
 }
 
 void UMyGameInstance::AddPlayerXP(int AmountOfXP)
-{
-	
+{	
 	PlayerXP += AmountOfXP;
-	if(PlayerXP>=100)
+	if (PlayerXP >= 100)
 	{
 		PlayerXPLevel++;
 		PlayerXP -= 100;
@@ -34,7 +32,12 @@ void UMyGameInstance::AddPlayerXP(int AmountOfXP)
 void UMyGameInstance::SaveGame()
 {
 	UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
-
+	if (SaveGameInstance == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("SaveGameInstance is null"));
+		return;
+	}
+	
 	SaveGameInstance->BestPlayerScore = BestScore;
 	SaveGameInstance->PlayerXP = PlayerXP;
 	SaveGameInstance->PlayerXPLevel = PlayerXPLevel;
@@ -51,6 +54,11 @@ void UMyGameInstance::LoadGame()
 
 	UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
 	SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot("Save",0));
+	if (SaveGameInstance == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("SaveGameInstance is null"));
+		return;
+	}
 
 	//Define the best score variable with saved value
 	BestScore = SaveGameInstance->BestPlayerScore;

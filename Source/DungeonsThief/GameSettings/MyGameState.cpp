@@ -8,7 +8,6 @@
 ASpawnEnemyManager* AMyGameState::SpawnEnemyManager()
 {
 	UWorld* World = GetWorld();
-
 	if (World == nullptr)
 	{
 		return nullptr;

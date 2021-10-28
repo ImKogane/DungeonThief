@@ -41,6 +41,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Helpers")
 	class UMyGameInstance* MyGameInstance;
 
+	UPROPERTY(EditAnywhere, Category = "Helpers")
+	float XPBoostBuff;
+
 	class AMyGameState* MyGameState;
 
 public:
