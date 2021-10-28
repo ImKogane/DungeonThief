@@ -292,7 +292,6 @@ void AMainCharacter::ChangeObjectTransparency()
 
 		ChangeMaterials();
 	}
-	
 }
 
 bool AMainCharacter::CheckIfIsPlayer(AActor* CurrentHitActor)
@@ -312,6 +311,10 @@ bool AMainCharacter::CheckIfIsPlayer(AActor* CurrentHitActor)
 			}
 					
 			UMaterial* CurrentHitObjectMaterial = CurrentHitObjectsMaterial[i];
+			if (CurrentHitObjectMaterial == nullptr)
+			{
+				break;
+			}
 			CurrentHitMesh->SetMaterial(0, CurrentHitObjectMaterial);
 		}
 		CurrentHitMeshes.Empty();
