@@ -62,9 +62,13 @@ protected:
 	class UMyGameInstance* MyGameInstance;
 
 public :
+	UFUNCTION()
 	void ShowWinScreen(bool Visibility);
+	
+	UFUNCTION()
 	void ShowLoseScreen(bool Visibility);
 
+	UFUNCTION()
 	void ShowPauseMenu(bool Visibility);
 
 	void SetCanPause(bool state);

@@ -52,27 +52,27 @@ void AMainMenuController::BeginPlay()
 	}
 }
 
-void AMainMenuController::ShowScreen(bool Visibility, EWidgetMainMenuScreen GameScreen)
+void AMainMenuController::ShowSkinSelectionMenu()
 {
-	switch (GameScreen)
-	{
-	case EWidgetMainMenuScreen::EWMMS_PickLevel:
-		PickLevelMenu->SetVisibility(ESlateVisibility::Visible);
-		break;
+	SkinSelectionMenu->SetVisibility(ESlateVisibility::Visible);
+}
 
-	case EWidgetMainMenuScreen::EWMMS_Settings:
-		SettingsMenu->SetVisibility(ESlateVisibility::Visible);
-		break;
+void AMainMenuController::ShowPickLevelMenu()
+{
+	PickLevelMenu->SetVisibility(ESlateVisibility::Visible);
+}
 
-	case EWidgetMainMenuScreen::EWMMS_Tutorial:
-		TutorialMenu->SetVisibility(ESlateVisibility::Visible);
-		break;
+void AMainMenuController::ShowSettingsMenu()
+{
+	SettingsMenu->SetVisibility(ESlateVisibility::Visible);
+}
 
-	case EWidgetMainMenuScreen::EWMMS_MainMenu:
-		MainMenu->SetVisibility(ESlateVisibility::Visible);
-		break;
+void AMainMenuController::ShowTutorialMenu()
+{
+	TutorialMenu->SetVisibility(ESlateVisibility::Visible);
+}
 
-	case EWidgetMainMenuScreen::EWMMS_SkinSelector:
-		SkinSelectionMenu->SetVisibility(ESlateVisibility::Visible);
-	}
+void AMainMenuController::ShowMainMenu()
+{
+	MainMenu->SetVisibility(ESlateVisibility::Visible);
 }

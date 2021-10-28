@@ -6,15 +6,6 @@
 #include "GameFramework/PlayerController.h"
 #include "MainMenuController.generated.h"
 
-UENUM(BlueprintType)
-enum class EWidgetMainMenuScreen : uint8
-{
-	EWMMS_PickLevel UMETA(DisplayName = "PickLevelScreen"),
-	EWMMS_Settings UMETA(DisplayName = "SettingsScreen"),
-	EWMMS_Tutorial UMETA(DisplayName = "TutorialScreen"),
-	EWMMS_MainMenu UMETA(DisplayName = "MainMenucreen"),
-	EWMMS_SkinSelector UMETA(DisplayName = "SkinSelectorScreen")
-};
 
 /**
  * 
@@ -68,7 +59,20 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
 	UUserWidget* SkinSelectionMenu;
 
-public:
+public:	
 	UFUNCTION()
-	void ShowScreen(bool Visibility, EWidgetMainMenuScreen GameScreen);
+	void ShowSkinSelectionMenu();
+	
+	UFUNCTION()
+	void ShowPickLevelMenu();
+	
+	UFUNCTION()
+	void ShowSettingsMenu();
+	
+	UFUNCTION()
+	void ShowTutorialMenu();
+	
+	UFUNCTION()
+	void ShowMainMenu();
+
 };
