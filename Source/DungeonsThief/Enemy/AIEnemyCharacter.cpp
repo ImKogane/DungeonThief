@@ -106,16 +106,20 @@ void AAIEnemyCharacter::StopMovement()
 {
 	AAIEnemyController* EnemyController = Cast<AAIEnemyController>(GetController());
 
-	if (EnemyController)
+	if (EnemyController == nullptr)
 	{
-		EnemyController->BrainComponent->StopLogic("GameOver");
+		UE_LOG(LogTemp, Error, TEXT("EnemyController is null"));
+		return;
 	}
+
+	EnemyController->BrainComponent->StopLogic("GameOver");
 }
 
 void AAIEnemyCharacter::OnDestoyingBehaviour(AActor* Act)
 {
 	if (MyGameMode == nullptr)
 	{
+		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
 		return;
 	}
 
@@ -126,23 +130,29 @@ void AAIEnemyCharacter::OnDestoyingBehaviour(AActor* Act)
 void AAIEnemyCharacter::EnemyWinGame()
 {
 	DropItem();
-	if (AnimationHandler && WinMontage)
+	
+	if (AnimationHandler == nullptr && WinMontage == nullptr)
 	{
-		StopMovement();
-		
-		AnimationHandler->PlayAnimation(this, WinMontage);
+		UE_LOG(LogTemp, Error, TEXT("AnimationHandler or WinMontage is null"));
+		return;
 	}
+	
+	StopMovement();
+	AnimationHandler->PlayAnimation(this, WinMontage);
 }
 
 void AAIEnemyCharacter::EnemyLoseGame()
 {
 	DropItem();
-	if (AnimationHandler && LoseMontage)
+	
+	if (AnimationHandler == nullptr && WinMontage == nullptr)
 	{
-		StopMovement();
-
-		AnimationHandler->PlayAnimation(this, LoseMontage);
+		UE_LOG(LogTemp, Error, TEXT("AnimationHandler or WinMontage is null"));
+		return;
 	}
+	
+	StopMovement();
+	AnimationHandler->PlayAnimation(this, LoseMontage);
 }
 
 /**
