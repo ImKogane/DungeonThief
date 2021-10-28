@@ -57,7 +57,7 @@ void AFoodSpot::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AAc
 void AFoodSpot::OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	ACarryingCharacter* Player = Cast<ACarryingCharacter>(OtherActor);
-	if(Player != nullptr)
+	if(Player == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Player is null"));
 		return;
