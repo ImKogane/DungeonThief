@@ -116,39 +116,6 @@ void AMainCharacterController::ShowScreen(bool Visibility, EWidgetGameScreen Win
 	}
 }
 
-/*void AMainCharacterController::ShowPauseMenu(bool Visibility)
-{
-
-	if(CanPause)
-	{
-		PauseMenuWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-		bShowMouseCursor = true;
-		UGameplayStatics::SetGamePaused(GetWorld(), true);
-	}
-	
-}
-
-void AMainCharacterController::ShowMainHUD(bool Visibility)
-{
-	MainWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-
-	if(Visibility == true)
-	{
-		SetCanPause(true);
-	}
-}
-
-void AMainCharacterController::ShowCharacterHUD(bool Visibility)
-{
-	CharacterPickWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-
-	if(Visibility == false)
-	{
-		CanPause = true;
-	}
-	
-}*/
-
 void AMainCharacterController::SetCanPause(bool state)
 {
 	CanPause = state;
