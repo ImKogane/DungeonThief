@@ -14,7 +14,7 @@ EBTNodeResult::Type UBT_PickBackDroppedFood::CodeToExecute()
 
 	if (FoodDropped == nullptr)
 	{
-		BlackboardComponent->ClearValue("SpotLocationToGo");
+		BlackboardComponent->ClearValue("FoodDropped");
 		return EBTNodeResult::Failed;
 	}
 	float DistFromFood = FVector::Dist(FoodDropped->GetActorLocation(), AICharacter->GetActorLocation());
