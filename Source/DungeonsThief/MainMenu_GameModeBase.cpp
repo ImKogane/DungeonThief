@@ -8,9 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 
 void AMainMenu_GameModeBase::BeginPlay()
-{
-	//UGameplayStatics::SetGamePaused(GetWorld(), true);
-	
+{	
 }
 
 void AMainMenu_GameModeBase::ShowPickLevelWidget()
