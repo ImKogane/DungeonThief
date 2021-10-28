@@ -23,7 +23,7 @@ AAIEnemyController::AAIEnemyController()
 
 	LocationToGoKey = "LocationToGo";
 	
-	FieldOfView = 135.0f;
+	FieldOfView = 67.5f;
 
 	SightDistance = 1000.f;
 }

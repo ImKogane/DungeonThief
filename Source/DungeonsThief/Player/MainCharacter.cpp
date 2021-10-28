@@ -224,9 +224,7 @@ void AMainCharacter::MoveRight(float Value)
 	void AMainCharacter::ScrollInOut(float Value)
 	{
 		if(Value != 0.0f && bCanMove)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Je scroll"))
-			
+		{			
 			float CurrentArmLenght = CameraBoom->TargetArmLength + Value;
 			
 			if(CurrentArmLenght < MaxZoom && CurrentArmLenght > MinZoom)

@@ -56,7 +56,7 @@ void APlayerHidingPlace::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedCompon
 	AFood* FoodEnter = Cast<AFood>(OtherActor);
 	if (FoodEnter == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("FoodEnter is null"));
+		//OtherActor isn't a food alone
 		return;
 	}
 
@@ -65,21 +65,18 @@ void APlayerHidingPlace::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedCompon
 		
 	if(FoodManager == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("FoodEnter is null"));
+		UE_LOG(LogTemp, Error, TEXT("FoodManager is null"));
 		return;
 	}
 	
 	FoodManager->RemoveFoodFromWorldList(FoodEnter);
 	
 	AMainCharacter* Player = Cast<AMainCharacter>(FoodEnter->GetCharacterCarryingMe());
-	if (Player == nullptr)
+	if (Player != nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("PlayerHidingPlace : Player is null"));
-		return;
-	}
-	
-	Player->DropItem();
-	Player->SetNearFoodActor(nullptr);
+		Player->DropItem();
+		Player->SetNearFoodActor(nullptr);
+	}	
 	
 	FoodEnter->Destroy();
 }
