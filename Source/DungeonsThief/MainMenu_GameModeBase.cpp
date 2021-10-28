@@ -11,15 +11,5 @@ void AMainMenu_GameModeBase::BeginPlay()
 {	
 }
 
-void AMainMenu_GameModeBase::ShowPickLevelWidget()
-{
-	AMainMenuController* MenuController = Cast<AMainMenuController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-
-	if(MenuController != nullptr)
-	{
-		MenuController->ShowPickLevelMenu();
-	}
-}
-
 
 
