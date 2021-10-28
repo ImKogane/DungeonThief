@@ -102,7 +102,7 @@ void AFood::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor*
 	
 	if(Player == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Player is null"));
+		//OverlapActor isn't the player
 		return;
 	}
 	
@@ -115,7 +115,7 @@ void AFood::OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* O
 	
 	if(Player == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Player is null"));
+		//OverlapActor isn't the player
 		return;
 	}
 	
