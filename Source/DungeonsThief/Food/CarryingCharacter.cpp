@@ -160,11 +160,11 @@ void ACarryingCharacter::DropItem()
 		if(FoodCarriedActor != nullptr)
 		{
 			NearFoodActor = FoodCarriedActor;
+			AFood* ModifyFood = Cast<AFood>(NearFoodActor);
+			ModifyFood->SetCharacterCarryingMe(nullptr);
 			FVector ForwardVec = GetActorForwardVector();
 			ForwardVec.Normalize();
 			FoodCarriedActor->SetActorLocation(GetActorLocation() + ForwardVec * 60);
-			AFood* ModifyFood = Cast<AFood>(NearFoodActor);
-			ModifyFood->SetCharacterCarryingMe(nullptr);
 			ModifyFood->BeDrop();
 			FoodCarriedActor = nullptr;
 			IsCarryFood = false;
