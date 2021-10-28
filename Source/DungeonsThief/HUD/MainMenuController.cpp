@@ -4,6 +4,8 @@
 #include "DungeonsThief/HUD/MainMenuController.h"
 
 #include "Blueprint/UserWidget.h"
+#include "DungeonsThief/Player/MainCharacterController.h"
+#include "Kismet/GameplayStatics.h"
 
 void AMainMenuController::BeginPlay()
 {
@@ -51,30 +53,30 @@ void AMainMenuController::BeginPlay()
 	
 }
 
-
-void AMainMenuController::ShowPickLevelMenu()
+void AMainMenuController::ShowScreen(bool Visibility, EWidgetMainMenuScreen GameScreen)
 {
-	PickLevelMenu->SetVisibility(ESlateVisibility::Visible);
-}
-
-void AMainMenuController::ShowSettingsMenu()
-{
-	SettingsMenu->SetVisibility(ESlateVisibility::Visible);
-}
-
-void AMainMenuController::ShowTutorialMenu()
-{
-	TutorialMenu->SetVisibility(ESlateVisibility::Visible);
-}
-
-void AMainMenuController::ShowMainMenu()
-{
-	MainMenu->SetVisibility(ESlateVisibility::Visible);
-}
-
-void AMainMenuController::ShowSkinSelectionMenu()
-{
-	SkinSelectionMenu->SetVisibility(ESlateVisibility::Visible);
+	switch (GameScreen)
+	{
+	case EWidgetMainMenuScreen::EWMMS_PickLevel:
+		PickLevelMenu->SetVisibility(ESlateVisibility::Visible);
+		break;
+		
+	case EWidgetMainMenuScreen::EWMMS_Settings:
+		SettingsMenu->SetVisibility(ESlateVisibility::Visible);
+		break;
+		
+	case EWidgetMainMenuScreen::EWMMS_Tutorial:
+		TutorialMenu->SetVisibility(ESlateVisibility::Visible);
+		break;
+		
+	case EWidgetMainMenuScreen::EWMMS_MainMenu:
+		MainMenu->SetVisibility(ESlateVisibility::Visible);
+		break;
+		
+	case EWidgetMainMenuScreen::EWMMS_SkinSelector:
+		SkinSelectionMenu->SetVisibility(ESlateVisibility::Visible);
+		
+	}
 }
 
 
