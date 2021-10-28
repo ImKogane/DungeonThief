@@ -103,7 +103,7 @@ void AMainCharacter::BeginPlay()
 	}
 
 	MyGameMode->OnGameWin.AddDynamic(this, &AMainCharacter::WinGame);
-	MyGameMode->OnGameLose.AddDynamic(this, &AMainCharacter::LoseGame);
+	MyGameMode->OnGameLose.AddDynamic(this, &AMainCharacter::LooseGame);
 
 	PreviewCamera->ShowOnlyActors.Add(this);
 	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
@@ -260,7 +260,7 @@ void AMainCharacter::WinGame()
 	}
 }
 
-void AMainCharacter::LoseGame()
+void AMainCharacter::LooseGame()
 {
 	SetPlayRagdoll();
 
@@ -287,7 +287,7 @@ void AMainCharacter::ChangeObjectTransparency()
 
 	if (GetWorld()->LineTraceMultiByProfile(HitResults, StartTrace, EndTrace, FName("IgnoreCamera"), *TraceParams))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *HitResults[0].GetActor()->GetName());
+		// the first actor is the blocking actor that is actually the pawn (here the player)
 		if (CheckIfIsPlayer(HitResults[0].GetActor()))
 		{
 			return;

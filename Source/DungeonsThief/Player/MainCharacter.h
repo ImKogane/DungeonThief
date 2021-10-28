@@ -82,29 +82,7 @@ protected:
 	class TArray<UMaterial*> CurrentHitObjectsMaterial;
 	
 	class TArray<UStaticMeshComponent*> CurrentHitMeshes;
-	
-	
-public:
-	//For function declaration
-	
-	FORCEINLINE void SetCanMove(bool value) { bCanMove = value; }
-	
-	FORCEINLINE bool GetIsCrouching() { return IsCrouch; }
-	
-	FORCEINLINE int GetCharacterID() { return CharacterID; } 
 
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	UFUNCTION()
-    void WinGame();
-
-	UFUNCTION()
-    void LooseGame();
-	
 protected:
 	//For function declaration
 
@@ -136,8 +114,6 @@ protected:
 	UFUNCTION()
 	void SetGamePause();
 
-	/* Change StaticMesh materials to allow player to see through it*/
-	void ChangeObjectTransparency();
 	/* For ragdoll behaviour */
 	FVector GetXYRandomDirection(float XMin, float XMax, float YMin, float YMax);
 
@@ -149,18 +125,14 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	/* Return true if the CurrentHitActor is the Player, false otherwise */
-	bool CheckIfIsPlayer(AActor* CurrentHitActor);
+	// Called to bind functionality to input
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	/* Get StaticMeshComponent from the CurrentHitActor */
-	void GetStaticMeshes(AActor* CurrentHitActor);
-
-	/* Change materials from all StaticMeshComponent between the camera and the player */
-	void ChangeMaterials();
-
-};
 	UFUNCTION()
-	void LoseGame();
+	void WinGame();
+
+	UFUNCTION()
+	void LooseGame();
 
 	/* Called in UI to pick up a character for player */
 	UFUNCTION()
@@ -171,4 +143,17 @@ public:
 	FORCEINLINE int GetCharacterID() { return CharacterID; }
 
 	void ChangeCharaterMesh(class USkeltalMesh* NewMesh);
+	
+	/* Change StaticMesh materials to allow player to see through it*/
+    void ChangeObjectTransparency();
+	
+	/* Return true if the CurrentHitActor is the Player, false otherwise */
+	bool CheckIfIsPlayer(AActor* CurrentHitActor);
+
+	/* Get StaticMeshComponent from the CurrentHitActor */
+	void GetStaticMeshes(AActor* CurrentHitActor);
+
+	/* Change materials from all StaticMeshComponent between the camera and the player */
+	void ChangeMaterials();
+
 };
