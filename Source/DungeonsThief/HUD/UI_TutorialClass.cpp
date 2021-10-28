@@ -20,6 +20,6 @@ void UUI_TutorialClass::Back()
 	if (MenuController != nullptr)
 	{
 		this->SetVisibility(ESlateVisibility::Hidden);
-		MenuController->ShowScreen(true, EWidgetMainMenuScreen::EWMMS_MainMenu);
+		MenuController->ShowMainMenu();
 	}
 }

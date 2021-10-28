@@ -56,7 +56,7 @@ void UUI_MainMenuClass::PlayGame(EGameplayMode GameplayMode)
 				MyGameInstance->SetGameplayMode(GameplayMode);
 			}
 
-			MenuController->ShowScreen(true, EWidgetMainMenuScreen::EWMMS_PickLevel);
+			MenuController->ShowPickLevelMenu();
 		}
 	}
 }
@@ -69,7 +69,7 @@ void UUI_MainMenuClass::OpenSettings()
 
 	if (MenuController != nullptr)
 	{
-		MenuController->ShowScreen(true, EWidgetMainMenuScreen::EWMMS_Settings);
+		MenuController->ShowSettingsMenu();
 	}
 }
 
@@ -81,7 +81,7 @@ void UUI_MainMenuClass::OpenTutorial()
 	if (MenuController != nullptr)
 	{
 		this->SetVisibility(ESlateVisibility::Hidden);
-		MenuController->ShowScreen(true, EWidgetMainMenuScreen::EWMMS_Tutorial);
+		MenuController->ShowTutorialMenu();
 	}
 }
 
@@ -92,7 +92,7 @@ void UUI_MainMenuClass::OpenShop()
 
 	if (MenuController != nullptr)
 	{
-		MenuController->ShowScreen(true, EWidgetMainMenuScreen::EWMMS_SkinSelector);
+		MenuController->ShowSkinSelectionMenu();
 	}
 }
 
