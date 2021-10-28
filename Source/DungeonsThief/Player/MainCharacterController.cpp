@@ -76,49 +76,32 @@ void AMainCharacterController::BeginPlay()
 	UGameplayStatics::SetGamePaused(GetWorld(), true);
 }
 
-void AMainCharacterController::ShowScreen(bool Visibility, EWidgetGameScreen WinScreen)
+void AMainCharacterController::ShowWinScreen(bool Visibility)
 {
-	switch (WinScreen)
+	WinScreenWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+	bShowMouseCursor = Visibility;
+}
+
+void AMainCharacterController::ShowLoseScreen(bool Visibility)
+{
+	UUI_MenuEndGame* LoseScreenCast = Cast<UUI_MenuEndGame>(LoseScreenWidget);
+	if (MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_ScoreMode)
 	{
-	case EWidgetGameScreen::EWGS_WinScreen:
-		WinScreenWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-		bShowMouseCursor = Visibility;
-		break;
-	case EWidgetGameScreen::EWGS_LoseScreen:
-		{
-			UUI_MenuEndGame* LoseScreenCast = Cast<UUI_MenuEndGame>(LoseScreenWidget);
-			if (MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_ScoreMode)
-			{
-				LoseScreenCast->SetTextScore(MyGameState->GetPlayerPoints());
-			}
+		LoseScreenCast->SetTextScore(MyGameState->GetPlayerPoints());
+	}
 
-			LoseScreenCast->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-			bShowMouseCursor = Visibility;
-		}
-		break;
-	case EWidgetGameScreen::EWGS_PauseScreen:
-		if (CanPause)
-		{
-			PauseMenuWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
-			bShowMouseCursor = Visibility;
-			UGameplayStatics::SetGamePaused(GetWorld(), true);
-		}
-		break;
-	case EWidgetGameScreen::EWGS_CharacterHUDScreen:
-		CharacterPickWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+	LoseScreenCast->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+	bShowMouseCursor = Visibility;
+}
 
-		if (Visibility == false)
-		{
-			SetCanPause(true);
-		}
-		break;
-	case EWidgetGameScreen::EWGS_MainHUDScreen:
-		MainWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+void AMainCharacterController::ShowPauseMenu(bool Visibility)
+{
 
-		if (Visibility == true)
-		{
-			SetCanPause(true);
-		}
+	if(CanPause)
+	{
+		PauseMenuWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+		bShowMouseCursor = true;
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
 	}
 }
 

@@ -248,7 +248,7 @@ void AMainCharacter::WinGame()
 
 	if (MainCharacterController)
 	{
-		MainCharacterController->ShowScreen(true, EWidgetGameScreen::EWGS_WinScreen);
+		MainCharacterController->ShowWinScreen(true);
 	}
 }
 
@@ -258,7 +258,7 @@ void AMainCharacter::LoseGame()
 
 	if (MainCharacterController)
 	{
-		MainCharacterController->ShowScreen(true, EWidgetGameScreen::EWGS_LoseScreen);
+		MainCharacterController->ShowLoseScreen(true);
 	}
 }
 
@@ -332,7 +332,7 @@ void AMainCharacter::SetGamePause()
 		return;
 	}
 
-	Player->ShowScreen(true, EWidgetGameScreen::EWGS_PauseScreen);
+	Player->ShowPauseMenu(true);
 }
 
 FVector AMainCharacter::GetXYRandomDirection(float XMin, float XMax, float YMin, float YMax)

@@ -6,16 +6,6 @@
 #include "GameFramework/PlayerController.h"
 #include "MainCharacterController.generated.h"
 
-UENUM(BlueprintType)
-enum class EWidgetGameScreen : uint8
-{
-	EWGS_WinScreen UMETA(DisplayName = "WinScreen"),
-	EWGS_LoseScreen UMETA(DisplayName = "LoseScreen"),
-	EWGS_PauseScreen UMETA(DisplayName = "PauseScreen"),
-	EWGS_MainHUDScreen UMETA(DisplayName = "MainHUDScreen"),
-	EWGS_CharacterHUDScreen UMETA(DisplayName = "CharacterHUDScreen")
-};
-
 /**
  * 
  */
@@ -72,7 +62,10 @@ protected:
 	class UMyGameInstance* MyGameInstance;
 
 public :
-	void ShowScreen(bool Visibility, EWidgetGameScreen Screen);
+	void ShowWinScreen(bool Visibility);
+	void ShowLoseScreen(bool Visibility);
+
+	void ShowPauseMenu(bool Visibility);
 
 	void SetCanPause(bool state);
 };
