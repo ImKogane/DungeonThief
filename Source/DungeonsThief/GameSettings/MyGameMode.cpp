@@ -13,7 +13,6 @@ void AMyGameMode::InitGame(const FString& MapName, const FString& Options, FStri
 	Super::InitGame(MapName, Options, ErrorMessage);
 
 	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
-	MyGameInstance->LoadGame();
 }
 
 void AMyGameMode::InitGameState()

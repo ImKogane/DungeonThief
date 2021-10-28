@@ -16,4 +16,7 @@ class DUNGEONSTHIEF_API AMainMenu_GameModeBase : public AGameModeBase
 
 protected:
 	virtual void BeginPlay() override;
+
+	UPROPERTY(VisibleAnywhere, Category = "Helpers")
+	class UMyGameInstance* MyGameInstance;
 };

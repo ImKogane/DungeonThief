@@ -4,9 +4,12 @@
 #include "DungeonsThief/GameSettings/MainMenu_GameModeBase.h"
 
 #include "LevelSequencePlayer.h"
+#include "GameSettings/MyGameInstance.h"
 #include "HUD/MainMenuController.h"
 #include "Kismet/GameplayStatics.h"
 
 void AMainMenu_GameModeBase::BeginPlay()
 {
+    MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
+	MyGameInstance->LoadGame();
 }
