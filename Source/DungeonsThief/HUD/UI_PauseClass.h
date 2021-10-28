@@ -31,5 +31,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "UI infos")
 	FName MainMenuLevelName = FName("MainMenuLevel");
+
+	UPROPERTY(EditAnywhere, Category = "UI infos")
+	class AMyGameMode* MyGameMode;
 	
 };
