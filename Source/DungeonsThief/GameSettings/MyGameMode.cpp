@@ -57,7 +57,7 @@ void AMyGameMode::WinGame()
 		return;
 	}
 
-	MyGameInstance->AddPlayerXP(10 * XPBoostBuff);
+	MyGameInstance->AddPlayerXP(25 * XPBoostBuff);
 
 	if (OnGameWin.IsBound())
 	{

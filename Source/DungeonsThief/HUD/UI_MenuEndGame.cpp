@@ -97,7 +97,7 @@ void UUI_MenuEndGame::SetTextScore(int Score)
 		EndBestScore->SetText(FText::Format(FText::FromString("Best score : {0}"), SavedScore));
 	}
 
-	MyGameInstance->AddPlayerXP(Score * 2);
+	MyGameInstance->AddPlayerXP(Score * 4);
 }
 
 
