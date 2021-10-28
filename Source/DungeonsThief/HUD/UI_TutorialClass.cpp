@@ -8,24 +8,18 @@
 void UUI_TutorialClass::NativeConstruct()
 {
 	Super::NativeConstruct();
-	
-	BtnBack->OnClicked.AddUniqueDynamic(this, &UUI_TutorialClass::Back);
 
+	BtnBack->OnClicked.AddUniqueDynamic(this, &UUI_TutorialClass::Back);
 }
 
 void UUI_TutorialClass::Back()
 {
-	AMainMenuController* MenuController = Cast<AMainMenuController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	AMainMenuController* MenuController = Cast<AMainMenuController>(
+		UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
-	if(MenuController != nullptr)
+	if (MenuController != nullptr)
 	{
 		this->SetVisibility(ESlateVisibility::Hidden);
 		MenuController->ShowScreen(true, EWidgetMainMenuScreen::EWMMS_MainMenu);
 	}
-
 }
-
-
-
-
-

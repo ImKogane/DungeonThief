@@ -14,7 +14,7 @@ class AMyGameMode;
 // Sets default values
 ASpawnEnemyManager::ASpawnEnemyManager()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	DeleteEnemyBoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("DeleteEnemyBoxComponent"));
@@ -24,10 +24,10 @@ ASpawnEnemyManager::ASpawnEnemyManager()
 	SpawnLocation = CreateDefaultSubobject<USphereComponent>(TEXT("SpawnLocation"));
 	SpawnLocation->SetupAttachment(DeleteEnemyBoxComponent);
 	SpawnLocation->InitSphereRadius(10);
-	
+
 	MinSpawnDelay = 0.0f;
 	MaxSpawnDelay = 5.99f;
-	
+
 	FirstSpawnDelay = 60;
 
 	bIsFirstSpawn = true;
@@ -59,9 +59,9 @@ void ASpawnEnemyManager::BeginPlay()
 	MyGameMode->OnGameLose.AddDynamic(this, &ASpawnEnemyManager::StopAllTimeHandle);
 
 	CurrentEnemyToSpawn = GetWorld()->GetName() == "MainLevel" ? FirstEnemyToSpawn : SecondEnemyToSpawn;
-		
+
 	//First spawn : 2 enemies are instanciated + wait 60s to instanciate a third one
-	SpawnEnemy(60);	
+	SpawnEnemy(60);
 }
 
 // Called every frame
@@ -92,19 +92,20 @@ void ASpawnEnemyManager::CreateEnemy()
 		return;
 	}
 
-	if(CurrentEnemyToSpawn == nullptr)
+	if (CurrentEnemyToSpawn == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("CurrentEnemyToSpawn null"));
 		return;
 	}
 
-	if(SpawnLocation == nullptr)
+	if (SpawnLocation == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("SpawnLocation null"));
 		return;
 	}
-	
-	AAIEnemyCharacter* EnemyCharacter = World->SpawnActor<AAIEnemyCharacter>(CurrentEnemyToSpawn, SpawnLocation->GetComponentLocation(), GetActorRotation());
+
+	AAIEnemyCharacter* EnemyCharacter = World->SpawnActor<AAIEnemyCharacter>(
+		CurrentEnemyToSpawn, SpawnLocation->GetComponentLocation(), GetActorRotation());
 	SetupEnemy(EnemyCharacter);
 	EnemiesSpawned.Add(EnemyCharacter);
 }
@@ -119,7 +120,7 @@ void ASpawnEnemyManager::SpawnEnemy(int Delay)
 		UE_LOG(LogTemp, Warning, TEXT("WORLD NULL"));
 		return;
 	}
-	
+
 	if (bIsFirstSpawn)
 	{
 		bIsFirstSpawn = false;
@@ -130,7 +131,7 @@ void ASpawnEnemyManager::SpawnEnemy(int Delay)
 			CreateEnemy();
 		}
 	}
-	
+
 	GetWorldTimerManager().SetTimer(handle, [this]()
 	{
 		CreateEnemy();
@@ -151,21 +152,23 @@ void ASpawnEnemyManager::DeleteAI(AAIEnemyCharacter* AIToDelet)
 	{
 		CreateEnemy();
 	}
-	//else : we wait a random delay between 0 and 5s
+		//else : we wait a random delay between 0 and 5s
 	else
 	{
 		int NewDelay = FMath::FRandRange(MinSpawnDelay, MaxSpawnDelay);
-		if(NewDelay == 0)
+		if (NewDelay == 0)
 		{
 			CreateEnemy();
-		}else
+		}
+		else
 		{
 			SpawnEnemy(NewDelay);
 		}
 	}
 }
 
-void ASpawnEnemyManager::DeleteBoxOnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void ASpawnEnemyManager::DeleteBoxOnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                               UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 }
 
@@ -177,6 +180,3 @@ void ASpawnEnemyManager::StopAllTimeHandle()
 		GetWorldTimerManager().ClearTimer(Handle);
 	}
 }
-
-
-

@@ -32,15 +32,16 @@ void UUI_PauseClass::ResumeGame()
 
 void UUI_PauseClass::ReturnToMenu()
 {
-	
 	UWorld* World = GetWorld();
 	UE_LOG(LogTemp, Warning, TEXT("START GAME"));
 
 	if (World)
 	{
 		MyGameMode = Cast<AMyGameMode>(World->GetAuthGameMode());
-		if(MyGameMode)
+		if (MyGameMode)
+		{
 			MyGameMode->GetSpawnManager()->StopAllTimeHandle();
+		}
 		//UGameplayStatics::SetGamePaused(World, false);
 		UGameplayStatics::OpenLevel(World, MainMenuLevelName);
 	}

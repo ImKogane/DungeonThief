@@ -15,8 +15,5 @@ class DUNGEONSTHIEF_API AMainMenu_GameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 protected:
-
-	void BeginPlay() override;
-	
-	
+	virtual void BeginPlay() override;
 };

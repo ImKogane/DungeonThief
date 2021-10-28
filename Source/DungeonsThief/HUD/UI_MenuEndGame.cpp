@@ -16,23 +16,22 @@
 void UUI_MenuEndGame::NativeConstruct()
 {
 	Super::NativeConstruct();
-	
+
 	BtnPlayAgain->OnClicked.AddUniqueDynamic(this, &UUI_MenuEndGame::RestartGame);
 	BtnMenu->OnClicked.AddUniqueDynamic(this, &UUI_MenuEndGame::ReturnToMenu);
 	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
 
-	if(bLoseUI && MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_ScoreMode)
+	if (bLoseUI && MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_ScoreMode)
 	{
 		EndScore->SetVisibility(ESlateVisibility::Visible);
 		EndBestScore->SetVisibility(ESlateVisibility::Visible);
-		
 	}
 	else
 	{
 		EndScore->SetVisibility(ESlateVisibility::Hidden);
 		EndBestScore->SetVisibility(ESlateVisibility::Hidden);
 	}
-	
+
 	MainLevelName = FName(GetWorld()->GetName());
 
 	//Bind method with the GameMode
@@ -77,10 +76,10 @@ void UUI_MenuEndGame::ReturnToMenu()
 void UUI_MenuEndGame::SetTextScore(int Score)
 {
 	int SavedScore = MyGameInstance->GetBestScore();
-	
+
 	EndScore->SetText(FText::Format(FText::FromString("Your score : {0}"), Score));
 
-	if(Score > SavedScore)
+	if (Score > SavedScore)
 	{
 		EndBestScore->SetText(FText::Format(FText::FromString("Best score : {0}"), Score));
 
@@ -93,7 +92,6 @@ void UUI_MenuEndGame::SetTextScore(int Score)
 	}
 
 	MyGameInstance->AddPlayerXP(Score * 2);
-	
 }
 
 
@@ -102,17 +100,13 @@ void UUI_MenuEndGame::SetTextScore(int Score)
  */
 void UUI_MenuEndGame::UpdateXPProgression()
 {
-	if(MyGameInstance == nullptr)
+	if (MyGameInstance == nullptr)
 	{
 		return;
 	}
-	
-	float Percent = (float)MyGameInstance->GetPlayerXP() / (float)100;
-	XPBar->SetPercent(Percent);	//Set progress bar value
-	
+
+	float Percent = static_cast<float>(MyGameInstance->GetPlayerXP()) / static_cast<float>(100);
+	XPBar->SetPercent(Percent); //Set progress bar value
+
 	PlayerLevel->SetText(FText::Format(FText::FromString("{0}"), MyGameInstance->GetPlayerXPLevel()));
-	
 }
-
-
-

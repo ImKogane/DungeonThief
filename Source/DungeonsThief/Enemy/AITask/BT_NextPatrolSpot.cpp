@@ -9,6 +9,6 @@
 EBTNodeResult::Type UBT_NextPatrolSpot::CodeToExecute()
 {
 	AICharacter->RemoveFirstLocationForPatrol();
-	
+
 	return EBTNodeResult::Succeeded;
 }

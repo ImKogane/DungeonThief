@@ -18,15 +18,15 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+
 	void UnSpectatePlayer();
-	
+
 	UPROPERTY(VisibleAnywhere, Category = "Controller")
 	class UMyGameInstance* MyGameInstance;
-	
+
 	UPROPERTY(VisibleAnywhere, Category = "Controller")
 	AController* SpectatorPawnController;
 };

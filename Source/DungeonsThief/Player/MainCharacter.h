@@ -17,8 +17,8 @@ public:
 	// Sets default values for this character's properties
 	AMainCharacter();
 
-	
-protected: 
+
+protected:
 	// For variable declaration
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -38,7 +38,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "CameraZoom")
 	float MaxZoom;
-	
+
 	UPROPERTY(EditAnywhere, Category = "CameraZoom")
 	float MinZoom;
 
@@ -46,7 +46,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "WinAndLose")
 	class UAnimMontage* WinMontage;
-	
+
 	UPROPERTY(EditAnywhere, Category = "WinAndLose")
 	class UAnimMontage* LoseMontage;
 
@@ -55,10 +55,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "PlayeModel")
 	int CharacterID = 0;
-	
+
 	UPROPERTY(EditAnywhere, Category = "PlayeModel")
 	TArray<USkeletalMesh*> PlayableCharacters;
-	
+
 	bool bCanMove;
 
 	UPROPERTY(VisibleAnywhere, Category = "HUD")
@@ -72,22 +72,22 @@ protected:
 	/* Camera 3D preview */
 	UPROPERTY(VisibleAnywhere, Category = "Preview Camera")
 	class USpringArmComponent* PreviewCameraBoom;
-	
+
 	UPROPERTY(VisibleAnywhere, Category = "Preview Camera")
 	class USceneCaptureComponent2D* PreviewCamera;
-	
+
 protected:
 	//For function declaration
-	
+
 	/* Called for Spectating mode */
 	void SpectatePlayer();
 
 	/* Called for crouch player */
 	void CrouchPlayer();
-	
+
 	/* Called for remove crouch state of player */
 	void UnCrouchPlayer();
-	
+
 	/* Called for forward and backward movement */
 	void MoveForward(float Value);
 
@@ -109,12 +109,12 @@ protected:
 
 	/* For ragdoll behaviour */
 	FVector GetXYRandomDirection(float XMin, float XMax, float YMin, float YMax);
-	
+
 	void SetPlayRagdoll();
 
 public:
 	FORCEINLINE void SetCanMove(bool value) { bCanMove = value; }
-	
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -132,10 +132,8 @@ public:
 	void DefinePlayerCharacter(int CharacterIndex);
 
 	FORCEINLINE bool GetIsCrouching() { return IsCrouch; }
-	
+
 	FORCEINLINE int GetCharacterID() { return CharacterID; }
 
-	void ChangeCharaterMesh(class USkeltalMesh* NewMesh);	
+	void ChangeCharaterMesh(class USkeltalMesh* NewMesh);
 };
-
-

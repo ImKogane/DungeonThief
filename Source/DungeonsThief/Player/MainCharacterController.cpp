@@ -19,11 +19,11 @@ void AMainCharacterController::BeginPlay()
 {
 	Super::BeginPlay();
 	AMyGameMode* GameModeBase = Cast<AMyGameMode>(GetWorld()->GetAuthGameMode());
-	
+
 	MyGameState = GameModeBase->GetGameState<AMyGameState>();
 	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
 
-	if(GetPawn())
+	if (GetPawn())
 	{
 		MyGameInstance->SetMainPlayerPawn(GetPawn());
 	}
@@ -32,7 +32,7 @@ void AMainCharacterController::BeginPlay()
 	{
 		MainWidget = CreateWidget<UUserWidget>(this, WMain);
 		MainWidget->AddToViewport();
-        MainWidget->SetVisibility(ESlateVisibility::Visible);
+		MainWidget->SetVisibility(ESlateVisibility::Visible);
 	}
 
 	if (WCharacterPick)
@@ -61,7 +61,7 @@ void AMainCharacterController::BeginPlay()
 			LoseScreenWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
-	
+
 	if (WPauseMenu)
 	{
 		PauseMenuWidget = CreateWidget<UUserWidget>(this, WPauseMenu);
@@ -71,7 +71,7 @@ void AMainCharacterController::BeginPlay()
 			PauseMenuWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
-	
+
 	bShowMouseCursor = true;
 	UGameplayStatics::SetGamePaused(GetWorld(), true);
 }
@@ -87,15 +87,17 @@ void AMainCharacterController::ShowScreen(bool Visibility, EWidgetGameScreen Win
 	case EWidgetGameScreen::EWGS_LoseScreen:
 		{
 			UUI_MenuEndGame* LoseScreenCast = Cast<UUI_MenuEndGame>(LoseScreenWidget);
-			if(MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_ScoreMode)
+			if (MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_ScoreMode)
+			{
 				LoseScreenCast->SetTextScore(MyGameState->GetPlayerPoints());
-	
+			}
+
 			LoseScreenCast->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 			bShowMouseCursor = Visibility;
 		}
 		break;
 	case EWidgetGameScreen::EWGS_PauseScreen:
-		if(CanPause)
+		if (CanPause)
 		{
 			PauseMenuWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 			bShowMouseCursor = Visibility;
@@ -105,14 +107,18 @@ void AMainCharacterController::ShowScreen(bool Visibility, EWidgetGameScreen Win
 	case EWidgetGameScreen::EWGS_CharacterHUDScreen:
 		CharacterPickWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 
-		if(Visibility == false)
+		if (Visibility == false)
+		{
 			SetCanPause(true);
+		}
 		break;
 	case EWidgetGameScreen::EWGS_MainHUDScreen:
 		MainWidget->SetVisibility(Visibility ? ESlateVisibility::Visible : ESlateVisibility::Hidden);
 
-		if(Visibility == true)
+		if (Visibility == true)
+		{
 			SetCanPause(true);
+		}
 	}
 }
 

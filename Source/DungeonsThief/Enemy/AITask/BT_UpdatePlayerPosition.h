@@ -16,7 +16,6 @@ class DUNGEONSTHIEF_API UBT_UpdatePlayerPosition : public UBT_BaseTaskDungeonsTh
 	GENERATED_BODY()
 
 protected:
-	
 	/* Execute this function each time this Task is going to fire */
 	virtual EBTNodeResult::Type CodeToExecute() override;
 };

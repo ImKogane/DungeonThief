@@ -11,8 +11,8 @@ void UBT_SelectSpotIfPatrol::CodeToExecute()
 {
 	Super::CodeToExecute();
 	TArray<FVector> LocationsForPatrol = AICharacter->GetLocationsForPatrol();
-	
-	if(LocationsForPatrol.Num() == 0)
+
+	if (LocationsForPatrol.Num() == 0)
 	{
 		BlackboardComponent->ClearValue("LocationForPatrol");
 		return;

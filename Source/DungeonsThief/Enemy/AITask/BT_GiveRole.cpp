@@ -32,25 +32,23 @@ EBTNodeResult::Type UBT_GiveRole::CodeToExecute()
 		UE_LOG(LogTemp, Log, TEXT("Waiting %s"), *AICharacter->GetName())
 		return EBTNodeResult::Failed;
 	}
-	
+
 	SpawnEnemyManager->SetGlobalWaitAI(true);
 	const int NumberOfFoodInWorld = FoodManager->GetAllFoodInWorld().Num();
 	const int NumberOfSpotInWorld = FoodManager->GetAllSpotInGame().Num();
 
-	MaxFoodInWorld = NumberOfSpotInWorld >=5 ? 5 : NumberOfSpotInWorld;
-	
-	if(NumberOfFoodInWorld >= MaxFoodInWorld)
+	MaxFoodInWorld = NumberOfSpotInWorld >= 5 ? 5 : NumberOfSpotInWorld;
+
+	if (NumberOfFoodInWorld >= MaxFoodInWorld)
 	{
-		uint8 ByteEnum = (uint8)EEnemyState::EES_Patrolling;
+		uint8 ByteEnum = static_cast<uint8>(EEnemyState::EES_Patrolling);
 		BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
 	}
 	else
 	{
-		uint8 ByteEnum = (uint8)EEnemyState::EES_CarryFood;
+		uint8 ByteEnum = static_cast<uint8>(EEnemyState::EES_CarryFood);
 		BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
 		AIController->SetEnemyState(EEnemyState::EES_CarryFood);
 	}
 	return EBTNodeResult::Succeeded;
-	
-			
 }

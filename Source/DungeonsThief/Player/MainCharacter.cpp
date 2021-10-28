@@ -33,7 +33,7 @@ AMainCharacter::AMainCharacter()
 	// Attach the camera to the end of the camera boom  
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
-	
+
 	BaseTurnRate = 65.0f;
 	BaseLookupRate = 65.0f;
 
@@ -49,7 +49,7 @@ AMainCharacter::AMainCharacter()
 	GetCharacterMovement()->AirControl = .2f;
 
 	BaseSpeed = GetCharacterMovement()->MaxWalkSpeed;
-	CrouchSpeed = BaseSpeed/2;
+	CrouchSpeed = BaseSpeed / 2;
 
 	MaxZoom = 600.0f;
 	MinZoom = 200.0f;
@@ -60,14 +60,14 @@ AMainCharacter::AMainCharacter()
 	PreviewCameraBoom->SetupAttachment(GetRootComponent());
 	PreviewCameraBoom->TargetArmLength = 50.0f;
 	PreviewCameraBoom->bUsePawnControlRotation = false;
-	
+
 	PreviewCamera = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("Preview Camera"));
 	PreviewCamera->SetupAttachment(PreviewCameraBoom, USpringArmComponent::SocketName);
 	PreviewCamera->PrimitiveRenderMode = ESceneCapturePrimitiveRenderMode::PRM_UseShowOnlyList;
-	
+
 	bCanMove = true;
-	
-	RagdollForceImpulse = 10; 
+
+	RagdollForceImpulse = 10;
 
 	GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
 }
@@ -77,9 +77,9 @@ void AMainCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	MainCharacterController = Cast<AMainCharacterController>(GetController());
-	
+
 	//set where the camera is looking at
-	CameraBoom->SetRelativeLocation(FVector(0,0,60));
+	CameraBoom->SetRelativeLocation(FVector(0, 0, 60));
 
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * SpeedBonus;
 
@@ -96,10 +96,10 @@ void AMainCharacter::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
 		return;
 	}
-	
+
 	MyGameMode->OnGameWin.AddDynamic(this, &AMainCharacter::WinGame);
 	MyGameMode->OnGameLose.AddDynamic(this, &AMainCharacter::LoseGame);
-	
+
 	PreviewCamera->ShowOnlyActors.Add(this);
 	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
 }
@@ -116,7 +116,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	check(PlayerInputComponent);
-	
+
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);
 
@@ -132,9 +132,9 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AMainCharacter::CrouchPlayer);
 	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AMainCharacter::UnCrouchPlayer);
-	
+
 	PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &AMainCharacter::SetGamePause);
-	
+
 	PlayerInputComponent->BindAction("Spectate", IE_Pressed, this, &AMainCharacter::SpectatePlayer);
 }
 
@@ -159,22 +159,20 @@ void AMainCharacter::MoveForward(float Value)
 
 void AMainCharacter::CrouchPlayer()
 {
-	if(IsCrouch == false && IsCarryFood == false)
+	if (IsCrouch == false && IsCarryFood == false)
 	{
 		Crouch();
 		PreviewCameraBoom->TargetArmLength = -120.0f;
-		GetCharacterMovement()->MaxWalkSpeed = (BaseSpeed/1.75) * CrouchSpeedBonus;
+		GetCharacterMovement()->MaxWalkSpeed = (BaseSpeed / 1.75) * CrouchSpeedBonus;
 		IsCrouch = true;
 		GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
 	}
-
 }
-
 
 
 void AMainCharacter::UnCrouchPlayer()
 {
-	if(IsCrouch == true)
+	if (IsCrouch == true)
 	{
 		UnCrouch();
 		PreviewCameraBoom->TargetArmLength = -60.0f;
@@ -182,7 +180,6 @@ void AMainCharacter::UnCrouchPlayer()
 		IsCrouch = false;
 	}
 }
-
 
 
 /*
@@ -199,40 +196,40 @@ void AMainCharacter::MoveRight(float Value)
 		AddMovementInput(Direction, Value);
 	}
 }
-#pragma endregion 
+#pragma endregion
 
 
 //////////////////// CAMERA SYSTEM ////////////////////
 #pragma region Camera System
 
-	void AMainCharacter::TurnAtRate(float Rate)
+void AMainCharacter::TurnAtRate(float Rate)
+{
+	if (bCanMove)
 	{
-		if (bCanMove)
-		{
-			AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
-		}
+		AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 	}
+}
 
-	void AMainCharacter::LookupRate(float Rate)
+void AMainCharacter::LookupRate(float Rate)
+{
+	if (bCanMove)
 	{
-		if (bCanMove)
-		{
-			AddControllerPitchInput(Rate * BaseLookupRate * GetWorld()->GetDeltaSeconds());
-		}
+		AddControllerPitchInput(Rate * BaseLookupRate * GetWorld()->GetDeltaSeconds());
 	}
+}
 
-	void AMainCharacter::ScrollInOut(float Value)
+void AMainCharacter::ScrollInOut(float Value)
+{
+	if (Value != 0.0f && bCanMove)
 	{
-		if(Value != 0.0f && bCanMove)
-		{			
-			float CurrentArmLenght = CameraBoom->TargetArmLength + Value;
-			
-			if(CurrentArmLenght < MaxZoom && CurrentArmLenght > MinZoom)
-			{
-				CameraBoom->TargetArmLength += Value;
-			}
+		float CurrentArmLenght = CameraBoom->TargetArmLength + Value;
+
+		if (CurrentArmLenght < MaxZoom && CurrentArmLenght > MinZoom)
+		{
+			CameraBoom->TargetArmLength += Value;
 		}
 	}
+}
 
 
 #pragma endregion
@@ -252,13 +249,13 @@ void AMainCharacter::WinGame()
 	if (MainCharacterController)
 	{
 		MainCharacterController->ShowScreen(true, EWidgetGameScreen::EWGS_WinScreen);
-	}	
+	}
 }
 
 void AMainCharacter::LoseGame()
 {
 	SetPlayRagdoll();
-	
+
 	if (MainCharacterController)
 	{
 		MainCharacterController->ShowScreen(true, EWidgetGameScreen::EWGS_LoseScreen);
@@ -275,26 +272,32 @@ void AMainCharacter::LoseGame()
 void AMainCharacter::DefinePlayerCharacter(int CharacterIndex)
 {
 	CharacterID = CharacterIndex;
-	
+
 	USkeletalMesh* ChooseMesh = PlayableCharacters[CharacterIndex];
 
 	switch (CharacterIndex)
 	{
 	case 0:
 		CarrySpeedBonus = 1.1;
-		ChooseMesh = MyGameInstance->GetHasCustomGrantSkin() ? MyGameInstance->GetCurrentGrantSkin() : PlayableCharacters[CharacterIndex]; 
+		ChooseMesh = MyGameInstance->GetHasCustomGrantSkin()
+			             ? MyGameInstance->GetCurrentGrantSkin()
+			             : PlayableCharacters[CharacterIndex];
 		break;
-		
+
 	case 1:
 		SpeedBonus = 1.1;
-		ChooseMesh = MyGameInstance->GetHasCustomNomadSkin() ? MyGameInstance->GetCurrentNomadSkin() : PlayableCharacters[CharacterIndex]; 
+		ChooseMesh = MyGameInstance->GetHasCustomNomadSkin()
+			             ? MyGameInstance->GetCurrentNomadSkin()
+			             : PlayableCharacters[CharacterIndex];
 		break;
-		
+
 	case 2:
 		CrouchSpeedBonus = 1.05;
-		ChooseMesh = MyGameInstance->GetHasCustomEvaSkin() ? MyGameInstance->GetCurrentEvaSkin() : PlayableCharacters[CharacterIndex]; 
+		ChooseMesh = MyGameInstance->GetHasCustomEvaSkin()
+			             ? MyGameInstance->GetCurrentEvaSkin()
+			             : PlayableCharacters[CharacterIndex];
 		break;
-		
+
 	default:
 		break;
 	}
@@ -308,7 +311,7 @@ void AMainCharacter::ChangeCharaterMesh(USkeltalMesh* NewMesh)
 	{
 		return;
 	}
-	
+
 	GetMesh()->SetSkeletalMeshWithoutResettingAnimation(MyGameInstance->GetCurrentGrantSkin());
 }
 
@@ -320,15 +323,15 @@ void AMainCharacter::SpectatePlayer()
 
 void AMainCharacter::SetGamePause()
 {
-	APlayerController* ControllerRef =  UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	APlayerController* ControllerRef = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	AMainCharacterController* Player = Cast<AMainCharacterController>(ControllerRef);
 
-	if(Player == nullptr)
+	if (Player == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Main Character : Player is null"));
 		return;
 	}
-	
+
 	Player->ShowScreen(true, EWidgetGameScreen::EWGS_PauseScreen);
 }
 
@@ -345,18 +348,17 @@ void AMainCharacter::SetPlayRagdoll()
 	bCanMove = false;
 
 	DropItem();
-	
+
 	USkeletalMeshComponent* PlayerMesh = GetMesh();
 	if (PlayerMesh == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("No skeletal mesh was found on the player"));
 		return;
 	}
-	
+
 	PlayerMesh->SetAllBodiesBelowSimulatePhysics(FName("Pelvis"), true, true);
 	PlayerMesh->SetAllBodiesBelowPhysicsBlendWeight(FName("Pelvis"), 2.0, false, true);
 
 	PlayerMesh->SetSimulatePhysics(true);
-	PlayerMesh->AddImpulse(GetXYRandomDirection(-5,5,-5,5) * RagdollForceImpulse, FName("Pelvis"), true);
+	PlayerMesh->AddImpulse(GetXYRandomDirection(-5, 5, -5, 5) * RagdollForceImpulse, FName("Pelvis"), true);
 }
-

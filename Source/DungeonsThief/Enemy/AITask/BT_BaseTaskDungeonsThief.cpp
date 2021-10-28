@@ -11,7 +11,7 @@ EBTNodeResult::Type UBT_BaseTaskDungeonsThief::ExecuteTask(UBehaviorTreeComponen
 {
 	AIController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
 
-	if(AIController ==  nullptr)
+	if (AIController == nullptr)
 	{
 		return EBTNodeResult::Failed;
 	}
@@ -19,7 +19,7 @@ EBTNodeResult::Type UBT_BaseTaskDungeonsThief::ExecuteTask(UBehaviorTreeComponen
 	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
 	if (GameModeBase == nullptr)
 	{
-		return EBTNodeResult::Failed;;
+		return EBTNodeResult::Failed;
 	}
 
 	MyGameMode = Cast<AMyGameMode>(GameModeBase);
@@ -28,21 +28,21 @@ EBTNodeResult::Type UBT_BaseTaskDungeonsThief::ExecuteTask(UBehaviorTreeComponen
 		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
 		return EBTNodeResult::Failed;
 	}
-	
+
 	AICharacter = AIController->GetAICharacter();
-	if(AICharacter == nullptr)
+	if (AICharacter == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("AICharacter is null"));
 		return EBTNodeResult::Failed;
 	}
-	
+
 	BlackboardComponent = AIController->GetBlackBoardComponent();
-	if(BlackboardComponent == nullptr)
+	if (BlackboardComponent == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("BlackboardComponent is null"));
 		return EBTNodeResult::Failed;
 	}
-	
+
 	return CodeToExecute();
 }
 

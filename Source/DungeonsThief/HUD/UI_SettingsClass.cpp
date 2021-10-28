@@ -13,7 +13,7 @@
 void UUI_SettingsClass::NativeConstruct()
 {
 	Super::NativeConstruct();
-	
+
 	InputSettings = UInputSettings::GetInputSettings();
 
 	//Assign each selector to a keybind
@@ -36,8 +36,6 @@ void UUI_SettingsClass::NativeConstruct()
 	BtnResetSave->OnClicked.AddDynamic(this, &UUI_SettingsClass::ResetSave);
 
 	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
-	
-	
 }
 
 
@@ -48,7 +46,7 @@ FInputActionKeyMapping UUI_SettingsClass::GetActionMapping(FString KeyName) cons
 {
 	TArray<FInputActionKeyMapping> OutMappings;
 	InputSettings->GetActionMappingByName(static_cast<FName>(KeyName), OutMappings);
-	
+
 	return OutMappings[0];
 }
 
@@ -58,7 +56,7 @@ FInputAxisKeyMapping UUI_SettingsClass::GetAxisMapping(FString KeyName, const bo
 	InputSettings->GetAxisMappingByName(static_cast<FName>(KeyName), OutMappings);
 
 	FInputAxisKeyMapping KeyMapping;
-	
+
 	for (const auto Mapping : OutMappings)
 	{
 		if (bPositiveScale)
@@ -87,7 +85,7 @@ void UUI_SettingsClass::OnInteractKeySelected(const FInputChord InputChord)
 		ErrorKey(MappingName[0], true);
 		return;
 	}
-	
+
 	InputSettings->RemoveActionMapping(GetActionMapping(MappingName[0]));
 	InputSettings->AddActionMapping(FInputActionKeyMapping(static_cast<FName>(MappingName[0]), InputChord.Key));
 	TxtInputInfo->SetVisibility(ESlateVisibility::Hidden);
@@ -103,7 +101,7 @@ void UUI_SettingsClass::OnCrouchKeySelected(const FInputChord InputChord)
 		ErrorKey(MappingName[1], true);
 		return;
 	}
-	
+
 	InputSettings->RemoveActionMapping(GetActionMapping(MappingName[1]));
 	InputSettings->AddActionMapping(FInputActionKeyMapping(static_cast<FName>(MappingName[1]), InputChord.Key));
 	TxtInputInfo->SetVisibility(ESlateVisibility::Hidden);
@@ -121,7 +119,8 @@ void UUI_SettingsClass::OnForwardKeySelected(const FInputChord InputChord)
 	}
 
 	InputSettings->RemoveAxisMapping(GetAxisMapping(MappingName[2], true));
-	InputSettings->AddAxisMapping(FInputAxisKeyMapping(static_cast<FName>(MappingName[2]), InputChord.Key, PositiveScale));
+	InputSettings->AddAxisMapping(FInputAxisKeyMapping(static_cast<FName>(MappingName[2]), InputChord.Key,
+	                                                   PositiveScale));
 	TxtInputInfo->SetVisibility(ESlateVisibility::Hidden);
 }
 
@@ -137,7 +136,8 @@ void UUI_SettingsClass::OnBackwardKeySelected(const FInputChord InputChord)
 	}
 
 	InputSettings->RemoveAxisMapping(GetAxisMapping(MappingName[2], false));
-	InputSettings->AddAxisMapping(FInputAxisKeyMapping(static_cast<FName>(MappingName[2]), InputChord.Key, NegativeScale));
+	InputSettings->AddAxisMapping(FInputAxisKeyMapping(static_cast<FName>(MappingName[2]), InputChord.Key,
+	                                                   NegativeScale));
 	TxtInputInfo->SetVisibility(ESlateVisibility::Hidden);
 }
 
@@ -153,7 +153,8 @@ void UUI_SettingsClass::OnRightKeySelected(const FInputChord InputChord)
 	}
 
 	InputSettings->RemoveAxisMapping(GetAxisMapping(MappingName[3], true));
-	InputSettings->AddAxisMapping(FInputAxisKeyMapping(static_cast<FName>(MappingName[3]), InputChord.Key, PositiveScale));
+	InputSettings->AddAxisMapping(FInputAxisKeyMapping(static_cast<FName>(MappingName[3]), InputChord.Key,
+	                                                   PositiveScale));
 	TxtInputInfo->SetVisibility(ESlateVisibility::Hidden);
 }
 
@@ -169,7 +170,8 @@ void UUI_SettingsClass::OnLeftKeySelected(const FInputChord InputChord)
 	}
 
 	InputSettings->RemoveAxisMapping(GetAxisMapping(MappingName[3], false));
-	InputSettings->AddAxisMapping(FInputAxisKeyMapping(static_cast<FName>(MappingName[3]), InputChord.Key, NegativeScale));
+	InputSettings->AddAxisMapping(FInputAxisKeyMapping(static_cast<FName>(MappingName[3]), InputChord.Key,
+	                                                   NegativeScale));
 	TxtInputInfo->SetVisibility(ESlateVisibility::Hidden);
 }
 
@@ -178,12 +180,18 @@ bool UUI_SettingsClass::IsAvailableKey(const FKey Key) const
 {
 	for (auto ActionKeyMapping : InputSettings->GetActionMappings())
 	{
-		if (ActionKeyMapping.Key == Key) return true;	
+		if (ActionKeyMapping.Key == Key)
+		{
+			return true;
+		}
 	}
 
 	for (auto AxisKeyMapping : InputSettings->GetAxisMappings())
 	{
-		if (AxisKeyMapping.Key == Key) return true;
+		if (AxisKeyMapping.Key == Key)
+		{
+			return true;
+		}
 	}
 
 	return false;
@@ -195,7 +203,7 @@ bool UUI_SettingsClass::IsAvailableKey(const FKey Key) const
 void UUI_SettingsClass::ErrorKey(const FString NameMapping, const bool bPositiveScale) const
 {
 	TxtInputInfo->SetVisibility(ESlateVisibility::Visible);
-	
+
 	if (NameMapping == MappingName[0])
 	{
 		InteractionInput->SetSelectedKey(GetActionMapping(NameMapping).Key);
@@ -207,16 +215,24 @@ void UUI_SettingsClass::ErrorKey(const FString NameMapping, const bool bPositive
 	else if (NameMapping == MappingName[2])
 	{
 		if (bPositiveScale)
+		{
 			MoveForwardInput->SetSelectedKey(GetAxisMapping(NameMapping, bPositiveScale).Key);
+		}
 		else
+		{
 			MoveBackwardInput->SetSelectedKey(GetAxisMapping(NameMapping, bPositiveScale).Key);
+		}
 	}
 	else if (NameMapping == MappingName[3])
 	{
 		if (bPositiveScale)
+		{
 			MoveRightInput->SetSelectedKey(GetAxisMapping(NameMapping, bPositiveScale).Key);
+		}
 		else
+		{
 			MoveLeftInput->SetSelectedKey(GetAxisMapping(NameMapping, bPositiveScale).Key);
+		}
 	}
 }
 
@@ -229,7 +245,6 @@ void UUI_SettingsClass::ErrorKey(const FString NameMapping, const bool bPositive
 void UUI_SettingsClass::Back()
 {
 	this->SetVisibility(ESlateVisibility::Hidden);
-	
 }
 
 /**
@@ -238,6 +253,4 @@ void UUI_SettingsClass::Back()
 void UUI_SettingsClass::ResetSave()
 {
 	MyGameInstance->ResetSave();
-	
 }
-

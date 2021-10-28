@@ -16,22 +16,21 @@ UCLASS()
 class DUNGEONSTHIEF_API UUI_MenuEndGame : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 protected:
-	
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()
-    void RestartGame();
-	
+	void RestartGame();
+
 	UFUNCTION()
 	void ReturnToMenu();
 
 	UFUNCTION()
 	void UpdateXPProgression();
-    
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UI Element")
-    class UButton* BtnPlayAgain;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UI Element")
+	class UButton* BtnPlayAgain;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UI Element")
 	class UButton* BtnMenu;
@@ -44,23 +43,22 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UI Element")
 	class UProgressBar* XPBar;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UI Element")
 	class UTextBlock* PlayerLevel;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "Restart Game")
 	bool bLoseUI;
 
-	
+
 	class UMyGameInstance* MyGameInstance;
-	
-    UPROPERTY(EditAnywhere, Category = "Restart Game")
-    FName MainLevelName = FName("MainLevel");
-	
+
+	UPROPERTY(EditAnywhere, Category = "Restart Game")
+	FName MainLevelName = FName("MainLevel");
+
 	UPROPERTY(EditAnywhere, Category = "Restart Game")
 	FName MainMenuLevelName = FName("MainMenuLevel");
 
 public:
 	void SetTextScore(int Score);
-	
 };

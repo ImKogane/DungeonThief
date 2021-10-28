@@ -15,23 +15,21 @@ class DUNGEONSTHIEF_API UUI_CharacterPickClass : public UUserWidget
 	GENERATED_BODY()
 
 protected:
-
 	virtual void NativeConstruct() override;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
 	class UButton* BtnCharacter1;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
 	class UButton* BtnCharacter2;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
 	class UButton* BtnCharacter3;
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
-    class UTextBlock* CharacterInfoText;
 
-	
-	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
+	class UTextBlock* CharacterInfoText;
+
+
 	UFUNCTION()
 	void ChooseCharacter1();
 
@@ -55,6 +53,4 @@ protected:
 
 	UFUNCTION()
 	void UpdateCharacterInfoText(FString InfoText);
-
-	
 };

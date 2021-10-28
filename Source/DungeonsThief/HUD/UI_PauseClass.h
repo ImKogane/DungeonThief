@@ -19,7 +19,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
 	class UButton* BtnResume;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
 	class UButton* BtnMenu;
 
@@ -34,5 +34,4 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "UI infos")
 	class AMyGameMode* MyGameMode;
-	
 };

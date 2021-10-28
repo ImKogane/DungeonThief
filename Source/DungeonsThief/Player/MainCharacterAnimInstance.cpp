@@ -7,7 +7,7 @@
 void UMainCharacterAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
-	
+
 	if (Pawn == nullptr)
 	{
 		Pawn = TryGetPawnOwner();
@@ -17,8 +17,6 @@ void UMainCharacterAnimInstance::NativeInitializeAnimation()
 	{
 		MainCharacter = Cast<AMainCharacter>(Pawn);
 	}
-
-	
 }
 
 void UMainCharacterAnimInstance::UpdateAnimationProperties()
@@ -33,7 +31,6 @@ void UMainCharacterAnimInstance::UpdateAnimationProperties()
 		CharacterNum = MainCharacter->GetCharacterID();
 		IsCarryItem = MainCharacter->GetIsCarryFood();
 		IsCrouching = MainCharacter->GetIsCrouching();
-		
 	}
 }
 
@@ -43,4 +40,3 @@ void UMainCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 	UpdateAnimationProperties();
 }
-

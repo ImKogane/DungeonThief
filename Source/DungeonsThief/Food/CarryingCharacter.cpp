@@ -9,23 +9,21 @@
 // Sets default values
 ACarryingCharacter::ACarryingCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
 void ACarryingCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
 void ACarryingCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+
 	if (FoodCarriedActor == nullptr)
 	{
 		return;
@@ -39,7 +37,7 @@ void ACarryingCharacter::Tick(float DeltaTime)
 */
 void ACarryingCharacter::InteractWithItem()
 {
-	if(NearFoodActor != nullptr)
+	if (NearFoodActor != nullptr)
 	{
 		AFood* NearFood = Cast<AFood>(NearFoodActor);
 		if (NearFood == nullptr)
@@ -47,24 +45,24 @@ void ACarryingCharacter::InteractWithItem()
 			UE_LOG(LogTemp, Error, TEXT("Near Food is null"));
 			return;
 		}
-		
-		if(IsCarryFood == false)
+
+		if (IsCarryFood == false)
 		{
 			CarryItem();
-			NearFood->BeTake();			
+			NearFood->BeTake();
 		}
 		else
 		{
 			DropItem();
-		}			
+		}
 	}
 	else
 	{
-		if(NearToFoodSpot == true)
+		if (NearToFoodSpot == true)
 		{
-			if(IsCarryFood == true)
+			if (IsCarryFood == true)
 			{
-				PutItemOnSpot();	
+				PutItemOnSpot();
 			}
 		}
 		else
@@ -73,7 +71,6 @@ void ACarryingCharacter::InteractWithItem()
 		}
 	}
 }
-
 
 
 /**
@@ -88,19 +85,19 @@ void ACarryingCharacter::PutItemOnSpot()
 		UE_LOG(LogTemp, Error, TEXT("Food carry actor or NearFoodActor is null"));
 		return;
 	}
-	
+
 	FoodCarriedActor->SetActorLocation(SpotReference->GetSpawnPoint()->GetComponentLocation());
 	NearFoodActor = FoodCarriedActor;
-	
+
 	AFood* ModifyFoodData = Cast<AFood>(NearFoodActor);
 	if (ModifyFoodData == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("ModifyFoodDate is null"));
 		return;
 	}
-	
+
 	ModifyFoodData->SetIsOnSpot(true);
-	
+
 	FoodCarriedActor = nullptr;
 	IsCarryFood = false;
 }
@@ -110,10 +107,10 @@ void ACarryingCharacter::PutItemOnSpot()
 */
 void ACarryingCharacter::SetPlayerSpeed()
 {
-	if(IsCarryFood)
+	if (IsCarryFood)
 	{
 		AFood* FoodCarried = Cast<AFood>(FoodCarriedActor);
-		
+
 		GetCharacterMovement()->MaxWalkSpeed = (BaseSpeed * 0.5) * CarrySpeedBonus;
 		if (FoodCarried == nullptr)
 		{
@@ -131,7 +128,7 @@ void ACarryingCharacter::SetPlayerSpeed()
 
 void ACarryingCharacter::SetSpotReference(AFoodSpot* Reference)
 {
-	if(Reference != nullptr)
+	if (Reference != nullptr)
 	{
 		SpotReference = Reference;
 	}
@@ -146,23 +143,23 @@ void ACarryingCharacter::SetSpotReference(AFoodSpot* Reference)
 */
 void ACarryingCharacter::CarryItem()
 {
-	if(IsCarryFood == false)
+	if (IsCarryFood == false)
 	{
 		IsCarryFood = true;
 
-		if(NearFoodActor == nullptr)
+		if (NearFoodActor == nullptr)
 		{
 			return;
 		}
-		
+
 		FoodCarriedActor = NearFoodActor;
-		
+
 		AFood* ModifyFoodData = Cast<AFood>(FoodCarriedActor);
 		if (ModifyFoodData == nullptr)
 		{
 			return;
 		}
-		
+
 		ModifyFoodData->SetIsOnSpot(false);
 		ModifyFoodData->SetCharacterCarryingMe(this);
 
@@ -174,9 +171,9 @@ void ACarryingCharacter::CarryItem()
 		{
 			return;
 		}
-		
-		FoodCarriedActor->SetActorLocation(this->GetActorLocation());	
-		FoodCarriedActor->SetActorRotation(GetActorRotation());		
+
+		FoodCarriedActor->SetActorLocation(this->GetActorLocation());
+		FoodCarriedActor->SetActorRotation(GetActorRotation());
 	}
 }
 
@@ -185,26 +182,26 @@ void ACarryingCharacter::CarryItem()
 */
 void ACarryingCharacter::DropItem()
 {
-	if(IsCarryFood == true)
+	if (IsCarryFood == true)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 		IsCarryFood = false;
 
-		if(FoodCarriedActor == nullptr)
+		if (FoodCarriedActor == nullptr)
 		{
 			UE_LOG(LogTemp, Error, TEXT("FoddCarriedActor is null"));
 			return;
 		}
 
 		NearFoodActor = FoodCarriedActor;
-		
+
 		AFood* ModifyFood = Cast<AFood>(NearFoodActor);
 		if (ModifyFood == nullptr)
 		{
 			UE_LOG(LogTemp, Error, TEXT("ModifyFood is null"));
 			return;
 		}
-		
+
 		ModifyFood->SetCharacterCarryingMe(nullptr);
 
 		FVector ForwardVec = GetActorForwardVector();
@@ -214,7 +211,5 @@ void ACarryingCharacter::DropItem()
 
 		FoodCarriedActor = nullptr;
 		IsCarryFood = false;
-			
 	}
 }
-

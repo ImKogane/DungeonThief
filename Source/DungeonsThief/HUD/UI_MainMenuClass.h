@@ -13,16 +13,16 @@ UCLASS()
 class DUNGEONSTHIEF_API UUI_MainMenuClass : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 protected:
 	virtual void NativeConstruct() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
 	class UButton* BtnPlay;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
 	class UButton* BtnPlayScore;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
 	class UButton* BtnSettings;
 
@@ -43,13 +43,13 @@ protected:
 
 	UFUNCTION()
 	void PlayGame(enum EGameplayMode GameplayMode);
-	
+
 	UFUNCTION()
 	void OpenSettings();
 
 	UFUNCTION()
 	void OpenShop();
-	
+
 	UFUNCTION()
 	void OpenTutorial();
 

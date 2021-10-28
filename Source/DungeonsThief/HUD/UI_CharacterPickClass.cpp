@@ -12,11 +12,11 @@
 void UUI_CharacterPickClass::NativeConstruct()
 {
 	Super::NativeConstruct();
-	
+
 	BtnCharacter1->OnClicked.AddUniqueDynamic(this, &UUI_CharacterPickClass::ChooseCharacter1);
 	BtnCharacter2->OnClicked.AddUniqueDynamic(this, &UUI_CharacterPickClass::ChooseCharacter2);
 	BtnCharacter3->OnClicked.AddUniqueDynamic(this, &UUI_CharacterPickClass::ChooseCharacter3);
-	
+
 	BtnCharacter1->OnHovered.AddUniqueDynamic(this, &UUI_CharacterPickClass::HoverCharacterButton1);
 	BtnCharacter2->OnHovered.AddUniqueDynamic(this, &UUI_CharacterPickClass::HoverCharacterButton2);
 	BtnCharacter3->OnHovered.AddUniqueDynamic(this, &UUI_CharacterPickClass::HoverCharacterButton3);
@@ -27,9 +27,9 @@ void UUI_CharacterPickClass::NativeConstruct()
 
 void UUI_CharacterPickClass::ChooseCharacter1()
 {
-	AMainCharacter* PlayerRef = Cast<AMainCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(),0));
+	AMainCharacter* PlayerRef = Cast<AMainCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 
-	if(PlayerRef != nullptr)
+	if (PlayerRef != nullptr)
 	{
 		PlayerRef->DefinePlayerCharacter(0);
 		HideHUD();
@@ -38,28 +38,27 @@ void UUI_CharacterPickClass::ChooseCharacter1()
 
 void UUI_CharacterPickClass::ChooseCharacter2()
 {
-	AMainCharacter* PlayerRef = Cast<AMainCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(),0));
+	AMainCharacter* PlayerRef = Cast<AMainCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 
-	if(PlayerRef != nullptr)
+	if (PlayerRef != nullptr)
 	{
 		PlayerRef->DefinePlayerCharacter(1);
 		HideHUD();
 	}
-	
 }
 
 void UUI_CharacterPickClass::ChooseCharacter3()
 {
-	AMainCharacter* PlayerRef = Cast<AMainCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(),0));
+	AMainCharacter* PlayerRef = Cast<AMainCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 
-	if(PlayerRef != nullptr)
+	if (PlayerRef != nullptr)
 	{
 		PlayerRef->DefinePlayerCharacter(2);
 		HideHUD();
 	}
 }
 
-#pragma endregion 
+#pragma endregion
 
 //////////////// HOVER BUTTON EVENTS ////////////////
 #pragma region Hover button events
@@ -83,16 +82,16 @@ void UUI_CharacterPickClass::HoverCharacterButton3()
 
 void UUI_CharacterPickClass::HideHUD()
 {
-	AMainCharacterController* ControllerRef = Cast<AMainCharacterController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	AMainCharacterController* ControllerRef = Cast<AMainCharacterController>(
+		UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
-	if(ControllerRef != nullptr)
+	if (ControllerRef != nullptr)
 	{
 		this->SetVisibility(ESlateVisibility::Hidden);
-		UGameplayStatics::GetPlayerController(GetWorld(),0)->bShowMouseCursor = false;
+		UGameplayStatics::GetPlayerController(GetWorld(), 0)->bShowMouseCursor = false;
 		UGameplayStatics::SetGamePaused(GetWorld(), false);
 
 		ControllerRef->SetCanPause(true);
-		
 	}
 }
 
@@ -106,8 +105,3 @@ void UUI_CharacterPickClass::UpdateCharacterInfoText(FString InfoText)
 	FText Text = FText::FromString(InfoText);
 	CharacterInfoText->SetText(Text);
 }
-
-
-
-
-

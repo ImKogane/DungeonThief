@@ -13,14 +13,14 @@ class AMyGameMode;
 // Sets default values
 APlayerHidingPlace::APlayerHidingPlace()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	
+
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>("BoxCollider");
 	CollisionBox->SetBoxExtent(FVector(32.f, 32.f, 32.f));
 	CollisionBox->SetCollisionProfileName("Trigger");
 
-	CollisionBox->OnComponentBeginOverlap.AddDynamic(this,&APlayerHidingPlace::OnBoxOverlapBegin);
+	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &APlayerHidingPlace::OnBoxOverlapBegin);
 }
 
 // Called when the game starts or when spawned
@@ -51,7 +51,9 @@ void APlayerHidingPlace::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void APlayerHidingPlace::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+void APlayerHidingPlace::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                           UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                           const FHitResult& SweepResult)
 {
 	AFood* FoodEnter = Cast<AFood>(OtherActor);
 	if (FoodEnter == nullptr)
@@ -62,22 +64,21 @@ void APlayerHidingPlace::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedCompon
 
 	MyGameMode->GainPoints(FoodEnter->GetFoodPoints());
 	UGameplayStatics::PlaySoundAtLocation(this, WinPointsSound, GetActorLocation());
-		
-	if(FoodManager == nullptr)
+
+	if (FoodManager == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("FoodManager is null"));
 		return;
 	}
-	
+
 	FoodManager->RemoveFoodFromWorldList(FoodEnter);
-	
+
 	AMainCharacter* Player = Cast<AMainCharacter>(FoodEnter->GetCharacterCarryingMe());
 	if (Player != nullptr)
 	{
 		Player->DropItem();
 		Player->SetNearFoodActor(nullptr);
-	}	
-	
+	}
+
 	FoodEnter->Destroy();
 }
-

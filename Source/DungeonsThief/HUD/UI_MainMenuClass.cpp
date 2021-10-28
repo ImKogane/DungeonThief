@@ -15,7 +15,7 @@ void UUI_MainMenuClass::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	
+
 	BtnPlay->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::PlayNormalGame);
 	BtnPlayScore->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::PlayScoreGame);
 	BtnSettings->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::OpenSettings);
@@ -24,7 +24,7 @@ void UUI_MainMenuClass::NativeConstruct()
 	BtnExit->OnClicked.AddUniqueDynamic(this, &UUI_MainMenuClass::ExitGame);
 
 	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
-	
+
 	UE_LOG(LogTemp, Warning, TEXT("INIT"));
 }
 
@@ -46,13 +46,16 @@ void UUI_MainMenuClass::PlayGame(EGameplayMode GameplayMode)
 
 	if (World)
 	{
-		AMainMenuController* MenuController = Cast<AMainMenuController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+		AMainMenuController* MenuController = Cast<AMainMenuController>(
+			UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
-		if(MenuController != nullptr)
+		if (MenuController != nullptr)
 		{
-			if(MyGameInstance)
+			if (MyGameInstance)
+			{
 				MyGameInstance->SetGameplayMode(GameplayMode);
-			
+			}
+
 			MenuController->ShowScreen(true, EWidgetMainMenuScreen::EWMMS_PickLevel);
 		}
 	}
@@ -61,9 +64,10 @@ void UUI_MainMenuClass::PlayGame(EGameplayMode GameplayMode)
 
 void UUI_MainMenuClass::OpenSettings()
 {
-	AMainMenuController* MenuController = Cast<AMainMenuController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	AMainMenuController* MenuController = Cast<AMainMenuController>(
+		UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
-	if(MenuController != nullptr)
+	if (MenuController != nullptr)
 	{
 		MenuController->ShowScreen(true, EWidgetMainMenuScreen::EWMMS_Settings);
 	}
@@ -71,9 +75,10 @@ void UUI_MainMenuClass::OpenSettings()
 
 void UUI_MainMenuClass::OpenTutorial()
 {
-	AMainMenuController* MenuController = Cast<AMainMenuController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	AMainMenuController* MenuController = Cast<AMainMenuController>(
+		UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
-	if(MenuController != nullptr)
+	if (MenuController != nullptr)
 	{
 		this->SetVisibility(ESlateVisibility::Hidden);
 		MenuController->ShowScreen(true, EWidgetMainMenuScreen::EWMMS_Tutorial);
@@ -82,9 +87,10 @@ void UUI_MainMenuClass::OpenTutorial()
 
 void UUI_MainMenuClass::OpenShop()
 {
-	AMainMenuController* MenuController = Cast<AMainMenuController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	AMainMenuController* MenuController = Cast<AMainMenuController>(
+		UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
-	if(MenuController != nullptr)
+	if (MenuController != nullptr)
 	{
 		MenuController->ShowScreen(true, EWidgetMainMenuScreen::EWMMS_SkinSelector);
 	}
@@ -95,5 +101,3 @@ void UUI_MainMenuClass::ExitGame()
 	GetWorld()->GetFirstPlayerController()->ConsoleCommand("quit");
 	UE_LOG(LogTemp, Warning, TEXT("EXIT GAME"));
 }
-
-

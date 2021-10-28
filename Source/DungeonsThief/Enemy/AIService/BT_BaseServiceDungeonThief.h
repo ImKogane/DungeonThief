@@ -15,7 +15,10 @@ class DUNGEONSTHIEF_API UBT_BaseServiceDungeonThief : public UBTService
 	GENERATED_BODY()
 protected:
 	virtual void ScheduleNextTick(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
-	virtual void CodeToExecute(){}
+
+	virtual void CodeToExecute()
+	{
+	}
 
 	class AAIEnemyController* AIController;
 	class AAIEnemyCharacter* AICharacter;

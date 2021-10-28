@@ -10,17 +10,18 @@
  * 
  */
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameWin);	
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameWin);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameLose);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGainPoints);
 
 UCLASS()
 class DUNGEONSTHIEF_API AMyGameMode : public AGameMode
 {
 	GENERATED_BODY()
-	
+
 public:
-	
 	FOnGameWin OnGameWin;
 	FOnGameLose OnGameLose;
 	FOnGainPoints OnGainPoints;
@@ -28,16 +29,15 @@ public:
 	FORCEINLINE class AFoodManager* GetFoodManager() { return FoodManager; }
 	FORCEINLINE class ASpawnEnemyManager* GetSpawnManager() { return SpawnEnemyManager; }
 
-	FORCEINLINE void InitFoodManager(class AFoodManager* FM) { FoodManager = FM;};
+	FORCEINLINE void InitFoodManager(class AFoodManager* FM) { FoodManager = FM; };
 
 protected:
-	
 	UPROPERTY(VisibleAnywhere, Category = "Helpers")
 	class AFoodManager* FoodManager;
-	
+
 	UPROPERTY(VisibleAnywhere, Category = "Helpers")
 	class ASpawnEnemyManager* SpawnEnemyManager;
-	
+
 	UPROPERTY(VisibleAnywhere, Category = "Helpers")
 	class UMyGameInstance* MyGameInstance;
 
@@ -47,16 +47,15 @@ protected:
 	class AMyGameState* MyGameState;
 
 public:
-
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
-	
+
 	virtual void InitGameState() override;
 
 	virtual void HandleMatchHasStarted() override;
-	
+
 	void WinGame();
 
 	void LoseGame();
-	
-	void GainPoints(int Points);	
+
+	void GainPoints(int Points);
 };

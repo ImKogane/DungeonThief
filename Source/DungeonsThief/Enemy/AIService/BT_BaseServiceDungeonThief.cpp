@@ -8,7 +8,7 @@
 void UBT_BaseServiceDungeonThief::ScheduleNextTick(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	Super::ScheduleNextTick(OwnerComp, NodeMemory);
-	
+
 	AIController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
 
 	if (AIController == nullptr)
@@ -16,14 +16,14 @@ void UBT_BaseServiceDungeonThief::ScheduleNextTick(UBehaviorTreeComponent& Owner
 		UE_LOG(LogTemp, Warning, TEXT("AIController not found in BaseService"))
 		return;
 	}
-	
+
 	BlackboardComponent = AIController->GetBlackBoardComponent();
 	if (BlackboardComponent == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("BlackboardComponent not found in BaseService"))
 		return;
 	}
-	
+
 	AICharacter = AIController->GetAICharacter();
 	if (AICharacter == nullptr)
 	{

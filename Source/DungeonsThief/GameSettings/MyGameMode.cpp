@@ -26,21 +26,21 @@ void AMyGameMode::InitGameState()
 		UE_LOG(LogTemp, Error, TEXT("CurrentGameState is null"));
 		return;
 	}
-	
-	UWorld* World = GetWorld();	
+
+	UWorld* World = GetWorld();
 	if (World == nullptr && CurrentGameState == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("World or GameState are null"));
 		return;
 	}
 
-	MyGameState = CurrentGameState;	
+	MyGameState = CurrentGameState;
 }
 
 void AMyGameMode::HandleMatchHasStarted()
 {
 	Super::HandleMatchHasStarted();
-	
+
 	SpawnEnemyManager = MyGameState->SpawnEnemyManager();
 }
 
@@ -64,7 +64,7 @@ void AMyGameMode::LoseGame()
 void AMyGameMode::GainPoints(int Points)
 {
 	MyGameState->AddPlayerPoints(Points);
-	
+
 	if (OnGainPoints.IsBound())
 	{
 		OnGainPoints.Broadcast();

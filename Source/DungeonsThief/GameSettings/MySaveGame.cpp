@@ -7,5 +7,4 @@
 
 UMySaveGame::UMySaveGame()
 {
-	
 }

@@ -14,7 +14,7 @@ UCLASS()
 class DUNGEONSTHIEF_API UBT_GiveRole : public UBT_BaseTaskDungeonsThief
 {
 	GENERATED_BODY()
-	
+
 protected:
 	virtual EBTNodeResult::Type CodeToExecute() override;
 

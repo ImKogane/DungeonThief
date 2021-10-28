@@ -8,8 +8,5 @@
 #include "Kismet/GameplayStatics.h"
 
 void AMainMenu_GameModeBase::BeginPlay()
-{	
+{
 }
-
-
-

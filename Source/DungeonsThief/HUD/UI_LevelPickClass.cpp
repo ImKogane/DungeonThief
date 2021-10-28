@@ -7,7 +7,7 @@
 void UUI_LevelPickClass::NativeConstruct()
 {
 	Super::NativeConstruct();
-	
+
 	BtnDungeonLevel->OnClicked.AddUniqueDynamic(this, &UUI_LevelPickClass::PlayDungeonLevel);
 	BtnForgeLevel->OnClicked.AddUniqueDynamic(this, &UUI_LevelPickClass::PlayForgeLevel);
 	BtnBack->OnClicked.AddUniqueDynamic(this, &UUI_LevelPickClass::Back);
@@ -37,8 +37,3 @@ void UUI_LevelPickClass::Back()
 {
 	this->SetVisibility(ESlateVisibility::Hidden);
 }
-
-
-
-
-

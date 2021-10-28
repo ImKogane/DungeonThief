@@ -8,7 +8,6 @@
 
 EBTNodeResult::Type UBT_DeletAI::CodeToExecute()
 {
-	
 	ASpawnEnemyManager* SpawnEnemyManager = MyGameMode->GetSpawnManager();
 
 	if (SpawnEnemyManager == nullptr)
@@ -16,7 +15,7 @@ EBTNodeResult::Type UBT_DeletAI::CodeToExecute()
 		UE_LOG(LogTemp, Warning, TEXT("SpawnEnemyManager not found"))
 		return EBTNodeResult::Failed;
 	}
-	
+
 	SpawnEnemyManager->DeleteAI(AICharacter);
 
 	return EBTNodeResult::Succeeded;

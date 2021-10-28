@@ -11,17 +11,17 @@
 EBTNodeResult::Type UBT_UpdatePlayerPosition::CodeToExecute()
 {
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-	
+
 	if (PlayerPawn)
 	{
 		AMainCharacter* PlayerLocation = Cast<AMainCharacter>(PlayerPawn);
-		
+
 		if (PlayerLocation && AICharacter->GetHasSeenPlayer())
 		{
 			BlackboardComponent->SetValueAsVector("PlayerLocation", PlayerLocation->GetActorLocation());
-			
+
 			return EBTNodeResult::Succeeded;
-		}						
+		}
 	}
 
 	return EBTNodeResult::Failed;

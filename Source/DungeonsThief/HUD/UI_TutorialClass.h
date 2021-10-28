@@ -14,15 +14,12 @@ class DUNGEONSTHIEF_API UUI_TutorialClass : public UUserWidget
 {
 	GENERATED_BODY()
 
-	protected:
-
+protected:
 	virtual void NativeConstruct() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
 	class UButton* BtnBack;
-	
+
 	UFUNCTION()
 	void Back();
-
-	
 };

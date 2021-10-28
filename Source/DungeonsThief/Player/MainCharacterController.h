@@ -27,11 +27,10 @@ class DUNGEONSTHIEF_API AMainCharacterController : public APlayerController
 public:
 	// Sets default values for this character's properties
 	AMainCharacterController();
-	
-protected:
 
+protected:
 	virtual void BeginPlay() override;
-	
+
 	/** Reference to the UMG asset in the editor*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
 	TSubclassOf<class UUserWidget> WMain;
@@ -51,12 +50,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
 	UUserWidget* LoseScreenWidget;
-	
-	UPROPERTY(EditAnywhere, Category = "Widget")
-    TSubclassOf<UUserWidget> WPauseMenu;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
-    UUserWidget* PauseMenuWidget;
+	UPROPERTY(EditAnywhere, Category = "Widget")
+	TSubclassOf<UUserWidget> WPauseMenu;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
+	UUserWidget* PauseMenuWidget;
 
 	/** Reference to the character pick UMG asset in the editor*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
@@ -76,5 +75,4 @@ public :
 	void ShowScreen(bool Visibility, EWidgetGameScreen Screen);
 
 	void SetCanPause(bool state);
-
 };

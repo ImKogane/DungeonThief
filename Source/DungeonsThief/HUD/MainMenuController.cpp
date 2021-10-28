@@ -26,7 +26,7 @@ void AMainMenuController::BeginPlay()
 		PickLevelMenu->SetVisibility(ESlateVisibility::Hidden);
 		bShowMouseCursor = true;
 	}
-	
+
 	if (SettingsWidget)
 	{
 		SettingsMenu = CreateWidget<UUserWidget>(this, SettingsWidget);
@@ -34,7 +34,7 @@ void AMainMenuController::BeginPlay()
 		SettingsMenu->SetVisibility(ESlateVisibility::Hidden);
 		bShowMouseCursor = true;
 	}
-	
+
 	if (TutorialWidget)
 	{
 		TutorialMenu = CreateWidget<UUserWidget>(this, TutorialWidget);
@@ -50,7 +50,6 @@ void AMainMenuController::BeginPlay()
 		SkinSelectionMenu->SetVisibility(ESlateVisibility::Hidden);
 		bShowMouseCursor = true;
 	}
-	
 }
 
 void AMainMenuController::ShowScreen(bool Visibility, EWidgetMainMenuScreen GameScreen)
@@ -60,24 +59,20 @@ void AMainMenuController::ShowScreen(bool Visibility, EWidgetMainMenuScreen Game
 	case EWidgetMainMenuScreen::EWMMS_PickLevel:
 		PickLevelMenu->SetVisibility(ESlateVisibility::Visible);
 		break;
-		
+
 	case EWidgetMainMenuScreen::EWMMS_Settings:
 		SettingsMenu->SetVisibility(ESlateVisibility::Visible);
 		break;
-		
+
 	case EWidgetMainMenuScreen::EWMMS_Tutorial:
 		TutorialMenu->SetVisibility(ESlateVisibility::Visible);
 		break;
-		
+
 	case EWidgetMainMenuScreen::EWMMS_MainMenu:
 		MainMenu->SetVisibility(ESlateVisibility::Visible);
 		break;
-		
+
 	case EWidgetMainMenuScreen::EWMMS_SkinSelector:
 		SkinSelectionMenu->SetVisibility(ESlateVisibility::Visible);
-		
 	}
 }
-
-
-

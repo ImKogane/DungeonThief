@@ -7,14 +7,14 @@
 // Sets default values
 AFoodSpot::AFoodSpot()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	
+
 	SceneComponent = CreateDefaultSubobject<USceneComponent>("Root");
-    RootComponent = SceneComponent;
-    
-    SpotMesh = CreateDefaultSubobject<UStaticMeshComponent>("Spot");
-    SpotMesh->SetupAttachment(RootComponent);
+	RootComponent = SceneComponent;
+
+	SpotMesh = CreateDefaultSubobject<UStaticMeshComponent>("Spot");
+	SpotMesh->SetupAttachment(RootComponent);
 
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>("BoxCollider");
 	CollisionBox->SetBoxExtent(FVector(100.f, 100.f, 100.f));
@@ -23,14 +23,14 @@ AFoodSpot::AFoodSpot()
 
 	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AFoodSpot::OnBoxOverlapBegin);
 	CollisionBox->OnComponentEndOverlap.AddDynamic(this, &AFoodSpot::OnBoxOverlapEnd);
-	
+
 	SpawnSceneComponent = CreateDefaultSubobject<USceneComponent>("SpawnPoint");
 	SpawnSceneComponent->SetupAttachment(SpotMesh);
 }
 
 // Called when the game starts or when spawned
 void AFoodSpot::BeginPlay()
-{	
+{
 	Super::BeginPlay();
 }
 
@@ -41,29 +41,31 @@ void AFoodSpot::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AFoodSpot::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+void AFoodSpot::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                  const FHitResult& SweepResult)
 {
-	ACarryingCharacter* Player = Cast<ACarryingCharacter>(OtherActor);	
-	if(Player == nullptr)
+	ACarryingCharacter* Player = Cast<ACarryingCharacter>(OtherActor);
+	if (Player == nullptr)
 	{
 		//Overlap actor isn't the player
 		return;
 	}
-	
+
 	Player->SetSpotReference(this);
 	Player->SetIsNearSpot(true);
 }
 
-void AFoodSpot::OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void AFoodSpot::OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	ACarryingCharacter* Player = Cast<ACarryingCharacter>(OtherActor);
-	if(Player == nullptr)
+	if (Player == nullptr)
 	{
 		//Overlap actor isn't the player
 		return;
 	}
-	
+
 	Player->SetSpotReference(nullptr);
 	Player->SetIsNearSpot(false);
 }
-

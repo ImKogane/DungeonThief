@@ -15,6 +15,5 @@ class DUNGEONSTHIEF_API UBT_DropFood : public UBT_BaseTaskDungeonsThief
 {
 	GENERATED_BODY()
 protected:
-		virtual EBTNodeResult::Type CodeToExecute() override;
-	
+	virtual EBTNodeResult::Type CodeToExecute() override;
 };

@@ -16,7 +16,7 @@ UCLASS()
 class DUNGEONSTHIEF_API UBT_SelectLocationsForPatrol : public UBT_BaseTaskDungeonsThief
 {
 	GENERATED_BODY()
-	
+
 protected:
 	virtual EBTNodeResult::Type CodeToExecute() override;
 

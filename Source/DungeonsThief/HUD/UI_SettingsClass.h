@@ -15,9 +15,8 @@ UCLASS()
 class DUNGEONSTHIEF_API UUI_SettingsClass : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 protected:
-	
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()
@@ -28,10 +27,10 @@ protected:
 
 	UFUNCTION()
 	FInputAxisKeyMapping GetAxisMapping(FString KeyName, bool bPositiveScale) const;
-	
+
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
 	class UInputKeySelector* MoveForwardInput;
-	
+
 	UPROPERTY(VisibleAnywhere, meta = (BindWidget))
 	class UInputKeySelector* MoveBackwardInput;
 
@@ -52,24 +51,23 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
 	class UButton* BtnResetSave;
-	
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
 	class UTextBlock* TxtInputInfo;
 
 	UPROPERTY(VisibleAnywhere)
 	UInputSettings* InputSettings;
-	
+
 	UPROPERTY(EditAnywhere)
 	TArray<FString> MappingName;
-	
+
 	class UMyGameInstance* MyGameInstance;
 
 
 protected:
-
 	UFUNCTION()
 	void OnInteractKeySelected(FInputChord InputChord);
-	
+
 	UFUNCTION()
 	void OnCrouchKeySelected(FInputChord InputChord);
 
@@ -96,6 +94,4 @@ protected:
 
 	float PositiveScale = 1;
 	float NegativeScale = -1;
-
 };
-

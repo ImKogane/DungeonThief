@@ -25,7 +25,4 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	int PlayerXPLevel;
-
-	
-	
 };

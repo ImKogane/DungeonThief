@@ -13,8 +13,9 @@
 USTRUCT(BlueprintType)
 struct FCharacterSkin
 {
-	GENERATED_BODY();
-	
+	GENERATED_BODY()
+	;
+
 	UPROPERTY(EditAnywhere)
 	class USkeletalMesh* CurrentMesh;
 
@@ -29,9 +30,8 @@ UCLASS()
 class DUNGEONSTHIEF_API UUI_ShopClass : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 protected:
-	
 	virtual void NativeConstruct() override;
 
 	class UMyGameInstance* MyGameInstance;
@@ -39,12 +39,12 @@ protected:
 #pragma region BackToMenuButton
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UButton* BackToMenu;
-	
-	UFUNCTION()
-    void Back();
 
-#pragma endregion 
-	
+	UFUNCTION()
+	void Back();
+
+#pragma endregion
+
 	UPROPERTY(EditAnywhere, Category = "Custom Mesh")
 	TArray<FCharacterSkin> GrantSkins;
 	TArray<FCharacterSkin> GrantSkinsAvailable;
@@ -63,7 +63,7 @@ protected:
 #pragma region Grant Skin UI
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UImage* GrantPreview;
-	
+
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UButton* GrantLeftSelection;
 
@@ -72,12 +72,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UButton* GrantValidateSelection;
-#pragma endregion 
-	
-#pragma region Nomad Skin UI	
+#pragma endregion
+
+#pragma region Nomad Skin UI
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UImage* NomadPreview;
-	
+
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UButton* NomadLeftSelection;
 
@@ -86,9 +86,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UButton* NomadValidateSelection;
-#pragma endregion 
-	
-#pragma region Eva Skin UI	
+#pragma endregion
+
+#pragma region Eva Skin UI
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UImage* EvaPreview;
 
@@ -97,21 +97,21 @@ protected:
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UButton* EvaRightSelection;
-	
+
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UButton* EvaValidateSelection;
-#pragma endregion 
-	
+#pragma endregion
+
 protected:
 	/* Method Section */
-	
+
 	void GetAvailableSkins(TArray<FCharacterSkin> Skins, TArray<FCharacterSkin>& AvailableSkins);
-	
+
 	/* Method to change current skin selected*/
-	void ChooseNextSkin(int &CurrentIndex, TArray<FCharacterSkin> Skins, UImage* Preview);
-	void ChoosePreviousSkin(int &CurrentIndex, TArray<FCharacterSkin> Skins, UImage* Preview);
+	void ChooseNextSkin(int& CurrentIndex, TArray<FCharacterSkin> Skins, UImage* Preview);
+	void ChoosePreviousSkin(int& CurrentIndex, TArray<FCharacterSkin> Skins, UImage* Preview);
 	class USkeletalMesh* SelectSkin(int CurrentIndex, TArray<FCharacterSkin> Skins);
-	
+
 	UFUNCTION()
 	void ChooseNextGrantSkin();
 

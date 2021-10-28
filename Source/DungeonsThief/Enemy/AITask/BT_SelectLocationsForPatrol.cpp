@@ -14,35 +14,36 @@ EBTNodeResult::Type UBT_SelectLocationsForPatrol::CodeToExecute()
 {
 	ASpawnEnemyManager* SpawnEnemyManager = MyGameMode->GetSpawnManager();
 
-	if(SpawnEnemyManager == nullptr)
+	if (SpawnEnemyManager == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("FoodManager not found"))
 		return EBTNodeResult::Failed;
 	}
-	
+
 	NavSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(this);
-	
+
 	FNavLocation RandPointOnNav;
-	
+
 	TArray<FVector> LocationsForPatrol;
-	
+
 	for (int i = 0; i < 2; i++)
 	{
 		do
 		{
 			NavSystem->GetRandomPoint(RandPointOnNav);
-		}while (!NavSystem->ProjectPointToNavigation(RandPointOnNav.Location, RandPointOnNav));
-		
+		}
+		while (!NavSystem->ProjectPointToNavigation(RandPointOnNav.Location, RandPointOnNav));
+
 		LocationsForPatrol.Add(RandPointOnNav.Location);
 	}
-	
-	if(LocationsForPatrol.Num() == 2)
+
+	if (LocationsForPatrol.Num() == 2)
 	{
 		AICharacter->SetLocationsForPatrol(LocationsForPatrol);
 		BlackboardComponent->SetValueAsInt("HasARole", 1);
 		SpawnEnemyManager->SetGlobalWaitAI(false);
 		return EBTNodeResult::Succeeded;
 	}
-	
+
 	return EBTNodeResult::Failed;
 }

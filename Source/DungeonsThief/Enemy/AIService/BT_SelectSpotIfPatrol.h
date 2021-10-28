@@ -14,6 +14,5 @@ class DUNGEONSTHIEF_API UBT_SelectSpotIfPatrol : public UBT_BaseServiceDungeonTh
 {
 	GENERATED_BODY()
 protected:
-
 	virtual void CodeToExecute() override;
 };
