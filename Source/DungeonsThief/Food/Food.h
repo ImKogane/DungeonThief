@@ -10,19 +10,18 @@ UCLASS()
 class DUNGEONSTHIEF_API AFood : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AFood();
 
 protected:
-	
 	UPROPERTY(EditDefaultsOnly, Category="Global")
 	TArray<class UStaticMesh*> FoodArray;
 
 	UPROPERTY(EditDefaultsOnly, Category="Global")
 	int FoodPoints = 1;
-	
+
 	UPROPERTY(VisibleAnywhere)
 	class UStaticMeshComponent* FoodMesh;
 
@@ -34,7 +33,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="SuperFood")
 	class UStaticMesh* SuperFoodMesh;
-	
+
 	UPROPERTY(VisibleAnywhere, Category="SuperFood")
 	int SuperFoodRate = 10;
 
@@ -43,9 +42,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="Sound")
 	USoundBase* PickUpSound;
-	
-	
-			
+
+	UPROPERTY(VisibleAnywhere, Category="Global")
+	class ACarryingCharacter* CharacterCarryingMe;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -53,30 +53,32 @@ protected:
 	void BecomeSuperFood();
 
 	UFUNCTION()
-	void OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+	void OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	                       int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
-	void OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
-	
+	void OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	                     int32 OtherBodyIndex);
 
 	bool bIsOnSpot;
-	
-public:	
+
+public:
 	// Called every frame
 
 	UFUNCTION()
 	void BeTake();
 	void BeDrop();
 
-	FORCEINLINE UStaticMeshComponent* GetMeshComponent() { return FoodMesh; } 
-	FORCEINLINE bool GetIsSuperFood() { return IsSuperFood; } 
-	FORCEINLINE int GetFoodPoints	() { return FoodPoints; } 
-	FORCEINLINE float GetSpeedReduction	() { return SpeedReduction; }
+	FORCEINLINE UStaticMeshComponent* GetMeshComponent() { return FoodMesh; }
+	FORCEINLINE bool GetIsSuperFood() { return IsSuperFood; }
+	FORCEINLINE int GetFoodPoints() { return FoodPoints; }
+	FORCEINLINE float GetSpeedReduction() { return SpeedReduction; }
 
-	FORCEINLINE bool GetIsOnSpot(){return bIsOnSpot;}
-	FORCEINLINE void SetIsOnSpot(bool value){bIsOnSpot = value;}
-	
+	FORCEINLINE bool GetIsOnSpot() { return bIsOnSpot; }
+	FORCEINLINE void SetIsOnSpot(bool value) { bIsOnSpot = value; }
+
+	FORCEINLINE void SetCharacterCarryingMe(class ACarryingCharacter* WhoCarry) { CharacterCarryingMe = WhoCarry; }
+	FORCEINLINE class ACarryingCharacter* GetCharacterCarryingMe() { return CharacterCarryingMe; }
+
 	virtual void Tick(float DeltaTime) override;
-
 };

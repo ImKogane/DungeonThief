@@ -13,13 +13,13 @@ UCLASS()
 class DUNGEONSTHIEF_API UUI_LevelPickClass : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 protected:
 	virtual void NativeConstruct() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
 	class UButton* BtnDungeonLevel;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UIElements")
 	class UButton* BtnForgeLevel;
 
@@ -28,7 +28,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "UI infos")
 	FName DungeonLevelName = FName("MainLevel");
-	
+
 	UPROPERTY(EditAnywhere, Category = "UI infos")
 	FName ForgeLevelName = FName("ForgeLevel");
 
@@ -40,10 +40,4 @@ protected:
 
 	UFUNCTION()
 	void Back();
-
-	UFUNCTION()
-	void HoverButton();
-	
-	
-	
 };

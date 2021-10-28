@@ -2,8 +2,11 @@
 
 #pragma once
 
+#include <string>
+
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/TextBlock.h"
 #include "UI_MenuEndGame.generated.h"
 
 /**
@@ -13,26 +16,49 @@ UCLASS()
 class DUNGEONSTHIEF_API UUI_MenuEndGame : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 protected:
-	
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()
-    void RestartGame();
-	
+	void RestartGame();
+
 	UFUNCTION()
 	void ReturnToMenu();
-    
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "Restart Game")
-    class UButton* BtnPlayAgain;
+
+	UFUNCTION()
+	void UpdateXPProgression();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UI Element")
+	class UButton* BtnPlayAgain;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UI Element")
+	class UButton* BtnMenu;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UI Element")
+	class UTextBlock* EndScore;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UI Element")
+	class UTextBlock* EndBestScore;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UI Element")
+	class UProgressBar* XPBar;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "UI Element")
+	class UTextBlock* PlayerLevel;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget), Category = "Restart Game")
-	class UButton* BtnMenu;
-    
-    UPROPERTY(EditAnywhere, Category = "Restart Game")
-    FName MainLevelName = FName("MainLevel");
-	
+	bool bLoseUI;
+
+
+	class UMyGameInstance* MyGameInstance;
+
+	UPROPERTY(EditAnywhere, Category = "Restart Game")
+	FName MainLevelName = FName("MainLevel");
+
 	UPROPERTY(EditAnywhere, Category = "Restart Game")
 	FName MainMenuLevelName = FName("MainMenuLevel");
+
+public:
+	void SetTextScore(int Score);
 };

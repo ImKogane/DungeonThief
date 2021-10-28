@@ -11,9 +11,8 @@ class AMyGameMode;
 // Sets default values
 AFoodManager::AFoodManager()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -35,13 +34,13 @@ void AFoodManager::BeginPlay()
 	}
 
 	MyGameMode->InitFoodManager(this);
-	
-	int RandomIndex = FMath::FRandRange(0, SpotsArray.Num() - 1);
 
-	AFoodSpot* FoodSpot = SpotsArray[RandomIndex];
+	int FirstSpotWithFood = FMath::FRandRange(0, SpotsArray.Num() - 1);
+
+	AFoodSpot* FoodSpot = SpotsArray[FirstSpotWithFood];
 	if (FoodSpot)
 	{
-		AFood * SpawnedFood = SpawnFood(FoodSpot->GetSpawnPoint()->GetComponentLocation());
+		AFood* SpawnedFood = SpawnFood(FoodSpot->GetSpawnPoint()->GetComponentLocation());
 		SpawnedFood->SetIsOnSpot(true);
 	}
 }
@@ -54,8 +53,10 @@ void AFoodManager::Tick(float DeltaTime)
 
 void AFoodManager::RemoveFoodFromWorldList(AFood* FoodToRemove)
 {
-	if(AllFoodInWorld.Contains(FoodToRemove))
+	if (AllFoodInWorld.Contains(FoodToRemove))
+	{
 		AllFoodInWorld.Remove(FoodToRemove);
+	}
 }
 
 AFood* AFoodManager::SpawnFood(FVector SpawnLocation)
@@ -64,4 +65,3 @@ AFood* AFoodManager::SpawnFood(FVector SpawnLocation)
 	AllFoodInWorld.Add(SpawnedFood);
 	return SpawnedFood;
 }
-

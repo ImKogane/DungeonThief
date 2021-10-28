@@ -12,7 +12,7 @@ void UEnemyAnimInstance::NativeInitializeAnimation()
 	{
 		Pawn = TryGetPawnOwner();
 	}
-	
+
 	if (Pawn)
 	{
 		EnemyCharacter = Cast<AAIEnemyCharacter>(Pawn);

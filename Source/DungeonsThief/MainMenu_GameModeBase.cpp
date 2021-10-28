@@ -1,27 +1,20 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "MainMenu_GameModeBase.h"
+#include "DungeonsThief/GameSettings/MainMenu_GameModeBase.h"
 
 #include "LevelSequencePlayer.h"
+#include "GameSettings/MyGameInstance.h"
 #include "HUD/MainMenuController.h"
 #include "Kismet/GameplayStatics.h"
 
 void AMainMenu_GameModeBase::BeginPlay()
 {
-	//UGameplayStatics::SetGamePaused(GetWorld(), true);
-	
-}
-
-void AMainMenu_GameModeBase::ShowPickLevelWidget()
-{
-	AMainMenuController* MenuController = Cast<AMainMenuController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-
-	if(MenuController != nullptr)
+    MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
+	if (MyGameInstance == nullptr)
 	{
-		MenuController->ShowPickLevelMenu();
+		return;
 	}
+	
+	MyGameInstance->LoadGame();
 }
-
-
-

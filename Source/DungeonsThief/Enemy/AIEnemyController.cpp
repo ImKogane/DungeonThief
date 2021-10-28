@@ -15,23 +15,17 @@
 AAIEnemyController::AAIEnemyController()
 {
 	EnemyState = EEnemyState::EES_Patrolling;
-	
+
 	//Initialize BehaviourTreeComponent and BlackBoardComponent and keys
 	BehaviorTreeComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviourComponent"));
 
 	BlackboardComponent = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackboardComponent"));
 
 	LocationToGoKey = "LocationToGo";
-	
-	FieldOfView = 135.0f;
+
+	FieldOfView = 67.5f;
 
 	SightDistance = 1000.f;
-}
-
-
-void AAIEnemyController::StopBehaviouTree()
-{
-	BlackboardComponent->SetValueAsInt("CanMove", 1);
 }
 
 void AAIEnemyController::OnPossess(APawn* InPawn)
@@ -50,13 +44,8 @@ void AAIEnemyController::OnPossess(APawn* InPawn)
 				BlackboardComponent->InitializeBlackboard(*(AICharacter->BehaviourTree->BlackboardAsset));
 			}
 		}
-		
+
 		//Start the behaviour tree which coreesponds to the specific character
 		BehaviorTreeComponent->StartTree(*AICharacter->BehaviourTree);
-		
-		BlackboardComponent->SetValueAsInt("CanMove", 0);
 	}
 }
-
-
-

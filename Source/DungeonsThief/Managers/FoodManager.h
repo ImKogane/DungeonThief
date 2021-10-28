@@ -10,12 +10,12 @@ UCLASS()
 class DUNGEONSTHIEF_API AFoodManager : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AFoodManager();
 
-	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -24,26 +24,22 @@ protected:
 	TArray<class AFoodSpot*> SpotsArray;
 
 	UPROPERTY(VisibleAnywhere, Category="Food System")
-	TArray<class AFood*>  AllFoodInWorld;
+	TArray<class AFood*> AllFoodInWorld;
 
 	UPROPERTY(EditAnywhere, Category="Food System")
 	TSubclassOf<class AFood> FoodActor;
-	
-public:	
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	//return all spot in game
-	FORCEINLINE TArray<class AFoodSpot*> GetAllSpotInGame() { return SpotsArray;}
-	FORCEINLINE TSubclassOf<class AFood> GetBPFoodActor() {return FoodActor;}
-	FORCEINLINE TArray<class AFood*> GetAllFoodInWorld() {return AllFoodInWorld;}
+	FORCEINLINE TArray<class AFoodSpot*> GetAllSpotInGame() { return SpotsArray; }
+	FORCEINLINE TSubclassOf<class AFood> GetBPFoodActor() { return FoodActor; }
+	FORCEINLINE TArray<class AFood*> GetAllFoodInWorld() { return AllFoodInWorld; }
 
 	void RemoveFoodFromWorldList(AFood* FoodToRemove);
-	
-	//put it somewhere else juste a test here
-	bool GlobalWaitAI = false;
-	
-	
+
+
 	class AFood* SpawnFood(FVector SpawnLocation);
-	
 };

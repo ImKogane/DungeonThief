@@ -19,9 +19,11 @@ protected:
 
 	class AAIEnemyController* AIController;
 	class AAIEnemyCharacter* AICharacter;
-	
+
 	UBlackboardComponent* BlackboardComponent;
-	
+
+	class AMyGameMode* MyGameMode;
+
 	virtual EBTNodeResult::Type CodeToExecute();
 
 	class AFoodSpot* SelectRandomFoodSpot(TArray<AFoodSpot*> ActorList);

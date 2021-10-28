@@ -8,10 +8,11 @@
 // Sets default values
 AFood::AFood()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	FoodMesh = CreateDefaultSubobject<UStaticMeshComponent>("FoodMesh");
+	RootComponent = FoodMesh;
 
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>("BoxCollider");
 	CollisionBox->SetBoxExtent(FVector(100.f, 100.f, 100.f));
@@ -28,34 +29,37 @@ AFood::AFood()
 void AFood::BeTake()
 {
 	UGameplayStatics::PlaySoundAtLocation(this, PickUpSound, GetActorLocation());
+	FoodMesh->SetSimulatePhysics(false);
 	FoodMesh->SetCollisionProfileName(UCollisionProfile::NoCollision_ProfileName);
 }
 
 void AFood::BeDrop()
 {
 	//befor applying in the project for the food, ignore the pawn only to make the game more fluid
-	//FoodMesh->SetCollisionProfileName(UCollisionProfile::BlockAllDynamic_ProfileName);
-	FoodMesh->SetCollisionProfileName("OverlapOnlyPawn");
-	
+
+	FoodMesh->SetSimulatePhysics(true);
+	FoodMesh->SetCollisionProfileName(UCollisionProfile::BlockAllDynamic_ProfileName);
+	FoodMesh->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	//FoodMesh->SetCollisionProfileName("OverlapOnlyPawn");
 }
 
 
 // Called when the game starts or when spawned
 void AFood::BeginPlay()
 {
-
 	Super::BeginPlay();
 	SetRandomMesh();
 
+	FoodMesh->SetSimulatePhysics(true);
+	FoodMesh->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	FoodMesh->SetMassScale(NAME_None, 10);
 	BecomeSuperFood();
-	
 }
 
 // Called every frame
 void AFood::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 
@@ -64,23 +68,22 @@ void AFood::Tick(float DeltaTime)
  */
 void AFood::SetRandomMesh()
 {
-    //Choose random index
-	int random = FMath::FRandRange(0,FoodArray.Num());
-	
-	
-	if(FoodMesh != nullptr)
+	//Choose random index
+	int MeshIndex = FMath::FRandRange(0, FoodArray.Num());
+
+	if (FoodMesh == nullptr)
 	{
-		FoodMesh->SetStaticMesh(FoodArray[random]);
+		return;
 	}
-	
+
+	FoodMesh->SetStaticMesh(FoodArray[MeshIndex]);
 }
 
 void AFood::BecomeSuperFood()
 {
+	int LuckySuperFNumber = FMath::FRandRange(0, SuperFoodRate + 1);
 
-	int randomIndex = FMath::FRandRange(0,SuperFoodRate+1);
-
-	if(randomIndex == 5)
+	if (LuckySuperFNumber == 5)
 	{
 		FoodPoints = 2;
 		SpeedReduction = 0.25;
@@ -88,25 +91,33 @@ void AFood::BecomeSuperFood()
 		SetActorScale3D(FVector::OneVector * 0.85f);
 		IsSuperFood = true;
 	}
-	
 }
 
-void AFood::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+void AFood::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                              UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                              const FHitResult& SweepResult)
 {
 	ACarryingCharacter* Player = Cast<ACarryingCharacter>(OtherActor);
-	
-	if(Player != nullptr)
+
+	if (Player == nullptr)
 	{
-		Player->SetNearFoodActor(this);
+		//OverlapActor isn't the player
+		return;
 	}
+
+	Player->SetNearFoodActor(this);
 }
 
-void AFood::OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void AFood::OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	ACarryingCharacter* Player = Cast<ACarryingCharacter>(OtherActor);
-	
-	if(Player != nullptr)
+
+	if (Player == nullptr)
 	{
-		Player->SetNearFoodActor(nullptr);
+		//OverlapActor isn't the player
+		return;
 	}
+
+	Player->SetNearFoodActor(nullptr);
 }

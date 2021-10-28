@@ -4,6 +4,8 @@
 #include "DungeonsThief/HUD/UI_PauseClass.h"
 
 #include "Components/Button.h"
+#include "DungeonsThief/GameSettings/MyGameMode.h"
+#include "DungeonsThief/Managers/SpawnEnemyManager.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -11,10 +13,9 @@ void UUI_PauseClass::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	
+
 	BtnResume->OnClicked.AddUniqueDynamic(this, &UUI_PauseClass::ResumeGame);
 	BtnMenu->OnClicked.AddUniqueDynamic(this, &UUI_PauseClass::ReturnToMenu);
-	
 }
 
 void UUI_PauseClass::ResumeGame()
@@ -36,6 +37,11 @@ void UUI_PauseClass::ReturnToMenu()
 
 	if (World)
 	{
+		MyGameMode = Cast<AMyGameMode>(World->GetAuthGameMode());
+		if (MyGameMode)
+		{
+			MyGameMode->GetSpawnManager()->StopAllTimeHandle();
+		}
 		//UGameplayStatics::SetGamePaused(World, false);
 		UGameplayStatics::OpenLevel(World, MainMenuLevelName);
 	}

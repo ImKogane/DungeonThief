@@ -13,18 +13,15 @@ UCLASS()
 class DUNGEONSTHIEF_API UMainCharacterAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
-	
-public :
 
-    virtual void NativeInitializeAnimation() override;
-    
-    
+public :
+	virtual void NativeInitializeAnimation() override;
+
 	void UpdateAnimationProperties();
-	
+
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 public:
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AnimationProperties")
 	float MovementSpeed;
 

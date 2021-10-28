@@ -17,18 +17,17 @@ class DUNGEONSTHIEF_API AMainCharacterController : public APlayerController
 public:
 	// Sets default values for this character's properties
 	AMainCharacterController();
-	
-protected:
 
+protected:
 	virtual void BeginPlay() override;
-	
+
 	/** Reference to the UMG asset in the editor*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
-	TSubclassOf<class UUserWidget> HUDOverlayAsset;
+	TSubclassOf<class UUserWidget> WMain;
 
 	/** Variable to hold the wodget after creating it */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
-	UUserWidget* HUDOverlay;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
+	UUserWidget* MainWidget;
 
 	UPROPERTY(EditAnywhere, Category = "Widget")
 	TSubclassOf<UUserWidget> WWinScreen;
@@ -37,23 +36,43 @@ protected:
 	UUserWidget* WinScreenWidget;
 
 	UPROPERTY(EditAnywhere, Category = "Widget")
-	TSubclassOf<UUserWidget> WLooseScreen;
+	TSubclassOf<UUserWidget> WLoseScreen;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
-	UUserWidget* LooseScreenWidget;
-	
-	UPROPERTY(EditAnywhere, Category = "Widget")
-    TSubclassOf<UUserWidget> WPauseMenu;
+	UUserWidget* LoseScreenWidget;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
-    UUserWidget* PauseMenuWidget;
-	
+	UPROPERTY(EditAnywhere, Category = "Widget")
+	TSubclassOf<UUserWidget> WPauseMenu;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Widget")
+	UUserWidget* PauseMenuWidget;
+
+	/** Reference to the character pick UMG asset in the editor*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+	TSubclassOf<class UUserWidget> WCharacterPick;
+
+	/** Variable to hold the Character pick widget after creating it */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
+	UUserWidget* CharacterPickWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Controller infos")
+	bool CanPause = false;
+
+	class AMyGameState* MyGameState;
+	class UMyGameInstance* MyGameInstance;
 
 public :
-
+	UFUNCTION()
 	void ShowWinScreen(bool Visibility);
-	void ShowLooseScreen(bool Visibility);
-	void ShowPauseMenu(bool Visibility);
 	
+	UFUNCTION()
+	void ShowLoseScreen(bool Visibility);
 
+	UFUNCTION()
+	void ShowPauseMenu(bool Visibility);
+
+	UFUNCTION()
+	void ShowMainMenu(bool Visibility);
+
+	void SetCanPause(bool state);
 };

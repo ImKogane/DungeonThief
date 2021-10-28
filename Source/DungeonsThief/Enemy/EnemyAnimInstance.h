@@ -15,14 +15,13 @@ class DUNGEONSTHIEF_API UEnemyAnimInstance : public UAnimInstance
 	GENERATED_BODY()
 
 protected:
-
 	/* Initialize variables */
 	virtual void NativeInitializeAnimation() override;
 
 	/* Where all the animation variables will be updated */
 	virtual void UpdateAnimationProperties();
 
-	/* The Tick function from the animation instance */ 
+	/* The Tick function from the animation instance */
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 	/* Return the character movement speed */
@@ -36,7 +35,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	class APawn* Pawn;
-	
+
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	class AAIEnemyCharacter* EnemyCharacter;
 };

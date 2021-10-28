@@ -15,8 +15,7 @@ class DUNGEONSTHIEF_API AFoodSpot : public AActor
 	GENERATED_BODY()
 
 
-	
-public:	
+public:
 	// Sets default values for this actor's properties
 	AFoodSpot();
 
@@ -25,29 +24,31 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere)
-		USceneComponent* SceneComponent;
-	
-	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* SpotMesh;
+	USceneComponent* SceneComponent;
 
 	UPROPERTY(VisibleAnywhere)
-		USceneComponent* SpawnSceneComponent;
-	
+	UStaticMeshComponent* SpotMesh;
+
 	UPROPERTY(VisibleAnywhere)
-		UBoxComponent* CollisionBox;
+	USceneComponent* SpawnSceneComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	UBoxComponent* CollisionBox;
+
+	UPROPERTY(EditAnywhere)
+	class UParticleSystemComponent* SpotParticles;
 
 	UFUNCTION()
-		void OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+	void OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	                       int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
-		void OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	void OnBoxOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	                     int32 OtherBodyIndex);
 
-	
-
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	FORCEINLINE USceneComponent* GetSpawnPoint() { return SpawnSceneComponent; } 
-
+	FORCEINLINE USceneComponent* GetSpawnPoint() { return SpawnSceneComponent; }
 };

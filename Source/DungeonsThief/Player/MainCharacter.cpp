@@ -8,8 +8,11 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SceneCaptureComponent2D.h"
+#include "DungeonsThief/GameSettings/MyGameInstance.h"
 #include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "DungeonsThief/GameSettings/MyGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/StaticMeshActor.h"
 
@@ -32,8 +35,7 @@ AMainCharacter::AMainCharacter()
 	// Attach the camera to the end of the camera boom  
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
-	
-	
+
 	BaseTurnRate = 65.0f;
 	BaseLookupRate = 65.0f;
 
@@ -49,14 +51,25 @@ AMainCharacter::AMainCharacter()
 	GetCharacterMovement()->AirControl = .2f;
 
 	BaseSpeed = GetCharacterMovement()->MaxWalkSpeed;
-	CrouchSpeed = BaseSpeed/2;
+	CrouchSpeed = BaseSpeed / 2;
 
 	MaxZoom = 600.0f;
 	MinZoom = 200.0f;
 
 	AnimationHandler = CreateDefaultSubobject<AAnimationsHandler>(TEXT("AnimationHandler"));
 
+	PreviewCameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("PreviewCameraBoom"));
+	PreviewCameraBoom->SetupAttachment(GetRootComponent());
+	PreviewCameraBoom->TargetArmLength = 50.0f;
+	PreviewCameraBoom->bUsePawnControlRotation = false;
+
+	PreviewCamera = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("Preview Camera"));
+	PreviewCamera->SetupAttachment(PreviewCameraBoom, USpringArmComponent::SocketName);
+	PreviewCamera->PrimitiveRenderMode = ESceneCapturePrimitiveRenderMode::PRM_UseShowOnlyList;
+
 	bCanMove = true;
+
+	RagdollForceImpulse = 10;
 
 	GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
 }
@@ -66,13 +79,9 @@ void AMainCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	MainCharacterController = Cast<AMainCharacterController>(GetController());
-	
-	//set where the camera is looking at
-	CameraBoom->SetRelativeLocation(FVector(0,0,60));
 
-	//Choose random index
-	int Random = FMath::FRandRange(0,PlayableCharacters.Num());
-	DefinePlayerCharacter(Random);
+	//set where the camera is looking at
+	CameraBoom->SetRelativeLocation(FVector(0, 0, 60));
 
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * SpeedBonus;
 
@@ -94,8 +103,10 @@ void AMainCharacter::BeginPlay()
 	}
 
 	MyGameMode->OnGameWin.AddDynamic(this, &AMainCharacter::WinGame);
-	MyGameMode->OnGameLoose.AddDynamic(this, &AMainCharacter::LooseGame);
+	MyGameMode->OnGameLose.AddDynamic(this, &AMainCharacter::LoseGame);
 
+	PreviewCamera->ShowOnlyActors.Add(this);
+	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
 }
 
 void AMainCharacter::Tick(float DeltaTime)
@@ -112,7 +123,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	check(PlayerInputComponent);
-	
+
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);
 
@@ -128,8 +139,10 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AMainCharacter::CrouchPlayer);
 	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AMainCharacter::UnCrouchPlayer);
-	
+
 	PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &AMainCharacter::SetGamePause);
+
+	PlayerInputComponent->BindAction("Spectate", IE_Pressed, this, &AMainCharacter::SpectatePlayer);
 }
 
 
@@ -153,28 +166,27 @@ void AMainCharacter::MoveForward(float Value)
 
 void AMainCharacter::CrouchPlayer()
 {
-	if(IsCrouch == false && IsCarryFood == false)
+	if (IsCrouch == false && IsCarryFood == false)
 	{
 		Crouch();
-		GetCharacterMovement()->MaxWalkSpeed = (BaseSpeed/1.75) * CrouchSpeedBonus;
+		PreviewCameraBoom->TargetArmLength = -120.0f;
+		GetCharacterMovement()->MaxWalkSpeed = (BaseSpeed / 1.75) * CrouchSpeedBonus;
 		IsCrouch = true;
 		GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
 	}
-
 }
-
 
 
 void AMainCharacter::UnCrouchPlayer()
 {
-	if(IsCrouch == true)
+	if (IsCrouch == true)
 	{
 		UnCrouch();
+		PreviewCameraBoom->TargetArmLength = -60.0f;
 		SetPlayerSpeed();
 		IsCrouch = false;
 	}
 }
-
 
 
 /*
@@ -191,49 +203,47 @@ void AMainCharacter::MoveRight(float Value)
 		AddMovementInput(Direction, Value);
 	}
 }
-#pragma endregion 
+#pragma endregion
 
 
 //////////////////// CAMERA SYSTEM ////////////////////
 #pragma region Camera System
 
-	void AMainCharacter::TurnAtRate(float Rate)
+void AMainCharacter::TurnAtRate(float Rate)
+{
+	if (bCanMove)
 	{
-		if (bCanMove)
-		{
-			AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
-		}
+		AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 	}
+}
 
-	void AMainCharacter::LookupRate(float Rate)
+void AMainCharacter::LookupRate(float Rate)
+{
+	if (bCanMove)
 	{
-		if (bCanMove)
-		{
-			AddControllerPitchInput(Rate * BaseLookupRate * GetWorld()->GetDeltaSeconds());
-		}
+		AddControllerPitchInput(Rate * BaseLookupRate * GetWorld()->GetDeltaSeconds());
 	}
+}
 
-	void AMainCharacter::ScrollInOut(float Value)
+void AMainCharacter::ScrollInOut(float Value)
+{
+	if (Value != 0.0f && bCanMove)
 	{
-		if(Value != 0.0f && bCanMove)
+		float CurrentArmLenght = CameraBoom->TargetArmLength + Value;
+
+		if (CurrentArmLenght < MaxZoom && CurrentArmLenght > MinZoom)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Je scroll"))
-			
-			float CurrentArmLenght = CameraBoom->TargetArmLength + Value;
-			
-			if(CurrentArmLenght < MaxZoom && CurrentArmLenght > MinZoom)
-			{
-				CameraBoom->TargetArmLength += Value;
-			}
+			CameraBoom->TargetArmLength += Value;
 		}
 	}
+}
 
 
 #pragma endregion
 
 
-//////////////////// WIN / LOOSE BEHAVIOUR ////////////////////
-#pragma region Win/Loose Behvaiour
+//////////////////// WIN / LOSE BEHAVIOUR ////////////////////
+#pragma region Win/Lose Behvaiour
 
 void AMainCharacter::WinGame()
 {
@@ -246,22 +256,22 @@ void AMainCharacter::WinGame()
 	if (MainCharacterController)
 	{
 		MainCharacterController->ShowWinScreen(true);
-	}	
+		MainCharacterController->ShowMainMenu(false);
+	}
 }
 
-void AMainCharacter::LooseGame()
+void AMainCharacter::LoseGame()
 {
-	if (AnimationHandler && LooseMontage)
-	{
-		AnimationHandler->PlayAnimation(this, LooseMontage);
-		bCanMove = false;
-	}
+	SetPlayRagdoll();
 
 	if (MainCharacterController)
 	{
-		MainCharacterController->ShowLooseScreen(true);
+		MainCharacterController->ShowLoseScreen(true);
+		MainCharacterController->ShowMainMenu(false);
 	}
 }
+
+
 #pragma endregion
 
 
@@ -371,35 +381,93 @@ void AMainCharacter::ChangeMaterials()
 void AMainCharacter::DefinePlayerCharacter(int CharacterIndex)
 {
 	CharacterID = CharacterIndex;
-	GetMesh()->SetSkeletalMesh(PlayableCharacters[CharacterIndex]);
+
+	USkeletalMesh* ChooseMesh = PlayableCharacters[CharacterIndex];
 
 	switch (CharacterIndex)
 	{
 	case 0:
 		CarrySpeedBonus = 1.1;
+		ChooseMesh = MyGameInstance->GetHasCustomGrantSkin()
+			             ? MyGameInstance->GetCurrentGrantSkin()
+			             : PlayableCharacters[CharacterIndex];
 		break;
-		
+
 	case 1:
 		SpeedBonus = 1.1;
+		ChooseMesh = MyGameInstance->GetHasCustomNomadSkin()
+			             ? MyGameInstance->GetCurrentNomadSkin()
+			             : PlayableCharacters[CharacterIndex];
 		break;
-		
+
 	case 2:
 		CrouchSpeedBonus = 1.05;
+		ChooseMesh = MyGameInstance->GetHasCustomEvaSkin()
+			             ? MyGameInstance->GetCurrentEvaSkin()
+			             : PlayableCharacters[CharacterIndex];
 		break;
-		
+
 	default:
 		break;
 	}
+
+	GetMesh()->SetSkeletalMesh(ChooseMesh);
+}
+
+void AMainCharacter::ChangeCharaterMesh(USkeltalMesh* NewMesh)
+{
+	if (MyGameInstance == nullptr)
+	{
+		return;
+	}
+
+	GetMesh()->SetSkeletalMeshWithoutResettingAnimation(MyGameInstance->GetCurrentGrantSkin());
+}
+
+
+void AMainCharacter::SpectatePlayer()
+{
+	MainCharacterController->ChangeState(NAME_Spectating);
 }
 
 void AMainCharacter::SetGamePause()
 {
-	APlayerController* ControllerRef =  UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	APlayerController* ControllerRef = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	AMainCharacterController* Player = Cast<AMainCharacterController>(ControllerRef);
 
-	if(Player != nullptr)
+	if (Player == nullptr)
 	{
-		Player->ShowPauseMenu(true);
+		UE_LOG(LogTemp, Error, TEXT("Main Character : Player is null"));
+		return;
 	}
+
+	Player->ShowPauseMenu(true);
 }
 
+FVector AMainCharacter::GetXYRandomDirection(float XMin, float XMax, float YMin, float YMax)
+{
+	float X = FMath::RandRange(XMin, XMax);
+	float Y = FMath::RandRange(YMin, YMax);
+
+	return FVector(X, Y, 5);
+}
+
+void AMainCharacter::SetPlayRagdoll()
+{
+	bCanMove = false;
+
+	DropItem();
+
+	USkeletalMeshComponent* PlayerMesh = GetMesh();
+	if (PlayerMesh == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("No skeletal mesh was found on the player"));
+		return;
+	}
+
+	PlayerMesh->SetAllBodiesBelowSimulatePhysics(FName("Pelvis"), true, true);
+	PlayerMesh->SetAllBodiesBelowPhysicsBlendWeight(FName("Pelvis"), 2.0, false, true);
+
+	PlayerMesh->SetSimulatePhysics(true);
+	PlayerMesh->AddImpulse(GetXYRandomDirection(-5, 5, -5, 5) * RagdollForceImpulse, FName("Pelvis"), true);
+}

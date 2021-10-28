@@ -6,11 +6,14 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DungeonsThief/Enemy/AIEnemyController.h"
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
+#include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "DungeonsThief/Managers/FoodManager.h"
+#include "DungeonsThief/Managers/SpawnEnemyManager.h"
 
 EBTNodeResult::Type UBT_GiveRole::CodeToExecute()
 {
-	AFoodManager* FoodManager = Cast<AFoodManager>(BlackboardComponent->GetValueAsObject("FoodManager"));
+	AFoodManager* FoodManager = MyGameMode->GetFoodManager();
+	ASpawnEnemyManager* SpawnEnemyManager = MyGameMode->GetSpawnManager();
 
 	if (FoodManager == nullptr)
 	{
@@ -18,27 +21,34 @@ EBTNodeResult::Type UBT_GiveRole::CodeToExecute()
 		return EBTNodeResult::Failed;
 	}
 
-	if (FoodManager->GlobalWaitAI)
+	if (SpawnEnemyManager == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Waiting %s"), *AICharacter->GetName())
+		UE_LOG(LogTemp, Warning, TEXT("SpawnEnemyManager not found"))
 		return EBTNodeResult::Failed;
 	}
-	
-	FoodManager->GlobalWaitAI = true;
-	const int NumberOfFoodInWorld = FoodManager->GetAllFoodInWorld().Num();
-	
-	if(NumberOfFoodInWorld >= FoodManager->GetAllSpotInGame().Num())
+
+	if (SpawnEnemyManager->GetGlobalWaitAI())
 	{
-		uint8 ByteEnum = (uint8)EEnemyState::EES_Patrolling;
+		UE_LOG(LogTemp, Log, TEXT("Waiting %s"), *AICharacter->GetName())
+		return EBTNodeResult::Failed;
+	}
+
+	SpawnEnemyManager->SetGlobalWaitAI(true);
+	const int NumberOfFoodInWorld = FoodManager->GetAllFoodInWorld().Num();
+	const int NumberOfSpotInWorld = FoodManager->GetAllSpotInGame().Num();
+
+	MaxFoodInWorld = NumberOfSpotInWorld >= 5 ? 5 : NumberOfSpotInWorld;
+
+	if (NumberOfFoodInWorld >= MaxFoodInWorld)
+	{
+		uint8 ByteEnum = static_cast<uint8>(EEnemyState::EES_Patrolling);
 		BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
 	}
 	else
 	{
-		uint8 ByteEnum = (uint8)EEnemyState::EES_CarryFood;
+		uint8 ByteEnum = static_cast<uint8>(EEnemyState::EES_CarryFood);
 		BlackboardComponent->SetValueAsEnum("EnemyState", ByteEnum);
 		AIController->SetEnemyState(EEnemyState::EES_CarryFood);
 	}
 	return EBTNodeResult::Succeeded;
-	
-			
 }

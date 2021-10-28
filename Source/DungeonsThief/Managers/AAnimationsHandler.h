@@ -13,11 +13,9 @@
 UCLASS()
 class DUNGEONSTHIEF_API AAnimationsHandler : public AActor
 {
-
 	GENERATED_BODY()
-	
-public:
 
+public:
 	AAnimationsHandler();
 
 	void PlayAnimation(class ACharacter* Character, class UAnimMontage* MontageToPlay);

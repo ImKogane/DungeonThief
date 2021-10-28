@@ -14,18 +14,20 @@ UCLASS()
 class DUNGEONSTHIEF_API UUI_MainClass : public UUserWidget
 {
 	GENERATED_BODY()
-	
-protected:
 
-	void NativeConstruct() override;
-	
+protected:
+	virtual void NativeConstruct() override;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
 	class UProgressBar* FoodBar;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget))
+	class UTextBlock* ScorePoint;
+
 	class AMyGameMode* MyGameMode;
 	class AMyGameState* MyGameState;
+	class UMyGameInstance* MyGameInstance;
 
 	UFUNCTION()
 	void UpdateProgression();
-	
 };

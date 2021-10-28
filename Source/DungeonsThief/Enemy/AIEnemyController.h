@@ -30,19 +30,18 @@ public:
 
 	FORCEINLINE EEnemyState GetEnemyState() { return EnemyState; }
 	FORCEINLINE void SetEnemyState(EEnemyState State) { EnemyState = State; }
-	
+
 	FORCEINLINE UBlackboardComponent* GetBlackBoardComponent() const { return BlackboardComponent; }
 
 	FORCEINLINE class AAIEnemyCharacter* GetAICharacter() { return AICharacter; }
 
 	FORCEINLINE float GetFieldOfView() { return FieldOfView; }
 	FORCEINLINE float GetSightDistance() { return SightDistance; }
-	
-protected:
 
+protected:
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	EEnemyState EnemyState;
-	
+
 	/* Reference to the Behavior Tree */
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	class UBehaviorTreeComponent* BehaviorTreeComponent;
@@ -62,12 +61,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	float SightDistance;
-
-public:
-
-	void StopBehaviouTree();
-	
-protected:
 
 	/* This function is called when the enemy is spawned */
 	/* We'll initialize the blackboard and start the behaviour tree */

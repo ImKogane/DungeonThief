@@ -21,8 +21,8 @@ UCLASS()
 class DUNGEONSTHIEF_API ASpawnEnemyManager : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ASpawnEnemyManager();
 
@@ -30,16 +30,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere);
+	UPROPERTY(VisibleAnywhere)
+	;
 	class UBoxComponent* DeleteEnemyBoxComponent;
 
 	//The object is placed in such a way that the enemies do not touch the collision box when they are instantiated
-	UPROPERTY(VisibleAnywhere);
+	UPROPERTY(VisibleAnywhere)
+	;
 	class USphereComponent* SpawnLocation;
 
-	UPROPERTY(EditAnywhere, Category = "Spawn Enemy")
-	class AFoodManager* FoodManager;
-	
 	UPROPERTY(EditAnywhere, Category = "Spawn Enemy")
 	TSubclassOf<class AAIEnemyCharacter> FirstEnemyToSpawn;
 
@@ -47,36 +46,47 @@ protected:
 	TSubclassOf<class AAIEnemyCharacter> SecondEnemyToSpawn;
 
 	TSubclassOf<class AAIEnemyCharacter> CurrentEnemyToSpawn;
-	
+
 	TArray<class AAIEnemyCharacter*> EnemiesSpawned;
-	
-	UPROPERTY(VisibleAnywhere, Category = "Spawn Enemy")
-	int MinSpawnDelay;
 
 	UPROPERTY(VisibleAnywhere, Category = "Spawn Enemy")
-	int MaxSpawnDelay;
+	float MinSpawnDelay;
+
+	UPROPERTY(VisibleAnywhere, Category = "Spawn Enemy")
+	float MaxSpawnDelay;
 
 	UPROPERTY(VisibleAnywhere, Category = "Spawn Enemy")
 	int FirstSpawnDelay;
 
 	bool bIsFirstSpawn;
 
-public:	
+	bool bGlobalWaitAI;
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION()
+	void DeleteAI(AAIEnemyCharacter* AIToDelet);
+
 	FORCEINLINE TArray<class AAIEnemyCharacter*> GetEnemiesSpawned() { return EnemiesSpawned; }
 
+	FORCEINLINE bool GetGlobalWaitAI() { return bGlobalWaitAI; }
+	FORCEINLINE void SetGlobalWaitAI(bool value) { bGlobalWaitAI = value; }
+
+	UFUNCTION()
+	void StopAllTimeHandle();
+
 protected:
+	TArray<FTimerHandle> AllSpawnTimer;
 
 	void SetupEnemy(class AAIEnemyCharacter* EnemyCharacter);
 
 	void CreateEnemy();
-	
+
 	void SpawnEnemy(int Delay);
 
 	UFUNCTION()
-    virtual void DeleteBoxOnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult);
-	UFUNCTION()
-    virtual void DeleteBoxOnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	virtual void DeleteBoxOnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	                                   UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 };

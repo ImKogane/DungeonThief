@@ -17,8 +17,8 @@ public:
 	// Sets default values for this character's properties
 	AMainCharacter();
 
-	
-protected: 
+
+protected:
 	// For variable declaration
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -38,31 +38,43 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "CameraZoom")
 	float MaxZoom;
-	
+
 	UPROPERTY(EditAnywhere, Category = "CameraZoom")
 	float MinZoom;
 
 	class AAnimationsHandler* AnimationHandler;
 
-	UPROPERTY(EditAnywhere, Category = "Animations")
+	UPROPERTY(EditAnywhere, Category = "WinAndLose")
 	class UAnimMontage* WinMontage;
-	
-	UPROPERTY(EditAnywhere, Category = "Animations")
-	class UAnimMontage* LooseMontage;
+
+	UPROPERTY(EditAnywhere, Category = "WinAndLose")
+	class UAnimMontage* LoseMontage;
 
 	UPROPERTY(EditAnywhere, Category = "Animations")
 	bool IsCrouch = false;
 
 	UPROPERTY(VisibleAnywhere, Category = "PlayeModel")
 	int CharacterID = 0;
-	
+
 	UPROPERTY(EditAnywhere, Category = "PlayeModel")
 	TArray<USkeletalMesh*> PlayableCharacters;
-	
+
 	bool bCanMove;
 
 	UPROPERTY(VisibleAnywhere, Category = "HUD")
 	class AMainCharacterController* MainCharacterController;
+
+	UPROPERTY(EditAnywhere, Category = "WinAndLose")
+	float RagdollForceImpulse;
+
+	class UMyGameInstance* MyGameInstance;
+
+	/* Camera 3D preview */
+	UPROPERTY(VisibleAnywhere, Category = "Preview Camera")
+	class USpringArmComponent* PreviewCameraBoom;
+
+	UPROPERTY(VisibleAnywhere, Category = "Preview Camera")
+	class USceneCaptureComponent2D* PreviewCamera;
 
 	UPROPERTY(EditAnywhere, Category = "Camera Collide Material")
 	class UMaterial* CameraCollideMaterial;
@@ -96,12 +108,15 @@ public:
 protected:
 	//For function declaration
 
+	/* Called for Spectating mode */
+	void SpectatePlayer();
+
 	/* Called for crouch player */
 	void CrouchPlayer();
-	
+
 	/* Called for remove crouch state of player */
 	void UnCrouchPlayer();
-	
+
 	/* Called for forward and backward movement */
 	void MoveForward(float Value);
 
@@ -117,16 +132,22 @@ protected:
 	/* Called for scrolling in or out the camera view*/
 	void ScrollInOut(float Value);
 
-	/* Called in UI to pick up a character for player */
-	UFUNCTION()
-	void DefinePlayerCharacter(int CharacterIndex);
-
 	/* Call pause function in player controller to show pause menu widget */
 	UFUNCTION()
 	void SetGamePause();
 
 	/* Change StaticMesh materials to allow player to see through it*/
 	void ChangeObjectTransparency();
+	/* For ragdoll behaviour */
+	FVector GetXYRandomDirection(float XMin, float XMax, float YMin, float YMax);
+
+	void SetPlayRagdoll();
+
+public:
+	FORCEINLINE void SetCanMove(bool value) { bCanMove = value; }
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 	/* Return true if the CurrentHitActor is the Player, false otherwise */
 	bool CheckIfIsPlayer(AActor* CurrentHitActor);
@@ -138,5 +159,16 @@ protected:
 	void ChangeMaterials();
 
 };
+	UFUNCTION()
+	void LoseGame();
 
+	/* Called in UI to pick up a character for player */
+	UFUNCTION()
+	void DefinePlayerCharacter(int CharacterIndex);
 
+	FORCEINLINE bool GetIsCrouching() { return IsCrouch; }
+
+	FORCEINLINE int GetCharacterID() { return CharacterID; }
+
+	void ChangeCharaterMesh(class USkeltalMesh* NewMesh);
+};

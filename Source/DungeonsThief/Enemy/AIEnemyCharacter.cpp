@@ -18,18 +18,18 @@
 // Sets default values
 AAIEnemyCharacter::AAIEnemyCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	CapsulePlayerDetection = CreateDefaultSubobject<UCapsuleComponent>(TEXT("PlayerDetection"));
 	CapsulePlayerDetection->SetupAttachment(GetRootComponent());
 	CapsulePlayerDetection->InitCapsuleSize(20, 50);
 
-	CapsulePlayerDetection->SetCollisionEnabled(ECollisionEnabled::NoCollision); 
-	CapsulePlayerDetection->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
-	CapsulePlayerDetection->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-	CapsulePlayerDetection->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap); 
-	
+	CapsulePlayerDetection->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	CapsulePlayerDetection->SetCollisionObjectType(ECC_WorldDynamic);
+	CapsulePlayerDetection->SetCollisionResponseToAllChannels(ECR_Ignore);
+	CapsulePlayerDetection->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+
 	BaseSpeed = 450.0f;
 
 	bHasSeenPlayer = false;
@@ -48,7 +48,7 @@ void AAIEnemyCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	CapsulePlayerDetection->OnComponentBeginOverlap.AddDynamic(this, &AAIEnemyCharacter::OnPlayerDetectionOverlapBegin);
-	
+
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 	SetRandomMesh();
 
@@ -66,9 +66,9 @@ void AAIEnemyCharacter::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
 		return;
 	}
-	
-	MyGameMode->OnGameWin.AddDynamic(this, &AAIEnemyCharacter::EnemyLooseGame);
-	MyGameMode->OnGameLoose.AddDynamic(this, &AAIEnemyCharacter::EnemyWinGame);
+
+	MyGameMode->OnGameWin.AddDynamic(this, &AAIEnemyCharacter::EnemyLoseGame);
+	MyGameMode->OnGameLose.AddDynamic(this, &AAIEnemyCharacter::EnemyWinGame);
 
 	OnDestroyed.AddDynamic(this, &AAIEnemyCharacter::OnDestoyingBehaviour);
 }
@@ -98,7 +98,7 @@ void AAIEnemyCharacter::ProcessWanderCooldown(float DeltaTime)
 			WanderCooldown = 0.0f;
 			bIsInWanderCooldown = false;
 			bHasSeenPlayer = false;
-		}		
+		}
 	}
 }
 
@@ -106,42 +106,53 @@ void AAIEnemyCharacter::StopMovement()
 {
 	AAIEnemyController* EnemyController = Cast<AAIEnemyController>(GetController());
 
-	if (EnemyController)
+	if (EnemyController == nullptr)
 	{
-		EnemyController->StopMovement();
-		EnemyController->StopBehaviouTree();
+		UE_LOG(LogTemp, Error, TEXT("EnemyController is null"));
+		return;
 	}
+
+	EnemyController->BrainComponent->StopLogic("GameOver");
 }
 
 void AAIEnemyCharacter::OnDestoyingBehaviour(AActor* Act)
 {
 	if (MyGameMode == nullptr)
 	{
+		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
 		return;
 	}
 
-	MyGameMode->OnGameWin.RemoveDynamic(this, &AAIEnemyCharacter::EnemyLooseGame);
-	MyGameMode->OnGameLoose.RemoveDynamic(this, &AAIEnemyCharacter::EnemyWinGame);
+	MyGameMode->OnGameWin.RemoveDynamic(this, &AAIEnemyCharacter::EnemyLoseGame);
+	MyGameMode->OnGameLose.RemoveDynamic(this, &AAIEnemyCharacter::EnemyWinGame);
 }
 
 void AAIEnemyCharacter::EnemyWinGame()
 {
-	if (AnimationHandler && WinMontage)
+	DropItem();
+
+	if (AnimationHandler == nullptr && WinMontage == nullptr)
 	{
-		StopMovement();
-		
-		AnimationHandler->PlayAnimation(this, WinMontage);
+		UE_LOG(LogTemp, Error, TEXT("AnimationHandler or WinMontage is null"));
+		return;
 	}
+
+	StopMovement();
+	AnimationHandler->PlayAnimation(this, WinMontage);
 }
 
-void AAIEnemyCharacter::EnemyLooseGame()
+void AAIEnemyCharacter::EnemyLoseGame()
 {
-	if (AnimationHandler && LooseMontage)
-	{
-		StopMovement();
+	DropItem();
 
-		AnimationHandler->PlayAnimation(this, LooseMontage);
+	if (AnimationHandler == nullptr && WinMontage == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("AnimationHandler or WinMontage is null"));
+		return;
 	}
+
+	StopMovement();
+	AnimationHandler->PlayAnimation(this, LoseMontage);
 }
 
 /**
@@ -150,22 +161,23 @@ void AAIEnemyCharacter::EnemyLooseGame()
 void AAIEnemyCharacter::SetRandomMesh()
 {
 	//Choose random index
-	int Random = FMath::FRandRange(0,MeshArray.Num());
-	GetMesh()->SetSkeletalMesh(MeshArray[Random]);
-	
-	Random = FMath::FRandRange(0,MaterialArray.Num());
-	GetMesh()->SetMaterial(0, MaterialArray[Random]);
-	
+	int MeshIndex = FMath::FRandRange(0, MeshArray.Num());
+	GetMesh()->SetSkeletalMesh(MeshArray[MeshIndex]);
+
+	MeshIndex = FMath::FRandRange(0, MaterialArray.Num());
+	GetMesh()->SetMaterial(0, MaterialArray[MeshIndex]);
 }
 
-void AAIEnemyCharacter::OnPlayerDetectionOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AAIEnemyCharacter::OnPlayerDetectionOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                                      UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+                                                      bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor == nullptr)
 	{
 		UE_LOG(LogTemp, Error, TEXT("OtherActor is null"));
 		return;
 	}
-	
+
 	AMainCharacter* MainCharacter = Cast<AMainCharacter>(OtherActor);
 	if (MainCharacter == nullptr)
 	{
@@ -178,10 +190,6 @@ void AAIEnemyCharacter::OnPlayerDetectionOverlapBegin(UPrimitiveComponent* Overl
 		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
 		return;
 	}
-	
-	MyGameMode->LooseGame();
+
+	MyGameMode->LoseGame();
 }
-
-
-
-

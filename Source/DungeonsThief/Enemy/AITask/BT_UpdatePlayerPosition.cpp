@@ -8,28 +8,19 @@
 #include "DungeonsThief/Enemy/AIEnemyCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
-EBTNodeResult::Type UBT_UpdatePlayerPosition::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBT_UpdatePlayerPosition::CodeToExecute()
 {
-	AAIEnemyController* AIController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
+	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 
-	if (AIController)
+	if (PlayerPawn)
 	{
-		//Get the Blackboard component and the Current Point of the NPC
-		UBlackboardComponent* BlackboardComponent = AIController->GetBlackBoardComponent();
+		AMainCharacter* PlayerLocation = Cast<AMainCharacter>(PlayerPawn);
 
-		APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-		AAIEnemyCharacter* EnemyCharacter = AIController->GetAICharacter();
-		
-		if (PlayerPawn && EnemyCharacter)
+		if (PlayerLocation && AICharacter->GetHasSeenPlayer())
 		{
-			AMainCharacter* PlayerLocation = Cast<AMainCharacter>(PlayerPawn);
-			
-			if (PlayerLocation && EnemyCharacter->GetHasSeenPlayer())
-			{
-				BlackboardComponent->SetValueAsObject("PlayerLocation", PlayerLocation);
-				
-				return EBTNodeResult::Succeeded;
-			}						
+			BlackboardComponent->SetValueAsVector("PlayerLocation", PlayerLocation->GetActorLocation());
+
+			return EBTNodeResult::Succeeded;
 		}
 	}
 

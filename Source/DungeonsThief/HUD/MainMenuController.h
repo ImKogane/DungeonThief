@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "MainMenuController.generated.h"
 
+
 /**
  * 
  */
@@ -13,9 +14,8 @@ UCLASS()
 class DUNGEONSTHIEF_API AMainMenuController : public APlayerController
 {
 	GENERATED_BODY()
-	
-protected:
 
+protected:
 	virtual void BeginPlay() override;
 
 	/** Reference to the menu UMG asset in the editor*/
@@ -26,7 +26,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
 	UUserWidget* MainMenu;
 
-	
+
 	/** Reference to the pick level menu UMG asset in the editor*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
 	TSubclassOf<class UUserWidget> PickLevelWidget;
@@ -34,12 +34,45 @@ protected:
 	/** Variable to hold the level menu widget after creating it */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
 	UUserWidget* PickLevelMenu;
+
+	/** Reference to the settings menu UMG asset in the editor*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+	TSubclassOf<class UUserWidget> SettingsWidget;
+
+	/** Variable to hold the level menu widget after creating it */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+	UUserWidget* SettingsMenu;
+
+	/** Reference to the tutorial widget UMG asset in the editor*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+	TSubclassOf<class UUserWidget> TutorialWidget;
+
+	/** Variable to hold the level menu widget after creating it */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+	UUserWidget* TutorialMenu;
+
+	/** Reference to the pick level menu UMG asset in the editor*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+	TSubclassOf<class UUserWidget> SkinSelectionWidget;
+
+	/** Variable to hold the skin selection menu **/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
+	UUserWidget* SkinSelectionMenu;
+
+public:	
+	UFUNCTION()
+	void ShowSkinSelectionMenu();
 	
-public:
 	UFUNCTION()
 	void ShowPickLevelMenu();
-
-	//UFUNCTION()
-	//void HidePickLevelMenu();
 	
+	UFUNCTION()
+	void ShowSettingsMenu();
+	
+	UFUNCTION()
+	void ShowTutorialMenu();
+	
+	UFUNCTION()
+	void ShowMainMenu();
+
 };

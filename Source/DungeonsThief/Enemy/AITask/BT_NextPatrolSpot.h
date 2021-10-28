@@ -13,7 +13,7 @@ UCLASS()
 class DUNGEONSTHIEF_API UBT_NextPatrolSpot : public UBT_BaseTaskDungeonsThief
 {
 	GENERATED_BODY()
-	
+
 protected:
 	virtual EBTNodeResult::Type CodeToExecute() override;
 };

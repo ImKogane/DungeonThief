@@ -3,22 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BehaviorTree/BTService.h"
-#include "BehaviorTree/BTTaskNode.h"
+#include "BT_BaseServiceDungeonThief.h"
 #include "BT_HasSeenPlayer.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DUNGEONSTHIEF_API UBT_HasSeenPlayer : public UBTService
+class DUNGEONSTHIEF_API UBT_HasSeenPlayer : public UBT_BaseServiceDungeonThief
 {
 	GENERATED_BODY()
 
 protected:
+	virtual void CodeToExecute() override;
 
-	virtual void ScheduleNextTick(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
-	
 	bool CanSeePlayerRayCast(FVector ForwardVector, FVector StartTrace, float MaxDistance, class AActor* IgnoreActor);
-
 };
