@@ -33,24 +33,32 @@ void AMyGameMode::InitGameState()
 		return;
 	}
 
-	if (MyGameState == nullptr)
-	{
-		UE_LOG(LogTemp, Error, TEXT("MyGameState is null"));
-		return;
-	}
 	MyGameState = CurrentGameState;
 }
 
 void AMyGameMode::HandleMatchHasStarted()
 {
 	Super::HandleMatchHasStarted();
-
+	
+	if (MyGameState == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("MyGameState is null"));
+		return;
+	}
+	
 	SpawnEnemyManager = MyGameState->SpawnEnemyManager();
 }
 
 void AMyGameMode::WinGame()
-{
+{	
+	if (MyGameState == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("MyGameState is null"));
+		return;
+	}
+
 	MyGameInstance->AddPlayerXP(10 * XPBoostBuff);
+
 	if (OnGameWin.IsBound())
 	{
 		OnGameWin.Broadcast();
@@ -67,6 +75,12 @@ void AMyGameMode::LoseGame()
 
 void AMyGameMode::GainPoints(int Points)
 {
+	if (MyGameState == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("MyGameState is null"));
+		return;
+	}
+	
 	MyGameState->AddPlayerPoints(Points);
 
 	if (OnGainPoints.IsBound())
