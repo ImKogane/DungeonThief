@@ -74,10 +74,6 @@ protected:
 
 public :
 	void ShowScreen(bool Visibility, EWidgetGameScreen Screen);
-	
-	// void ShowPauseMenu(bool Visibility);
-	// void ShowMainHUD(bool Visibility);
-	// void ShowCharacterHUD(bool Visibility);
 
 	void SetCanPause(bool state);
 	
