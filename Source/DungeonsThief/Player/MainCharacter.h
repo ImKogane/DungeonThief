@@ -68,6 +68,13 @@ protected:
 	float RagdollForceImpulse;
 
 	class UMyGameInstance* MyGameInstance;
+
+	/* Camera 3D preview */
+	UPROPERTY(VisibleAnywhere, Category = "Preview Camera")
+	class USpringArmComponent* PreviewCameraBoom;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Preview Camera")
+	class USceneCaptureComponent2D* PreviewCamera;
 	
 protected:
 	//For function declaration

@@ -41,19 +41,15 @@ EBTNodeResult::Type UBT_PickBackDroppedFood::CodeToExecute()
 	if (GetWorld()->LineTraceSingleByChannel(*HitResult, StartLineTrace, EndLineTrace, ECollisionChannel::ECC_WorldStatic, *TraceParams))
 	{
 		AFood* FoodHitted = Cast<AFood>(HitResult->GetActor());
-
-		UE_LOG(LogTemp, Warning, TEXT("cast hitted this : %s"), *HitResult->GetActor()->GetName())
 		
 		if (FoodHitted == nullptr)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Food not in sight"))
 			BlackboardComponent->ClearValue("FoodDropped");
 			return EBTNodeResult::Failed;
 		}
 
 		if(FoodHitted != FoodDropped)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Wrong food"))
 			BlackboardComponent->ClearValue("FoodDropped");
 			return EBTNodeResult::Failed;
 		}

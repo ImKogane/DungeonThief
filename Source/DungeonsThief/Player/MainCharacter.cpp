@@ -7,6 +7,7 @@
 #include "DungeonsThief/Managers/AAnimationsHandler.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SceneCaptureComponent2D.h"
 #include "DungeonsThief/GameSettings/MyGameInstance.h"
 #include "DungeonsThief/GameSettings/MyGameMode.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -55,6 +56,15 @@ AMainCharacter::AMainCharacter()
 
 	AnimationHandler = CreateDefaultSubobject<AAnimationsHandler>(TEXT("AnimationHandler"));
 
+	PreviewCameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("PreviewCameraBoom"));
+	PreviewCameraBoom->SetupAttachment(GetRootComponent());
+	PreviewCameraBoom->TargetArmLength = 50.0f;
+	PreviewCameraBoom->bUsePawnControlRotation = false;
+	
+	PreviewCamera = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("Preview Camera"));
+	PreviewCamera->SetupAttachment(PreviewCameraBoom, USpringArmComponent::SocketName);
+	PreviewCamera->PrimitiveRenderMode = ESceneCapturePrimitiveRenderMode::PRM_UseShowOnlyList;
+	
 	bCanMove = true;
 	
 	RagdollForceImpulse = 10; 
@@ -89,7 +99,8 @@ void AMainCharacter::BeginPlay()
 	
 	MyGameMode->OnGameWin.AddDynamic(this, &AMainCharacter::WinGame);
 	MyGameMode->OnGameLose.AddDynamic(this, &AMainCharacter::LoseGame);
-
+	
+	PreviewCamera->ShowOnlyActors.Add(this);
 	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
 }
 
@@ -151,6 +162,7 @@ void AMainCharacter::CrouchPlayer()
 	if(IsCrouch == false && IsCarryFood == false)
 	{
 		Crouch();
+		PreviewCameraBoom->TargetArmLength = -120.0f;
 		GetCharacterMovement()->MaxWalkSpeed = (BaseSpeed/1.75) * CrouchSpeedBonus;
 		IsCrouch = true;
 		GetCharacterMovement()->GetNavAgentPropertiesRef().bCanCrouch = true;
@@ -165,6 +177,7 @@ void AMainCharacter::UnCrouchPlayer()
 	if(IsCrouch == true)
 	{
 		UnCrouch();
+		PreviewCameraBoom->TargetArmLength = -60.0f;
 		SetPlayerSpeed();
 		IsCrouch = false;
 	}
@@ -211,9 +224,7 @@ void AMainCharacter::MoveRight(float Value)
 	void AMainCharacter::ScrollInOut(float Value)
 	{
 		if(Value != 0.0f && bCanMove)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Je scroll"))
-			
+		{			
 			float CurrentArmLenght = CameraBoom->TargetArmLength + Value;
 			
 			if(CurrentArmLenght < MaxZoom && CurrentArmLenght > MinZoom)
@@ -314,7 +325,7 @@ void AMainCharacter::SetGamePause()
 
 	if(Player == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Player is null"));
+		UE_LOG(LogTemp, Error, TEXT("Main Character : Player is null"));
 		return;
 	}
 	
