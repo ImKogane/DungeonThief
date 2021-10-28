@@ -123,6 +123,12 @@ void AMainCharacterController::ShowPauseMenu(bool Visibility)
 	}
 }
 
+
+void AMainCharacterController::ShowMainMenu(bool Visibility)
+{
+	MainWidget->SetVisibility(Visibility? ESlateVisibility::Visible : ESlateVisibility::Hidden);
+}
+
 void AMainCharacterController::SetCanPause(bool state)
 {
 	CanPause = state;
