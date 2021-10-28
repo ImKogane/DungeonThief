@@ -249,6 +249,7 @@ void AMainCharacter::WinGame()
 	if (MainCharacterController)
 	{
 		MainCharacterController->ShowWinScreen(true);
+		MainCharacterController->ShowMainMenu(false);
 	}
 }
 
@@ -259,6 +260,7 @@ void AMainCharacter::LoseGame()
 	if (MainCharacterController)
 	{
 		MainCharacterController->ShowLoseScreen(true);
+		MainCharacterController->ShowMainMenu(false);
 	}
 }
 

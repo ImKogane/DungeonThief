@@ -71,5 +71,8 @@ public :
 	UFUNCTION()
 	void ShowPauseMenu(bool Visibility);
 
+	UFUNCTION()
+	void ShowMainMenu(bool Visibility);
+
 	void SetCanPause(bool state);
 };
