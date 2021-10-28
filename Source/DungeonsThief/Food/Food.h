@@ -59,8 +59,6 @@ protected:
 	UFUNCTION()
 	void OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
-	
-
 	bool bIsOnSpot;
 	
 public:	

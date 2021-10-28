@@ -16,8 +16,6 @@ AFoodSpot::AFoodSpot()
     SpotMesh = CreateDefaultSubobject<UStaticMeshComponent>("Spot");
     SpotMesh->SetupAttachment(RootComponent);
 
-
-
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>("BoxCollider");
 	CollisionBox->SetBoxExtent(FVector(100.f, 100.f, 100.f));
 	CollisionBox->SetCollisionProfileName("Trigger");
@@ -28,18 +26,12 @@ AFoodSpot::AFoodSpot()
 	
 	SpawnSceneComponent = CreateDefaultSubobject<USceneComponent>("SpawnPoint");
 	SpawnSceneComponent->SetupAttachment(SpotMesh);
-	
-	
-	
-	
 }
 
 // Called when the game starts or when spawned
 void AFoodSpot::BeginPlay()
-{
-	
+{	
 	Super::BeginPlay();
-	
 }
 
 
@@ -47,18 +39,19 @@ void AFoodSpot::BeginPlay()
 void AFoodSpot::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AFoodSpot::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	ACarryingCharacter* Player = Cast<ACarryingCharacter>(OtherActor);
-	
-	if(Player != nullptr)
+	ACarryingCharacter* Player = Cast<ACarryingCharacter>(OtherActor);	
+	if(Player == nullptr)
 	{
-		Player->SetSpotReference(this);
-		Player->SetIsNearSpot(true);
+		UE_LOG(LogTemp, Error, TEXT("Player is null"));
+		return;
 	}
+	
+	Player->SetSpotReference(this);
+	Player->SetIsNearSpot(true);
 }
 
 void AFoodSpot::OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
@@ -66,8 +59,11 @@ void AFoodSpot::OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActo
 	ACarryingCharacter* Player = Cast<ACarryingCharacter>(OtherActor);
 	if(Player != nullptr)
 	{
-		Player->SetSpotReference(nullptr);
-		Player->SetIsNearSpot(false);
+		UE_LOG(LogTemp, Error, TEXT("Player is null"));
+		return;
 	}
+	
+	Player->SetSpotReference(nullptr);
+	Player->SetIsNearSpot(false);
 }
 

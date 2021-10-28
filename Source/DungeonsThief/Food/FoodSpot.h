@@ -14,7 +14,6 @@ class DUNGEONSTHIEF_API AFoodSpot : public AActor
 {
 	GENERATED_BODY()
 
-
 	
 public:	
 	// Sets default values for this actor's properties
@@ -25,24 +24,22 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere)
-		USceneComponent* SceneComponent;
+	USceneComponent* SceneComponent;
 	
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* SpotMesh;
+	UStaticMeshComponent* SpotMesh;
 
 	UPROPERTY(VisibleAnywhere)
-		USceneComponent* SpawnSceneComponent;
+	USceneComponent* SpawnSceneComponent;
 	
 	UPROPERTY(VisibleAnywhere)
-		UBoxComponent* CollisionBox;
+	UBoxComponent* CollisionBox;
 
 	UFUNCTION()
-		void OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+	void OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 
 	UFUNCTION()
-		void OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
-	
+	void OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 public:	
 	// Called every frame

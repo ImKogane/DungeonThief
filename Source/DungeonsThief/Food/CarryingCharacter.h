@@ -17,7 +17,7 @@ class DUNGEONSTHIEF_API ACarryingCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ACarryingCharacter();
-
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -51,18 +51,16 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Stats")
 	float CrouchSpeedBonus = 1;
-	
-	
-
-	UFUNCTION()
-	void CarryItem();
-	void PutItemOnSpot();
-	void SetPlayerSpeed();
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	
+	UFUNCTION()
+	void CarryItem();
+	void PutItemOnSpot();
+	void SetPlayerSpeed();
+	
 	UFUNCTION()
 	void InteractWithItem();
 	

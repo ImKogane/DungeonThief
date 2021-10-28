@@ -21,8 +21,6 @@ APlayerHidingPlace::APlayerHidingPlace()
 	CollisionBox->SetCollisionProfileName("Trigger");
 
 	CollisionBox->OnComponentBeginOverlap.AddDynamic(this,&APlayerHidingPlace::OnBoxOverlapBegin);
-	//CollisionBox->OnComponentEndOverlap.AddDynamic(this, &APlayerHidingPlace::OnBoxOverlapEnd);
-
 }
 
 // Called when the game starts or when spawned
@@ -33,12 +31,14 @@ void APlayerHidingPlace::BeginPlay()
 	AGameModeBase* GameModeBase = GetWorld()->GetAuthGameMode();
 	if (GameModeBase == nullptr)
 	{
+		UE_LOG(LogTemp, Error, TEXT("GameModeBase is null"));
 		return;
 	}
 
 	MyGameMode = Cast<AMyGameMode>(GameModeBase);
 	if (MyGameMode == nullptr)
 	{
+		UE_LOG(LogTemp, Error, TEXT("MyGameMode is null"));
 		return;
 	}
 
@@ -54,23 +54,33 @@ void APlayerHidingPlace::Tick(float DeltaTime)
 void APlayerHidingPlace::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
 	AFood* FoodEnter = Cast<AFood>(OtherActor);
-	if (FoodEnter != nullptr)
+	if (FoodEnter == nullptr)
 	{
-		MyGameMode->GainPoints(FoodEnter->GetFoodPoints());
-		UGameplayStatics::PlaySoundAtLocation(this, WinPointsSound, GetActorLocation());
+		UE_LOG(LogTemp, Error, TEXT("FoodEnter is null"));
+		return;
+	}
+
+	MyGameMode->GainPoints(FoodEnter->GetFoodPoints());
+	UGameplayStatics::PlaySoundAtLocation(this, WinPointsSound, GetActorLocation());
 		
-		if(FoodManager)
-		{
-			FoodManager->RemoveFoodFromWorldList(FoodEnter);
-		}
-		AMainCharacter* Player = Cast<AMainCharacter>(FoodEnter->GetCharacterCarryingMe());
-		
-		if (Player != nullptr)
-		{
-			Player->DropItem();
-			Player->SetNearFoodActor(nullptr);
-		}
-		FoodEnter->Destroy();
-	}	
+	if(FoodManager == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("FoodEnter is null"));
+		return;
+	}
+	
+	FoodManager->RemoveFoodFromWorldList(FoodEnter);
+	
+	AMainCharacter* Player = Cast<AMainCharacter>(FoodEnter->GetCharacterCarryingMe());
+	if (Player == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Player is null"));
+		return;
+	}
+	
+	Player->DropItem();
+	Player->SetNearFoodActor(nullptr);
+	
+	FoodEnter->Destroy();
 }
 

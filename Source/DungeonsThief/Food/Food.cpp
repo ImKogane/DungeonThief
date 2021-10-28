@@ -48,7 +48,6 @@ void AFood::BeDrop()
 // Called when the game starts or when spawned
 void AFood::BeginPlay()
 {
-
 	Super::BeginPlay();
 	SetRandomMesh();
 
@@ -63,7 +62,6 @@ void AFood::BeginPlay()
 void AFood::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 
@@ -74,18 +72,17 @@ void AFood::SetRandomMesh()
 {
     //Choose random index
 	int MeshIndex = FMath::FRandRange(0,FoodArray.Num());
-	
-	
-	if(FoodMesh != nullptr)
+		
+	if(FoodMesh == nullptr)
 	{
-		FoodMesh->SetStaticMesh(FoodArray[MeshIndex]);
+		return;
 	}
 	
+	FoodMesh->SetStaticMesh(FoodArray[MeshIndex]);
 }
 
 void AFood::BecomeSuperFood()
 {
-
 	int LuckySuperFNumber = FMath::FRandRange(0,SuperFoodRate+1);
 
 	if(LuckySuperFNumber == 5)
@@ -103,18 +100,24 @@ void AFood::OnBoxOverlapBegin( UPrimitiveComponent* OverlappedComponent, AActor*
 {
 	ACarryingCharacter* Player = Cast<ACarryingCharacter>(OtherActor);
 	
-	if(Player != nullptr)
+	if(Player == nullptr)
 	{
-		Player->SetNearFoodActor(this);
+		UE_LOG(LogTemp, Error, TEXT("Player is null"));
+		return;
 	}
+	
+	Player->SetNearFoodActor(this);
 }
 
 void AFood::OnBoxOverlapEnd( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	ACarryingCharacter* Player = Cast<ACarryingCharacter>(OtherActor);
 	
-	if(Player != nullptr)
+	if(Player == nullptr)
 	{
-		Player->SetNearFoodActor(nullptr);
+		UE_LOG(LogTemp, Error, TEXT("Player is null"));
+		return;
 	}
+	
+	Player->SetNearFoodActor(nullptr);
 }
