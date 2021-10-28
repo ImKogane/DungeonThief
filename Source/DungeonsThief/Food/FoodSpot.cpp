@@ -2,6 +2,7 @@
 
 #include "FoodSpot.h"
 #include "DungeonsThief/Player/MainCharacter.h"
+#include "Particles/ParticleSystemComponent.h"
 
 
 // Sets default values
@@ -26,6 +27,9 @@ AFoodSpot::AFoodSpot()
 
 	SpawnSceneComponent = CreateDefaultSubobject<USceneComponent>("SpawnPoint");
 	SpawnSceneComponent->SetupAttachment(SpotMesh);
+
+	SpotParticles = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("SpotParticles"));
+	SpotParticles->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
