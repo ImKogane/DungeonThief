@@ -18,6 +18,12 @@ EBTNodeResult::Type UBT_TryPuttingFoodOnSpot::CodeToExecute()
 	}
 
 	AFood* FoodDroped = Cast<AFood>(AICharacter->GetPlayerNearFoodActor());
+
+	if (FoodDroped == nullptr)
+	{
+		return EBTNodeResult::Failed;
+
+	}
 	if (FoodDroped->GetIsOnSpot())
 	{
 		BlackboardComponent->ClearValue("FoodCarrying");
@@ -25,6 +31,13 @@ EBTNodeResult::Type UBT_TryPuttingFoodOnSpot::CodeToExecute()
 		return EBTNodeResult::Succeeded;
 	}
 	AFoodSpot* SpotVisited = Cast<AFoodSpot>(BlackboardComponent->GetValueAsObject("SpotLocationToGo"));
+
+	if (SpotVisited == nullptr)
+	{
+		return EBTNodeResult::Failed;
+
+	}
+	
 	BlackboardComponent->ClearValue("SpotLocationToGo");
 	AICharacter->AddAlreadyVisitedSpot(SpotVisited);
 	AICharacter->InteractWithItem();

@@ -19,9 +19,20 @@ void AMainCharacterController::BeginPlay()
 {
 	Super::BeginPlay();
 	AMyGameMode* GameModeBase = Cast<AMyGameMode>(GetWorld()->GetAuthGameMode());
+	if (GameModeBase == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("GameModeBase is null"));
+		return;
+	}
 
 	MyGameState = GameModeBase->GetGameState<AMyGameState>();
 	MyGameInstance = Cast<UMyGameInstance>(GetGameInstance());
+
+	if (MyGameInstance == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("MyGameInstance is null"));
+		return;
+	}
 
 	if (GetPawn())
 	{
@@ -85,6 +96,13 @@ void AMainCharacterController::ShowWinScreen(bool Visibility)
 void AMainCharacterController::ShowLoseScreen(bool Visibility)
 {
 	UUI_MenuEndGame* LoseScreenCast = Cast<UUI_MenuEndGame>(LoseScreenWidget);
+	
+	if (LoseScreenCast == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("LoseScreenCast is null"));
+		return;
+	}
+	
 	if (MyGameInstance->GetGameplayMode() == EGameplayMode::EGM_ScoreMode)
 	{
 		LoseScreenCast->SetTextScore(MyGameState->GetPlayerPoints());

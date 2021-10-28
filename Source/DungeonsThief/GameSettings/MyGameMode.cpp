@@ -33,6 +33,11 @@ void AMyGameMode::InitGameState()
 		return;
 	}
 
+	if (MyGameState == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("MyGameState is null"));
+		return;
+	}
 	MyGameState = CurrentGameState;
 }
 
