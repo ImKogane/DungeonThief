@@ -27,7 +27,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int PlayerXP = 0;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	int PlayerXPLevel = 1;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
