@@ -74,7 +74,7 @@ void APlayerHidingPlace::OnBoxOverlapBegin(UPrimitiveComponent* OverlappedCompon
 	AMainCharacter* Player = Cast<AMainCharacter>(FoodEnter->GetCharacterCarryingMe());
 	if (Player == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Player is null"));
+		UE_LOG(LogTemp, Error, TEXT("PlayerHidingPlace : Player is null"));
 		return;
 	}
 	
