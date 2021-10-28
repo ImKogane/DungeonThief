@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "MainMenu_GameModeBase.h"
+#include "DungeonsThief/GameSettings/MainMenu_GameModeBase.h"
 
 #include "LevelSequencePlayer.h"
 #include "HUD/MainMenuController.h"
