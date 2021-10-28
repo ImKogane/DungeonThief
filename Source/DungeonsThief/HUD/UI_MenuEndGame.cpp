@@ -83,6 +83,8 @@ void UUI_MenuEndGame::SetTextScore(int Score)
 {
 	int SavedScore = MyGameInstance->GetBestScore();
 
+    UpdateXPProgression();
+    
 	EndScore->SetText(FText::Format(FText::FromString("Your score : {0}"), Score));
 
 	if (Score > SavedScore)
