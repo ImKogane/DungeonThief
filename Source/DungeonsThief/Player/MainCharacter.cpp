@@ -275,17 +275,18 @@ void AMainCharacter::ChangeObjectTransparency()
 	FVector EndTrace = StartTrace + (ForwardVector * CameraBoom->TargetArmLength);
 	FCollisionQueryParams* TraceParams = new FCollisionQueryParams();
 
-	if (GetWorld()->LineTraceMultiByChannel(HitResults, StartTrace, EndTrace, ECC_WorldStatic, *TraceParams))
+	if (GetWorld()->LineTraceMultiByProfile(HitResults, StartTrace, EndTrace, FName("IgnoreCamera"), *TraceParams))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *HitResults[0].GetActor()->GetName());
+		if (CheckIfIsPlayer(HitResults[0].GetActor()))
+		{
+			return;
+		}
+		
 		//we check all the hit objects to see if one of them has staticmesh component and then store it 
 		for (auto& Hit : HitResults)
 		{
 			AActor* CurrentHitActor = Hit.GetActor();
-
-			if (CheckIfIsPlayer(CurrentHitActor))
-			{
-				return;
-			}
 
 			GetStaticMeshes(CurrentHitActor);			
 		}
@@ -297,33 +298,33 @@ void AMainCharacter::ChangeObjectTransparency()
 bool AMainCharacter::CheckIfIsPlayer(AActor* CurrentHitActor)
 {
 	AMainCharacter* Player = Cast<AMainCharacter>(CurrentHitActor);
-	
-	if (Player != nullptr)
+	if (Player == nullptr)
 	{
-		//if we touch te player we don't need to do anything
-		//we only set back all the static mesh materials if there is any in the array
-		for (int i = 0; i < CurrentHitMeshes.Num(); i++)
-		{
-			UStaticMeshComponent* CurrentHitMesh = CurrentHitMeshes[i];
-			if (CurrentHitMesh == nullptr)
-			{
-				break;
-			}
-					
-			UMaterial* CurrentHitObjectMaterial = CurrentHitObjectsMaterial[i];
-			if (CurrentHitObjectMaterial == nullptr)
-			{
-				break;
-			}
-			CurrentHitMesh->SetMaterial(0, CurrentHitObjectMaterial);
-		}
-		CurrentHitMeshes.Empty();
-		CurrentHitObjectsMaterial.Empty();
-
-		return true;
+		UE_LOG(LogTemp, Warning, TEXT("NOT PLAYER"));
+		return false;
 	}
-	
-	return false;
+
+	//if we touch te player we don't need to do anything
+	//we only set back all the static mesh materials if there is any in the array
+	for (int i = 0; i < CurrentHitMeshes.Num(); i++)
+	{
+		UStaticMeshComponent* CurrentHitMesh = CurrentHitMeshes[i];
+		if (CurrentHitMesh == nullptr)
+		{
+			break;
+		}
+					
+		UMaterial* CurrentHitObjectMaterial = CurrentHitObjectsMaterial[i];
+		if (CurrentHitObjectMaterial == nullptr)
+		{
+			break;
+		}
+		CurrentHitMesh->SetMaterial(0, CurrentHitObjectMaterial);
+	}
+	CurrentHitMeshes.Empty();
+	CurrentHitObjectsMaterial.Empty();
+
+	return true;
 }
 
 void AMainCharacter::GetStaticMeshes(AActor* CurrentHitActor)
@@ -339,9 +340,9 @@ void AMainCharacter::GetStaticMeshes(AActor* CurrentHitActor)
 	{
 		return;
 	}
-	
+
 	if (!CurrentHitMeshes.Contains(StaticMeshComponent))
-	{
+	{		
 		CurrentHitMeshes.Add(StaticMeshComponent);
 		CurrentHitObjectsMaterial.Add(StaticMeshComponent->GetMaterial(0)->GetMaterial());
 	}
