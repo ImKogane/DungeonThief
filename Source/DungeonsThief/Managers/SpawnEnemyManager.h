@@ -72,6 +72,7 @@ public:
 	FORCEINLINE bool GetGlobalWaitAI() { return bGlobalWaitAI; }
 	FORCEINLINE void SetGlobalWaitAI(bool value) { bGlobalWaitAI = value; }
 
+	UFUNCTION()
 	void StopAllTimeHandle();
 
 protected:

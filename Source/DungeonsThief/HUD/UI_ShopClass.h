@@ -59,8 +59,8 @@ protected:
 	TArray<FCharacterSkin> EvaSkins;
 	TArray<FCharacterSkin> EvaSkinsAvailable;
 	int CurrentEvaIndex;
-	
-	/* Change Grant skins buttons */
+
+#pragma region Grant Skin UI
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UImage* GrantPreview;
 	
@@ -72,8 +72,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UButton* GrantValidateSelection;
-
-	/* Change Nomad skins buttons */
+#pragma endregion 
+	
+#pragma region Nomad Skin UI	
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UImage* NomadPreview;
 	
@@ -85,8 +86,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UButton* NomadValidateSelection;
-
-	/* Change Eva skins buttons */
+#pragma endregion 
+	
+#pragma region Eva Skin UI	
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UImage* EvaPreview;
 
@@ -98,9 +100,11 @@ protected:
 	
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UButton* EvaValidateSelection;
-
+#pragma endregion 
+	
 protected:
-
+	/* Method Section */
+	
 	void GetAvailableSkins(TArray<FCharacterSkin> Skins, TArray<FCharacterSkin>& AvailableSkins);
 	
 	/* Method to change current skin selected*/

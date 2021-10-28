@@ -37,9 +37,9 @@ void UUI_ShopClass::NativeConstruct()
 	GetAvailableSkins(NomadSkins, NomadSkinsAvailable);
 	GetAvailableSkins(EvaSkins, EvaSkinsAvailable);
 	
-	GrantPreview->SetBrushFromTexture(GrantSkins[0].CurrentSkinPreview);
-	NomadPreview->SetBrushFromTexture(NomadSkins[0].CurrentSkinPreview);
-	EvaPreview->SetBrushFromTexture(EvaSkins[0].CurrentSkinPreview);
+	GrantPreview->SetBrushFromTexture(GrantSkinsAvailable[0].CurrentSkinPreview);
+	NomadPreview->SetBrushFromTexture(NomadSkinsAvailable[0].CurrentSkinPreview);
+	EvaPreview->SetBrushFromTexture(EvaSkinsAvailable[0].CurrentSkinPreview);
 }
 
 void UUI_ShopClass::Back()
@@ -47,6 +47,7 @@ void UUI_ShopClass::Back()
 	this->SetVisibility(ESlateVisibility::Hidden);
 }
 
+#pragma region Custom Skin Methods
 void UUI_ShopClass::GetAvailableSkins(TArray<FCharacterSkin> Skins, TArray<FCharacterSkin>& AvailableSkins)
 {
 	for (auto Skin : Skins)
@@ -87,6 +88,7 @@ USkeletalMesh* UUI_ShopClass::SelectSkin(int CurrentIndex, TArray<FCharacterSkin
 
 	return SkinChosen.CurrentMesh;
 }
+#pragma endregion 
 
 #pragma region GrantSkinSelection
 void UUI_ShopClass::ChooseNextGrantSkin()

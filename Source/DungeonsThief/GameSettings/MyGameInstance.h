@@ -80,7 +80,7 @@ public:
 	FORCEINLINE class USkeletalMesh* GetCurrentNomadSkin() { return CurrentNomadSkin; }
 	FORCEINLINE void SetCurrentNomadSkin(class USkeletalMesh* NewMesh)
 	{
-		CurrentGrantSkin = NewMesh;
+		CurrentNomadSkin = NewMesh;
 		bHasCustomNomadSkin = true;
 	}
 
